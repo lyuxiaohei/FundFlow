@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统类型架构对比 · 投资项目库</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #fafafa; --ink: #111827; --muted: #4b5563; --soft: #6b7280;
+    --rule: rgba(17,24,39,0.10); --rule-solid: #d1d5db;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    padding: 48px 32px 32px; max-width: 1240px; margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--soft); margin-bottom: 12px;
+  }
+  h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.75rem; line-height: 1.3; }
+  .subtitle { font-size: 13px; color: var(--muted); margin-top: 8px; max-width: 880px; line-height: 1.6; }
+  .diagram { margin-top: 32px; }
+  svg { display: block; width: 100%; height: auto; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 16px; margin-top: 36px; }
+  .card { background: #ffffff; border: 1px solid rgba(17,24,39,0.12); border-radius: 6px; padding: 20px; }
+  .card-header { display: flex; align-items: center; gap: 8px; margin: 8px 0 12px; }
+  .card-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .card h3 { font-size: 14px; font-weight: 600; }
+  .card ul { list-style: none; }
+  .card li { font-size: 12px; color: var(--muted); line-height: 1.7; padding-left: 14px; position: relative; }
+  .card li::before { content: ""; position: absolute; left: 0; top: 9px; width: 5px; height: 1px; background: var(--rule-solid); }
+  .footer {
+    margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
+    font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--soft); letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<p class="eyebrow">INVESTMENT DEPT · PROJECT VAULT · SYSTEM TYPES</p>
+<h1>系统类型架构对比：轻量管道派 / 全流程派 / 投资部需求</h1>
+<p class="subtitle">方案A 轻量管道派 / 方案B 全流程派 / 方案C 投资部需求，三线按「募 · 投 · 管 · 退 · 支撑」段位对齐，箭头表示段位自上而下流转（募→投→管→退）；同类功能同背景色（紫=募、蓝=管道/投、橙=投后、红=清算/退、灰=统计/支撑），绿色为投资部独有的不投原因分类记录（同类产品均缺失，绿色箭头=放弃分支），虚线框为缺失/待确认段（文字置灰、保留段位底色），虚线短接为支撑层挂接。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1160 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#111827"/>
+    </marker>
+    <marker id="arrD" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- 三线分隔 -->
+  <line x1="396" y1="40" x2="396" y2="540" stroke="rgba(17,24,39,0.10)" stroke-width="1"/>
+  <line x1="756" y1="40" x2="756" y2="540" stroke="rgba(17,24,39,0.10)" stroke-width="1"/>
+
+  <!-- 线标题 -->
+  <text x="216" y="56" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="10" letter-spacing="0.12em" fill="#111827" text-anchor="middle" font-weight="600">方案A · 轻量管道派（CRM 型）</text>
+  <text x="540" y="56" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="10" letter-spacing="0.12em" fill="#111827" text-anchor="middle" font-weight="600">方案B · 全流程派（FRONT-TO-BACK）</text>
+  <text x="936" y="56" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="10" letter-spacing="0.12em" fill="#111827" text-anchor="middle" font-weight="600">方案C · 投资部需求（组合 + 空白）</text>
+
+  <!-- ============ 线A：轻量管道派（仅覆盖 投 + 支撑） ============ -->
+  <rect x="84" y="84" width="264" height="60" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="216" y="112" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投：管道 · 阶段管理</text>
+  <text x="216" y="130" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">自动捕捉 · 邮件日历名片</text>
+  <line x1="216" y1="146" x2="216" y2="157" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="84" y="162" width="264" height="60" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="216" y="190" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投：关系智能 · 联系人</text>
+  <text x="216" y="208" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">关系强度评分 · 引荐热路径</text>
+  <!-- 支撑两模块：同行小块，各自虚线挂接 -->
+  <path d="M216,224 L216,233 L147,233 L147,239" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,3"/>
+  <path d="M216,224 L216,233 L285,233 L285,239" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,3"/>
+
+  <rect x="84" y="240" width="126" height="60" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="147" y="268" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">支撑：数据富化</text>
+  <text x="147" y="286" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#4b5563" text-anchor="middle">40+ 外部数据源</text>
+
+  <rect x="222" y="240" width="126" height="60" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="285" y="268" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">支撑：报表 · 漏斗</text>
+  <text x="285" y="286" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#4b5563" text-anchor="middle">阶段转化统计</text>
+
+  <!-- 缺失三段：同行小块，文字置灰、保留段位底色 -->
+  <rect x="84" y="318" width="80" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="124" y="352" font-size="11" font-weight="600" fill="#9ca3af" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">募：缺失</text>
+
+  <rect x="176" y="318" width="80" height="60" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="216" y="352" font-size="11" font-weight="600" fill="#9ca3af" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">管：缺失</text>
+
+  <rect x="268" y="318" width="80" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="308" y="352" font-size="11" font-weight="600" fill="#9ca3af" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">退：缺失</text>
+
+  <text x="216" y="478" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">代表：Affinity · 4Degrees · VC800 · 慧投 VC</text>
+  <text x="216" y="500" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#111827" text-anchor="middle">仅覆盖「投」段与支撑 ｜ 轻量快捷</text>
+
+  <!-- ============ 线B：方案B 全流程派（五段全覆盖） ============ -->
+  <rect x="444" y="84" width="264" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="576" y="112" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">募：基金 · LP</text>
+  <text x="576" y="130" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">募集 · 资格认定 · 出资 · IR</text>
+  <line x1="576" y1="146" x2="576" y2="157" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="444" y="162" width="264" height="60" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="576" y="190" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投：项目全流程</text>
+  <text x="576" y="208" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">档案 · 管道 · 尽调 · 立项投决</text>
+  <line x1="576" y1="224" x2="576" y2="235" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="444" y="240" width="264" height="60" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1"/>
+  <text x="576" y="268" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">管：投后 · 估值</text>
+  <text x="576" y="286" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">跟踪 · 财报 · 预警 · 委派董事</text>
+  <line x1="576" y1="302" x2="576" y2="313" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="444" y="318" width="264" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="576" y="346" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">退：清算 · 核算</text>
+  <text x="576" y="364" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">退出 · 收益分配 · 基金清算</text>
+  <line x1="576" y1="380" x2="576" y2="394" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,3"/>
+
+  <rect x="444" y="396" width="264" height="60" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="576" y="424" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">支撑：台账 · IR 汇报</text>
+  <text x="576" y="442" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">基金台账 · 估值 · LP 门户</text>
+
+  <text x="576" y="500" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#111827" text-anchor="middle">募投管退全覆盖 ｜ 代表：eFront · 恒生 · 璞华 · 蓝凌</text>
+
+  <!-- ============ 线C：投资部需求（段位对齐 + 放弃分支） ============ -->
+  <rect x="788" y="84" width="172" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="874" y="112" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">募：极简（08-26 确认）</text>
+  <text x="874" y="130" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">LP 录入 · 资格认定 · 材料上传</text>
+  <line x1="874" y1="146" x2="874" y2="157" stroke="#9ca3af" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#arrD)"/>
+
+  <rect x="788" y="162" width="172" height="60" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="874" y="190" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投：投前管道 · 阶段流转</text>
+  <text x="874" y="208" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">收到 BP 即建档 · 记录各阶段时间</text>
+  <line x1="874" y1="224" x2="874" y2="235" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 放弃分支：投段 → Pass Reason（绿色） -->
+  <line x1="962" y1="192" x2="996" y2="192" stroke="#16a34a" stroke-width="1.3" marker-end="url(#arrG)"/>
+  <text x="979" y="183" font-size="9" font-weight="600" fill="#16a34a" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">放弃</text>
+  <rect x="1002" y="162" width="154" height="60" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1079" y="189" font-size="11.5" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投：不投原因分类记录</text>
+  <text x="1079" y="207" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#166534" text-anchor="middle">★ 同类产品均缺失 · 自建亮点</text>
+
+  <rect x="788" y="240" width="172" height="60" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1"/>
+  <text x="874" y="268" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">管：投后全记录</text>
+  <text x="874" y="286" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">事件 · 报告 · 预警 · 提醒</text>
+  <line x1="874" y1="302" x2="874" y2="313" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <rect x="788" y="318" width="172" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="874" y="346" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">退：基金清算终态</text>
+  <text x="874" y="364" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">项目退出 → 分配 → 清算注销</text>
+  <line x1="874" y1="380" x2="874" y2="394" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,3"/>
+
+  <rect x="788" y="396" width="172" height="60" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="874" y="424" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">支撑：统计漏斗</text>
+  <text x="874" y="442" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563" text-anchor="middle">漏斗 · 不投原因分布</text>
+
+  <text x="936" y="500" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#111827" text-anchor="middle">前段≈CRM 派 ｜ 后段≈全流程派 ｜ 不投原因记录独有</text>
+
+  <!-- ============ 色例 ============ -->
+  <line x1="48" y1="556" x2="1112" y2="556" stroke="rgba(17,24,39,0.10)" stroke-width="0.8"/>
+  <text x="48" y="580" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" fill="#4b5563">LEGEND</text>
+
+  <rect x="108" y="570" width="16" height="12" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="130" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">管道/投</text>
+
+  <rect x="180" y="570" width="16" height="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="202" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">募</text>
+
+  <rect x="226" y="570" width="16" height="12" fill="#ffedd5" stroke="#ea580c" stroke-width="1"/>
+  <text x="248" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">投后</text>
+
+  <rect x="280" y="570" width="16" height="12" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="302" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">清算/退</text>
+
+  <rect x="352" y="570" width="16" height="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="374" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">统计/支撑</text>
+
+  <rect x="442" y="570" width="16" height="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="464" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#166534">投资部独有功能</text>
+
+  <rect x="550" y="570" width="16" height="12" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="572" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">缺失/待确认（段位底色）</text>
+
+  <line x1="700" y1="576" x2="722" y2="576" stroke="#111827" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="728" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">段位流转</text>
+
+  <line x1="780" y1="576" x2="802" y2="576" stroke="#16a34a" stroke-width="1.3" marker-end="url(#arrG)"/>
+  <text x="808" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">放弃分支</text>
+
+  <line x1="860" y1="576" x2="882" y2="576" stroke="#9ca3af" stroke-width="1" stroke-dasharray="2,3"/>
+  <text x="888" y="580" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">支撑挂接</text>
+</svg>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <p class="eyebrow">方案 A · CRM</p>
+    <div class="card-header"><span class="card-dot" style="background:#2563eb"></span><h3>轻量管道派</h3></div>
+    <ul>
+      <li>仅覆盖「投」段与支撑层，轻量、快捷、自动化</li>
+      <li>募 / 管 / 退 三段缺失（图中虚线占位）</li>
+      <li>契合度：Affinity 中低 / 4Degrees 低</li>
+    </ul>
+  </div>
+  <div class="card">
+    <p class="eyebrow">方案 B · F2B</p>
+    <div class="card-header"><span class="card-dot" style="background:#ea580c"></span><h3>全流程派</h3></div>
+    <ul>
+      <li>募投管退 + 支撑五段全覆盖</li>
+      <li>重实施、机构级采购</li>
+      <li>契合度 Top：蓝凌（高）· 璞华（高）</li>
+    </ul>
+  </div>
+  <div class="card">
+    <p class="eyebrow">方案 C · 本项目需求</p>
+    <div class="card-header"><span class="card-dot" style="background:#16a34a"></span><h3>投资部需求 = 组合 + 空白</h3></div>
+    <ul>
+      <li>「投」段取 CRM 派形态，「管 / 退」段取全流程派能力</li>
+      <li>放弃路径在投段分叉直达不投原因记录（绿色箭头）——同类产品均缺失，自建差异化亮点</li>
+      <li>「募」段极简确认（08-26）：LP 文字录入 + 资格认定 + 材料上传，无募集流程/IR；整体最接近蓝凌/璞华（约 75~80%）</li>
+    </ul>
+  </div>
+</div>
+
+<p class="footer">投资项目管理系统（项目库）· 依据《P1-R01-方案分析报告》V1.3 与《P1-R01-A01-竞品分析》V3.0 · 2026-08-26 修订（方案C 募段确认）</p>
+
+</body>
+</html>

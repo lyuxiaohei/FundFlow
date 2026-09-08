@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图3 · 放弃流程</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fafafa; --ink:#111827; --muted:#4b5563; --soft:#6b7280;
+          --rule:rgba(17,24,39,0.10); --accent:#2563eb; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink);
+    font-family:'Geist','PingFang SC','Microsoft YaHei',sans-serif;
+    padding:48px 32px 32px; max-width:1180px; margin:0 auto; }
+  .eyebrow { font-family:'Geist Mono',monospace; font-size:8px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--soft); margin-bottom:12px; }
+  h1 { font-family:'Instrument Serif','PingFang SC',serif; font-weight:400; font-size:1.75rem; line-height:1.3; }
+  .subtitle { font-size:13px; color:var(--muted); margin-top:8px; max-width:980px; line-height:1.7; }
+  .diagram { margin-top:24px; }
+  svg { display:block; width:100%; height:auto; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid var(--rule);
+    font-family:'Geist Mono',monospace; font-size:9px; color:var(--soft); letter-spacing:0.08em; }
+</style>
+</head>
+<body>
+<p class="eyebrow">ATTACHMENT 7 · FIG.3 · ABANDON FLOW</p>
+<h1>图 3 · 放弃流程（未投闭环 · 核心差异化）</h1>
+<p class="subtitle">任一可放弃节点（①②④⑤⑥⑦）触发后的统一处理链。放弃原因结构化记录为全市场空白（附件1 十家核查）——是漏斗统计与复盘的数据地基。进入未投归档后不可回流，再次接触按新项目建档并关联原档案。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1120 420" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <!-- 行1 箭头 -->
+  <line x1="304" y1="124" x2="352" y2="124" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="560" y1="124" x2="608" y2="124" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <text x="582" y="112" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">必填</text>
+  <line x1="816" y1="124" x2="864" y2="124" stroke="#4b5563" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="838" y="112" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">可选</text>
+  <!-- wrap 行1末 → 行2首 -->
+  <path d="M 968 152 V 204 H 200 V 248" fill="none" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- 行2 箭头 -->
+  <line x1="304" y1="276" x2="352" y2="276" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="560" y1="276" x2="608" y2="276" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 行1 节点 -->
+  <rect x="96" y="96" width="208" height="56" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="200" y="118" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">用户点击「放弃」</text>
+  <text x="200" y="138" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">项目页 / 时间线 / 看板常驻按钮</text>
+
+  <rect x="352" y="96" width="208" height="56" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="456" y="118" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">带出所处阶段 + 时间戳</text>
+  <text x="456" y="138" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">系统自动 · ①②④⑤⑥⑦ 之一</text>
+
+  <rect x="608" y="96" width="208" height="56" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="712" y="118" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">选择放弃原因</text>
+  <text x="712" y="138" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">预置分类（按节点过滤）+ 自定义</text>
+
+  <rect x="864" y="96" width="208" height="56" rx="6" fill="rgba(17,24,39,0.02)" stroke="#111827" stroke-opacity="0.20" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="968" y="118" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">备注 + 附件</text>
+  <text x="968" y="138" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">可选补充说明</text>
+
+  <!-- 行2 节点 -->
+  <rect x="96" y="248" width="208" height="56" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="200" y="270" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">未投归档</text>
+  <text x="200" y="290" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">状态不可逆 · 可检索</text>
+
+  <rect x="352" y="248" width="208" height="56" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="456" y="270" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">纳入阶段漏斗统计</text>
+  <text x="456" y="290" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">各阶段转化率 / 放弃率</text>
+
+  <rect x="608" y="248" width="208" height="56" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="712" y="270" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">放弃原因分布</text>
+  <text x="712" y="290" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">节点 × 原因 交叉（独有维度）</text>
+
+  <!-- 注记 -->
+  <text x="920" y="284" font-size="13" font-style="italic" fill="#4b5563" font-family="'Instrument Serif','PingFang SC',serif">复盘与统计的数据地基</text>
+
+  <!-- Legend -->
+  <line x1="32" y1="352" x2="1088" y2="352" stroke="rgba(17,24,39,0.10)" stroke-width="0.8"/>
+  <text x="32" y="374" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.14em" fill="#4b5563">LEGEND</text>
+  <text x="104" y="374" font-family="'Geist Mono',monospace" font-size="9" fill="#4b5563">实线 = 必经 ｜ 虚线 = 可选 ｜ 蓝框 = 终态节点</text>
+</svg>
+</div>
+
+<p class="footer">投资项目管理系统（项目库）· P2-R01-D01 · 图3 · 放弃流程 · 2026-08-26</p>
+</body>
+</html>

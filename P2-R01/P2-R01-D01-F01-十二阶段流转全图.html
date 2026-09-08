@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>P2-R01-D01-F01 · 十二阶段流转全图（08-27 修订版）</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#fafafa;--paper2:#f0f2f5;--ink:#111827;--muted:#4b5563;--soft:#6b7280;--rule:rgba(17,24,39,.10);--ruleS:#d1d5db;--accent:#2563eb;--tint:rgba(37,99,235,.08)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);font-family:'Geist',sans-serif;color:var(--ink);padding:40px 48px}
+  .eyebrow{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--soft);text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;line-height:1.2}
+  .sub{color:var(--soft);font-size:13px;margin-top:6px}
+  .fig{margin:28px 0 8px;overflow-x:auto}
+  svg{display:block;max-width:100%;height:auto}
+  .colophon{border-top:1px solid var(--rule);margin-top:24px;padding-top:12px;font-family:'Geist Mono',monospace;font-size:10px;color:var(--soft);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<p class="eyebrow">P2-R01-D01-F01 · 项目全生命周期 · 2026-08-27 修订</p>
+<h1>投资项目十二阶段流转全图</h1>
+<p class="sub">⑧⑨ 对调（先基金设立后出资）· ③ 停滞提醒 · 放弃两级：GP 主动放弃 / LP 投决否决</p>
+
+<div class="fig">
+<svg viewBox="0 0 1160 880" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4b5563"/></marker>
+    <marker id="arrA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+  <!-- ===== 段位分区框（先画，线条在下层） ===== -->
+  <rect x="40" y="40" width="760" height="432" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="40" y="512" width="760" height="104" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="40" y="656" width="760" height="104" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="820" y="40" width="300" height="720" rx="8" fill="rgba(17,24,39,.02)" stroke="#4b5563" stroke-width="1" stroke-dasharray="5,4"/>
+  <text x="56" y="64" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">投前管道 ①—⑦ · 7 放弃节点</text>
+  <text x="56" y="532" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">投资执行与设立 ⑧⑨ · 08-27 对调</text>
+  <text x="56" y="676" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">投后与退出 ⑩—⑫ · 无放弃</text>
+  <text x="836" y="64" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">放弃通道 · 两级</text>
+
+  <!-- ===== 转移箭头（先于节点） ===== -->
+  <!-- 行1 主链 -->
+  <line x1="184" y1="148" x2="236" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="360" y1="148" x2="412" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="536" y1="148" x2="588" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- wrap ④→⑤ -->
+  <path d="M 652 176 L 652 244 L 212 244 L 212 316" fill="none" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- 行2 主链 -->
+  <line x1="272" y1="348" x2="324" y2="348" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="448" y1="348" x2="500" y2="348" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- ⑦→⑧ 跨区 -->
+  <path d="M 564 376 L 564 444 L 124 444 L 124 536" fill="none" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- ⑧→⑨ -->
+  <line x1="184" y1="568" x2="236" y2="568" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- ⑨→⑩ 跨区（分水岭后） -->
+  <path d="M 300 596 L 300 632 L 124 632 L 124 680" fill="none" stroke="#2563eb" stroke-width="1.2" marker-end="url(#arrA)"/>
+  <!-- 区3 主链 -->
+  <line x1="184" y1="712" x2="236" y2="712" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="360" y1="712" x2="412" y2="712" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- ⑪ 自环：分批次退出 -->
+  <path d="M 356 692 Q 388 668 388 700 Q 388 724 362 726" fill="none" stroke="#4b5563" stroke-width="1" marker-end="url(#arr)"/>
+  <!-- ⑫→终态 -->
+  <line x1="536" y1="712" x2="560" y2="712" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- ===== 放弃总线（梳形） ===== -->
+  <line x1="124" y1="72" x2="960" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="960" y1="72" x2="960" y2="276" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <!-- GP 竖升线（行1 ①②④；行2 ⑤⑥⑦ 走行1节点间隙） -->
+  <line x1="124" y1="120" x2="124" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="300" y1="120" x2="300" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="652" y1="120" x2="652" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="212" y1="320" x2="212" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="388" y1="320" x2="388" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <line x1="564" y1="320" x2="564" y2="72" stroke="#4b5563" stroke-width="1"/>
+  <!-- LP 边：⑦ 右缘直达登记 -->
+  <line x1="624" y1="348" x2="848" y2="348" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- ===== AB 复合态内部 ===== -->
+  <line x1="960" y1="344" x2="960" y2="356" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="960" y1="400" x2="960" y2="428" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- ===== 边标签（带遮罩） ===== -->
+  <g font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing=".04em">
+    <rect x="150" y="138" width="68" height="12" fill="#f0f2f5"/><text x="184" y="147">约线上沟通</text>
+    <rect x="374" y="138" width="72" height="12" fill="#f0f2f5"/><text x="410" y="147">签NDA</text>
+    <rect x="542" y="124" width="96" height="12" fill="#f0f2f5"/><text x="590" y="133">路径A直发/B访谈</text>
+    <rect x="384" y="234" width="56" height="12" fill="#f0f2f5"/><text x="412" y="243">尽调通过</text>
+    <rect x="256" y="338" width="56" height="12" fill="#f0f2f5"/><text x="284" y="347">立项通过</text>
+    <rect x="432" y="338" width="60" height="12" fill="#f0f2f5"/><text x="462" y="347">投资人认可</text>
+    <rect x="580" y="434" width="108" height="12" fill="#f0f2f5"/><text x="634" y="443">投决通过→设立基金</text>
+    <rect x="192" y="558" width="100" height="12" fill="#f0f2f5"/><text x="242" y="567">设立完成·账户具备</text>
+    <rect x="308" y="622" width="88" height="12" fill="#f0f2f5"/><text x="352" y="631">出资完成·分水岭</text>
+    <rect x="150" y="702" width="68" height="12" fill="#f0f2f5"/><text x="184" y="711">退出批次登记</text>
+    <rect x="366" y="702" width="56" height="12" fill="#f0f2f5"/><text x="394" y="711">全部退出</text>
+    <!-- GP 场景标签 -->
+    <rect x="88" y="102" width="72" height="12" fill="#f0f2f5"/><text x="124" y="111">看BP后不看</text>
+    <rect x="272" y="102" width="56" height="12" fill="#f0f2f5"/><text x="300" y="111">路演后</text>
+    <rect x="616" y="102" width="72" height="12" fill="#f0f2f5"/><text x="652" y="111">访谈/尽调后</text>
+    <rect x="176" y="300" width="72" height="12" fill="#f0f2f5"/><text x="212" y="309">立项否决</text>
+    <rect x="348" y="300" width="80" height="12" fill="#f0f2f5"/><text x="388" y="309">投资人不出资</text>
+    <rect x="512" y="300" width="104" height="12" fill="#f0f2f5"/><text x="564" y="309">GP·投决前主动撤回</text>
+    <!-- LP 标签 -->
+    <rect x="664" y="336" width="96" height="12" fill="#f0f2f5"/><text x="712" y="345">LP·投决会否决</text>
+  </g>
+
+  <!-- ===== 停滞标注（③ 下方，editorial callout，mask 遮让 GP 竖线） ===== -->
+  <rect x="330" y="190" width="292" height="16" fill="#f0f2f5"/>
+  <text x="476" y="203" font-family="'Instrument Serif',serif" font-style="italic" font-size="13" fill="#4b5563" text-anchor="middle">⚠ 可长期停滞（对方拖延）→ 停滞提醒，≠ 放弃</text>
+  <line x1="476" y1="176" x2="476" y2="188" stroke="#6b7280" stroke-width="0.8" stroke-dasharray="3,3"/>
+
+  <!-- ===== 主链节点 ===== -->
+  <g font-family="'Geist',sans-serif">
+    <!-- 行1 -->
+    <g>
+      <rect x="64" y="120" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="124" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">① 接触/收BP</text>
+      <text x="124" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">BP接收</text>
+    </g>
+    <g>
+      <rect x="240" y="120" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="300" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">② 线上路演</text>
+      <text x="300" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">路演完成</text>
+    </g>
+    <g>
+      <rect x="416" y="120" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="476" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">③ 保密协议签署</text>
+      <text x="476" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">⚠可长期停滞</text>
+    </g>
+    <g>
+      <rect x="592" y="120" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="652" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">④ 尽调/访谈</text>
+      <text x="652" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">尽调启动</text>
+    </g>
+    <!-- 行2 -->
+    <g>
+      <rect x="152" y="320" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="212" y="344" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑤ 立项</text>
+      <text x="212" y="360" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">立项通过</text>
+    </g>
+    <g>
+      <rect x="328" y="320" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="388" y="344" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑥ 投资人路演</text>
+      <text x="388" y="360" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">投资人认可</text>
+    </g>
+    <g>
+      <rect x="504" y="320" width="120" height="56" rx="8" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="564" y="344" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑦ 投决</text>
+      <text x="564" y="360" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">通过→设立·否决→LP</text>
+    </g>
+    <!-- 区2 -->
+    <g>
+      <rect x="64" y="540" width="120" height="56" rx="8" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="124" y="564" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑧ 基金设立</text>
+      <text x="124" y="580" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">★审批③ 基金注册</text>
+    </g>
+    <g>
+      <rect x="240" y="540" width="120" height="56" rx="8" fill="rgba(37,99,235,.08)" stroke="#2563eb" stroke-width="1.2"/>
+      <text x="300" y="564" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑨ 出资</text>
+      <text x="300" y="580" font-family="'Geist Mono',monospace" font-size="8" fill="#4b5563" text-anchor="middle">★审批④ 付款·分水岭</text>
+    </g>
+    <!-- 区3 -->
+    <g>
+      <rect x="64" y="684" width="120" height="56" rx="8" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="124" y="708" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑩ 投后管理</text>
+      <text x="124" y="724" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">持续·四项刚性</text>
+    </g>
+    <g>
+      <rect x="240" y="684" width="120" height="56" rx="8" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="300" y="708" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑪ 项目退出</text>
+      <text x="300" y="724" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">分批次</text>
+    </g>
+    <g>
+      <rect x="416" y="684" width="120" height="56" rx="8" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="476" y="708" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">⑫ 基金清算注销</text>
+      <text x="476" y="724" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">终态</text>
+    </g>
+    <!-- 终态 ring -->
+    <circle cx="576" cy="712" r="8" fill="none" stroke="#4b5563" stroke-width="1.2"/>
+    <circle cx="576" cy="712" r="4" fill="#4b5563"/>
+    <!-- 起点 dot -->
+    <circle cx="52" cy="148" r="5" fill="#111827"/>
+
+    <!-- AB 复合态节点 -->
+    <g>
+      <rect x="864" y="304" width="192" height="40" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="960" y="320" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">放弃 / 否决登记</text>
+      <text x="960" y="336" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">主体 GP/LP + 二级末级原因</text>
+    </g>
+    <g>
+      <rect x="864" y="356" width="192" height="44" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="960" y="374" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">未投归档</text>
+      <text x="960" y="390" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">不可逆 · 分GP/LP统计</text>
+    </g>
+    <circle cx="960" cy="440" r="7" fill="none" stroke="#4b5563" stroke-width="1.2"/>
+    <circle cx="960" cy="440" r="3.5" fill="#4b5563"/>
+  </g>
+
+  <!-- ===== 图例（底部横条） ===== -->
+  <line x1="40" y1="792" x2="1120" y2="792" stroke="rgba(17,24,39,.10)" stroke-width="0.8"/>
+  <text x="40" y="812" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">LEGEND</text>
+  <g font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">
+    <rect x="112" y="804" width="20" height="12" fill="#f0f2f5" stroke="rgba(17,24,39,.14)"/><text x="140" y="814">段位分区</text>
+    <rect x="212" y="804" width="20" height="12" fill="rgba(17,24,39,.02)" stroke="#4b5563" stroke-dasharray="4,3"/><text x="240" y="814">放弃通道</text>
+    <rect x="316" y="804" width="20" height="12" fill="rgba(37,99,235,.08)" stroke="#2563eb"/><text x="344" y="814">分水岭 ⑨ 出资</text>
+    <text x="456" y="814">★ 审批挂接</text>
+    <text x="544" y="814">⚠ 停滞提醒（≠放弃）</text>
+    <text x="700" y="814">─ GP 汇流总线 · ─ LP 直达</text>
+  </g>
+  <text x="40" y="848" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">7 放弃节点（①②④⑤⑥⑦）：①②④⑤⑥⑦ → GP 通道；⑦ 投决未通过 → LP 通道 · ③ 无放弃点但可停滞 · 过 ⑨ 无放弃直至 ⑫</text>
+</svg>
+</div>
+
+<p class="colophon">投资项目库 · P2-R01-D01 图1 · 2026-08-27 修订（⑧⑨对调 / ③停滞 / GP·LP 两级） · 依据《P2-R01-A01-需求调整记录-20260827》</p>
+</body>
+</html>

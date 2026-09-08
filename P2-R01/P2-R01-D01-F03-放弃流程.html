@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>P2-R01-D01-F03 · 放弃流程（08-27 修订版）</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#fafafa;--ink:#111827;--muted:#4b5563;--soft:#6b7280;--rule:rgba(17,24,39,.10);--accent:#2563eb}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);font-family:'Geist',sans-serif;color:var(--ink);padding:40px 48px}
+  .eyebrow{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--soft);text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;line-height:1.2}
+  .sub{color:var(--soft);font-size:13px;margin-top:6px}
+  .fig{margin:28px 0 8px;overflow-x:auto}
+  svg{display:block;max-width:100%;height:auto}
+  .colophon{border-top:1px solid var(--rule);margin-top:24px;padding-top:12px;font-family:'Geist Mono',monospace;font-size:10px;color:var(--soft);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<p class="eyebrow">P2-R01-D01-F03 · 放弃流程 · 2026-08-27 修订</p>
+<h1>放弃流程：两级原因结构化登记</h1>
+<p class="sub">一级主体 GP（投决前主动放弃）/ LP（投决会否决）自动判定 → 二级末级原因 + 自定义 → 未投归档（不可逆，分口径统计）</p>
+
+<div class="fig">
+<svg viewBox="0 0 1160 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4b5563"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+  <!-- 箭头 -->
+  <line x1="160" y1="148" x2="196" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="364" y1="148" x2="400" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="488" y1="120" x2="536" y2="120" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <path d="M 488 176 L 512 176 L 512 300 L 536 300" fill="none" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="712" y1="120" x2="756" y2="120" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <path d="M 712 300 L 734 300 L 734 176" fill="none" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="896" y1="148" x2="936" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+  <line x1="1035" y1="176" x2="1035" y2="304" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 边标签 -->
+  <g font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">
+    <rect x="496" y="100" width="80" height="12" fill="#fafafa"/><text x="536" y="109">GP·投决前主动</text>
+    <rect x="440" y="284" width="88" height="12" fill="#fafafa"/><text x="484" y="293">LP·投决会否决</text>
+    <rect x="916" y="184" width="72" height="12" fill="#fafafa"/><text x="952" y="193">触发统计口径</text>
+  </g>
+
+  <!-- 节点 -->
+  <g font-family="'Geist',sans-serif">
+    <g>
+      <rect x="40" y="120" width="120" height="56" rx="6" fill="rgba(107,114,128,.10)" stroke="#6b7280" stroke-width="1"/>
+      <text x="100" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">点击「放弃」</text>
+      <text x="100" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">项目页按钮</text>
+    </g>
+    <g>
+      <rect x="200" y="120" width="164" height="56" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="282" y="140" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">系统自动带出</text>
+      <text x="282" y="156" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">阶段·时间戳·主体判定</text>
+      <text x="282" y="168" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">（可人工改）</text>
+    </g>
+    <polygon points="444,96 488,148 444,200 400,148" fill="#fff" stroke="#111827" stroke-width="1"/>
+    <text x="444" y="144" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">一级</text>
+    <text x="444" y="160" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">选择主体</text>
+    <g>
+      <rect x="540" y="92" width="172" height="56" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="626" y="112" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">二级 · GP 末级原因</text>
+      <text x="626" y="128" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">超范围/团队/财务/估值…</text>
+      <text x="626" y="140" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">按节点过滤+自定义</text>
+    </g>
+    <g>
+      <rect x="540" y="272" width="172" height="56" rx="6" fill="#fff" stroke="#4b5563" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="626" y="292" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">二级 · LP 末级原因</text>
+      <text x="626" y="308" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">不看好行业/赛道/风险/</text>
+      <text x="626" y="320" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">估值/政策…+自定义</text>
+    </g>
+    <g>
+      <rect x="760" y="120" width="136" height="56" rx="6" fill="rgba(17,24,39,.02)" stroke="rgba(17,24,39,.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="828" y="144" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">备注 + 附件</text>
+      <text x="828" y="160" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">可选</text>
+    </g>
+    <g>
+      <rect x="940" y="120" width="190" height="56" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="1035" y="142" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">未投归档</text>
+      <text x="1035" y="158" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">状态不可逆·不回流</text>
+    </g>
+    <g>
+      <rect x="940" y="308" width="190" height="56" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="1035" y="330" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">漏斗统计 · 复盘</text>
+      <text x="1035" y="346" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">GP/LP 分口径·原因分布</text>
+    </g>
+  </g>
+
+  <!-- 停滞对照说明 -->
+  <line x1="40" y1="404" x2="1120" y2="404" stroke="rgba(17,24,39,.10)" stroke-width="0.8"/>
+  <text x="40" y="428" font-family="'Instrument Serif',serif" font-style="italic" font-size="14" fill="#4b5563">辨析：停滞 ≠ 放弃——③ 保密协议等任一阶段长期未推进触发「停滞提醒」，项目留在管道；放弃则离开管道进入未投归档。</text>
+  <text x="40" y="456" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">GP = 管理人（管理侧筛选） · LP = 出资人（出资侧决策）——两类统计与复盘口径分开（08-27 王总确认）</text>
+</svg>
+</div>
+
+<p class="colophon">投资项目库 · P2-R01-D01 图3 · 2026-08-27 修订（两级原因树） · 依据《P2-R01-A01-需求调整记录-20260827》</p>
+</body>
+</html>

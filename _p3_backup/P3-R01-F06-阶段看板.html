@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>阶段看板 - 投资项目管理系统（项目库）</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
+  --page-bg:#f5f5f5; --side-bg:#fafafa; --thead-bg:#fafafa;
+  --border:#f0f0f0; --input-border:#d9d9d9;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c; --placeholder:#bfbfbf; --danger:#ff4d4f;
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.5715; min-width:1200px; margin:0; }
+html,body{height:100%;}
+body{display:flex;flex-direction:column;overflow:hidden;}
+
+/* ===== 顶栏 ===== */
+.topbar { height:44px; background:#fff; border-bottom:1px solid var(--border); display:flex; align-items:center; flex:none; }
+.topbar .logo { width:208px; flex-shrink:0; padding-left:24px; color:var(--primary); font-size:16px; font-weight:700; letter-spacing:.5px; white-space:nowrap; }
+.topbar .tools { margin-left:auto; display:flex; align-items:center; gap:18px; padding-right:20px; color:var(--text-2); }
+.topbar .tools .ico-btn { cursor:pointer; display:inline-flex; align-items:center; }
+.topbar .manual { color:var(--primary); font-size:13px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.topbar .avatar { width:28px; height:28px; border-radius:50%; background:var(--primary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+
+/* ===== 布局（模式 B 定高内滚） ===== */
+.body { flex:1; min-height:0; display:flex; }
+.sidebar { width:208px; flex-shrink:0; background:var(--side-bg); border-right:1px solid var(--border); display:flex; flex-direction:column; height:100%; }
+.main-col { flex:1; min-width:0; display:flex; flex-direction:column; height:100%; }
+.content { flex:1; overflow-y:auto; padding:16px 20px 32px; }
+
+/* ===== 页签条 ===== */
+.tabs { background:#fff; border-bottom:1px solid var(--border); padding:8px 16px 0; display:flex; gap:6px; overflow-x:auto; flex:none; }
+.tab { height:28px; display:inline-flex; align-items:center; gap:6px; padding:0 10px; border:1px solid var(--border); border-radius:4px; background:#fff; color:var(--text); font-size:13px; white-space:nowrap; cursor:pointer; }
+.tab .close { color:var(--text-3); font-size:12px; line-height:1; }
+.tab .close:hover { color:var(--text); }
+.tab.active { background:var(--strip-bg); border-color:transparent; color:var(--primary); }
+
+/* ===== 侧边栏菜单 ===== */
+.side-menu { flex:1; padding:8px 0; overflow-y:auto; list-style:none; margin:0; }
+.side-menu ul { list-style:none; margin:0; padding:0; }
+.sm-ico { width:16px; height:16px; flex:none; margin-right:10px; display:inline-flex; align-items:center; justify-content:center; }
+.sm-link { height:40px; display:flex; align-items:center; padding:0 24px; font-size:14px; color:#262626; cursor:pointer; white-space:nowrap; }
+.sm-link:hover { color:#1677ff; }
+.sm-arrow { margin-left:auto; display:inline-flex; color:#8c8c8c; transition:transform .2s; }
+.sm-item:not(.open) > .sm-sub { display:none; }
+.sm-item.has-sub.open > .sm-link { color:#1677ff; }
+.sm-item.has-sub.open > .sm-link .sm-arrow { transform:rotate(180deg); color:#1677ff; }
+.sm-sub .sm-link { padding-left:48px; font-size:13px; }
+.sm-sub .sm-sub .sm-link { padding-left:64px; }
+.sm-link.selected { background:#e6f4ff; color:#1677ff; border-right:3px solid #1677ff; }
+.side-foot { position:relative; flex:none; border-top:1px solid #f0f0f0; padding:8px; }
+.sys-cur { display:flex; align-items:center; gap:8px; height:36px; padding:0 8px; border-radius:6px; cursor:pointer; color:#262626; }
+.sys-cur:hover { background:#f0f0f0; }
+.sys-badge { width:24px; height:24px; border-radius:6px; background:#1677ff; color:#fff; font-size:12px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.sys-name { flex:1; min-width:0; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sys-swap { color:#8c8c8c; display:inline-flex; flex:none; }
+.sys-pop { position:absolute; bottom:calc(100% + 4px); left:8px; right:8px; background:#fff; border:1px solid #f0f0f0; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.12); padding:6px; display:none; z-index:1000; }
+.sys-pop.show { display:block; }
+.sys-pop-title { font-size:12px; color:#8c8c8c; padding:6px 10px 8px; border-bottom:1px solid #f0f0f0; margin-bottom:4px; }
+.sys-item { display:flex; align-items:center; padding:8px 10px; font-size:13px; color:#262626; border-radius:4px; cursor:pointer; }
+.sys-item:hover { background:#f5f5f5; color:#1677ff; }
+.sys-item.current { color:#1677ff; background:#e6f4ff; font-weight:600; cursor:default; }
+.sys-item .check { margin-left:auto; }
+
+/* ===== 卡片 ===== */
+.card { background:#fff; border-radius:8px; padding:20px 24px; margin-bottom:16px; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+
+/* ===== 筛选区 ===== */
+.filter { padding:16px 16px 6px; }
+.fgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px 16px; }
+.fi { display:flex; align-items:center; min-width:0; }
+.collapse-row { display:none; }
+.fi label { flex:none; width:96px; text-align:right; margin-right:8px; font-size:12px; color:rgba(0,0,0,.85); white-space:nowrap; }
+.ctl { flex:1; min-width:0; height:30px; border:1px solid var(--input-border); border-radius:4px; display:flex; align-items:center; padding:0 8px; background:#fff; font-size:12px; }
+.ctl input { flex:1; min-width:0; border:none; outline:none; font-size:12px; font-family:inherit; color:rgba(0,0,0,.85); background:transparent; }
+.ctl input::placeholder { color:var(--placeholder); }
+.ctl.sel { justify-content:space-between; cursor:pointer; }
+.ctl.sel .v.ph { color:var(--placeholder); }
+.ctl.sel svg { width:12px; height:12px; color:rgba(0,0,0,.35); flex:none; }
+.ctl.range { gap:6px; }
+.ctl.range .sep { color:rgba(0,0,0,.45); flex:none; }
+.cb { width:13px; height:13px; accent-color:var(--primary); cursor:pointer; vertical-align:middle; }
+.fbtns { display:flex; align-items:center; gap:8px; padding-bottom:10px; }
+.link-btn { border:none; background:none; color:var(--primary); font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; font-family:inherit; padding:0 4px; }
+.btn { height:30px; padding:0 15px; border-radius:4px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:4px; }
+.btn-default { border:1px solid var(--input-border); background:#fff; color:rgba(0,0,0,.85); }
+.btn-default:hover { color:var(--primary); border-color:var(--primary); }
+.btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; }
+.btn-primary:hover { background:#4096ff; }
+.btn-dashed { border:1px dashed var(--primary); background:#fff; color:var(--primary); }
+
+/* ===== 状态页签 ===== */
+.stabs { display:flex; padding:10px 16px 0; border-bottom:1px solid var(--border); gap:24px; background:#fff; }
+.stab { padding:0 2px 10px; font-size:13px; color:rgba(0,0,0,.65); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; user-select:none; }
+.stab:hover { color:var(--primary); }
+.stab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:500; }
+.stab .cnt { color:var(--text-3); font-size:12px; margin-left:2px; }
+.stab-warn { color:#fa8c16; }
+
+/* ===== 工具行 ===== */
+.toolbar { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
+.toolbar .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
+
+/* ===== 表格 ===== */
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+thead th { background:var(--thead-bg); font-weight:600; color:rgba(0,0,0,.85); text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); }
+tbody td { padding:9px 12px; border-bottom:1px solid var(--border); color:rgba(0,0,0,.85); }
+tbody tr:hover td { background:#f5faff; }
+th.sticky-op, td.sticky-op { position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -6px rgba(0,0,0,.12); }
+thead th.sticky-op { background:var(--thead-bg); }
+tbody tr:hover td.sticky-op { background:#f5faff; }
+.lk { color:var(--primary); cursor:pointer; }
+.ops a { color:var(--primary); cursor:pointer; margin-right:10px; }
+.ops a:last-child { margin-right:0; }
+.ops a.danger-op { color:var(--danger); }
+.tag { display:inline-block; padding:0 7px; height:22px; line-height:20px; font-size:12px; border-radius:2px; border:1px solid transparent; }
+.tag-orange { color:#fa8c16; background:#fff7e6; border-color:#ffd591; }
+.tag-blue { color:var(--primary); background:var(--primary-bg); border-color:var(--primary); }
+.tag-gray { color:#8c8c8c; background:#fafafa; border-color:#e8e8e8; }
+.tag-red { color:var(--danger); background:#fff1f0; border-color:#ffa39e; }
+.stage-cell { display:inline-flex; align-items:center; gap:4px; }
+
+/* ===== 分页器 ===== */
+.pager { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:14px 16px; font-size:12px; color:rgba(0,0,0,.85); flex-wrap:wrap; }
+.pg-info { margin-right:8px; }
+.pg-btn { min-width:30px; height:30px; padding:0 6px; border:1px solid var(--input-border); border-radius:4px; background:#fff; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(0,0,0,.85); font-size:12px; user-select:none; }
+.pg-btn:hover { color:var(--primary); border-color:var(--primary); }
+.pg-btn.cur { background:var(--primary); border-color:var(--primary); color:#fff; }
+.pg-size { height:30px; border:1px solid var(--input-border); border-radius:4px; padding:0 8px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:#fff; }
+.pg-size svg { width:11px; height:11px; color:rgba(0,0,0,.35); }
+.pg-jump { display:inline-flex; align-items:center; gap:6px; }
+.pg-jump input { width:44px; height:30px; border:1px solid var(--input-border); border-radius:4px; text-align:center; font-size:12px; outline:none; font-family:inherit; }
+.pg-jump input:focus { border-color:var(--primary); }
+
+/* ===== 弹窗 ===== */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; z-index:1000; }
+.modal-overlay.show { display:flex; }
+.modal { background:#fff; border-radius:8px; width:480px; max-height:80vh; overflow-y:auto; box-shadow:0 6px 16px rgba(0,0,0,.12); }
+.modal-header { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.modal-title { font-size:16px; font-weight:600; color:#1a1a1a; margin:0; }
+.modal-close { cursor:pointer; font-size:20px; color:var(--text-3); line-height:1; }
+.modal-close:hover { color:var(--text); }
+.modal-body { padding:20px 24px; }
+.modal-footer { padding:12px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+.mfoot-tip { margin-right:auto; font-size:12px; color:var(--danger); align-self:center; }
+
+/* 弹窗表单 */
+.f-row { margin-bottom:14px; }
+.f-row label { display:block; font-size:13px; color:rgba(0,0,0,.85); margin-bottom:6px; }
+.f-row label .req { color:var(--danger); margin-right:2px; }
+.f-input { width:100%; box-sizing:border-box; height:32px; border:1px solid var(--input-border); border-radius:4px; padding:0 10px; font-size:13px; font-family:inherit; outline:none; }
+.f-input:focus { border-color:var(--primary); }
+.f-input:disabled { background:#f5f5f5; color:var(--text-2); cursor:not-allowed; }
+textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
+.f-readonly { background:#fafafa; border:1px solid var(--border); border-radius:4px; padding:7px 10px; font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:8px; }
+.subject-badge { display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:4px; font-size:12px; font-weight:600; }
+.subject-gp { color:#1677ff; background:#e6f4ff; border:1px solid #91caff; }
+.subject-lp { color:var(--danger); background:#fff1f0; border:1px solid #ffa39e; }
+.f-select { width:100%; height:32px; border:1px solid var(--input-border); border-radius:4px; padding:0 8px; font-size:13px; font-family:inherit; outline:none; background:#fff; color:var(--text); }
+.f-select:focus { border-color:var(--primary); }
+.f-hint { font-size:12px; color:var(--text-3); margin-top:4px; }
+.upload-zone { border:1px dashed var(--input-border); border-radius:6px; padding:22px 16px; text-align:center; color:var(--text-3); font-size:13px; cursor:pointer; background:#fafafa; }
+.upload-zone:hover { border-color:var(--primary); color:var(--primary); }
+.upload-zone .up-strong { color:var(--primary); }
+.warn-strip { background:#fff7e6; border:1px solid #ffd591; border-radius:6px; padding:8px 12px; font-size:12px; color:#ad4e00; margin-bottom:14px; display:flex; gap:6px; align-items:flex-start; }
+
+/* ===== 阶段看板（十二列泳道） ===== */
+.kb-bar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.vtabs { display:flex; background:#fff; border:1px solid var(--input-border); border-radius:6px; overflow:hidden; }
+.vtab { padding:6px 14px; font-size:13px; color:var(--text-2); cursor:pointer; background:#fff; }
+.vtab.on { background:var(--primary); color:#fff; }
+.kb-bar .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
+.kb { display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; align-items:flex-start; }
+.kb-col { flex:none; width:168px; background:#fff; border:1px solid var(--border); border-radius:8px; }
+.kb-head { padding:10px 12px 8px; border-bottom:1px solid var(--border); display:flex; align-items:baseline; gap:6px; }
+.kb-head .n { font-size:13px; font-weight:600; white-space:nowrap; }
+.kb-head .c { margin-left:auto; font-size:12px; color:var(--text-3); }
+.kb-col.mile .kb-head { background:var(--primary-bg); border-bottom-color:var(--primary); }
+.kb-body { padding:8px; min-height:120px; display:flex; flex-direction:column; gap:8px; }
+.kb-card { border:1px solid var(--border); border-radius:6px; padding:8px 10px; cursor:pointer; background:#fff; }
+.kb-card:hover { border-color:var(--primary); box-shadow:0 1px 4px rgba(22,119,255,.15); }
+.kb-card .nm { font-size:12px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.kb-card .st { font-size:11px; color:var(--text-3); margin-top:4px; display:flex; gap:6px; align-items:center; }
+.kb-card .st .warn { color:#fa8c16; }
+.kb-card .foot { display:flex; align-items:center; margin-top:6px; }
+.kb-card .ab { margin-left:auto; font-size:11px; color:var(--danger); cursor:pointer; }
+.kb-card .ab:hover { text-decoration:underline; }
+.kb-empty { font-size:11px; color:var(--placeholder); text-align:center; padding:16px 0; }
+.kb-note { font-size:12px; color:var(--text-3); margin-top:12px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">投资项目管理系统（项目库）</div>
+  <div class="tools">
+    <span class="ico-btn" title="刷新"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>
+    <span class="ico-btn" title="消息提醒（含停滞提醒 2 条）" style="position:relative;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i style="position:absolute;top:-5px;right:-9px;background:#fa8c16;color:#fff;font-size:10px;font-style:normal;line-height:1;padding:2px 4px;border-radius:8px;">2</i></span>
+    <span class="manual"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.3-2.7 3.8"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg>操作手册</span>
+    <span class="avatar" title="账户"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="3"/><circle cx="10" cy="13" r="0.6" fill="#fff"/><circle cx="14" cy="13" r="0.6" fill="#fff"/><path d="M12 8V4"/><circle cx="12" cy="3.4" r="0.8" fill="#fff"/></svg></span>
+  </div>
+</header>
+
+<div class="body">
+  <aside class="sidebar">
+    <ul class="side-menu">
+      <li class="sm-item">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>工作台</div>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9M3 9h18M9 21v-6h6v6"/></svg></span>项目总库<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('P3-R01-F01-项目列表.html')">项目列表</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F02-项目详情-基本信息.html')">项目详情</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub open">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>投前管道<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link selected">阶段看板</div></li>
+          <li><div class="sm-link">未投归档</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>基金管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">基金列表</div></li>
+          <li><div class="sm-link">基金详情</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">LP 名录</div></li>
+          <li><div class="sm-link">出资记录</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>投后管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">投后时间线</div></li>
+          <li><div class="sm-link">报告归档</div></li>
+          <li><div class="sm-link">风险预警</div></li>
+          <li><div class="sm-link">提醒中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出与分配<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">项目退出</div></li>
+          <li><div class="sm-link">收益分配</div></li>
+          <li><div class="sm-link">清算注销</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>统计报表<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">阶段漏斗</div></li>
+          <li><div class="sm-link">放弃原因分布</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>审批中心<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">发起审批</div></li>
+          <li><div class="sm-link">我的待审/已审</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link">用户与角色</div></li>
+          <li><div class="sm-link">字典管理</div></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="side-foot">
+      <div class="sys-cur" id="sysSwitchBtn" title="切换系统">
+        <span class="sys-badge">投</span>
+        <span class="sys-name">投资项目管理系统</span>
+        <span class="sys-swap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+      </div>
+      <div class="sys-pop" id="sysPop">
+        <div class="sys-pop-title">切换系统</div>
+        <div class="sys-item current">投资项目管理系统（项目库）<span class="check">✓</span></div>
+        <div class="sys-item" onclick="go('../../5-【ACTIVE】自研系统/自研系统原型/供应链管理后台/全量订单/订单列表.html')">一兆链采供应链管理后台</div>
+        <div class="sys-item" onclick="go('../../5-【ACTIVE】自研系统/自研系统原型/商城运营后台/订单与售后/订单列表.html')">商城运营后台</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <div class="tabs">
+      <span class="tab">工作台 <span class="close">×</span></span>
+      <span class="tab" onclick="go('P3-R01-F01-项目列表.html')">项目列表 <span class="close">×</span></span>
+      <span class="tab active">阶段看板 <span class="close">×</span></span>
+    </div>
+
+    <div class="content">
+      <div class="card" style="padding:16px;">
+        <div class="kb-bar">
+          <div class="vtabs"><span class="vtab on">泳道视图</span><span class="vtab" onclick="go('P3-R01-F01-项目列表.html')">批量列表</span></div>
+          <span class="tip">十二列泳道 · 拖拽卡片推进（评审演示为静态）· ⑧ 基金设立 → ⑨ 出资（08-27 对调）· 停滞卡片标 ⚠ 并推送提醒，仍在管道内</span>
+        </div>
+        <div class="kb">
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">① 接触/收BP</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">远山新材料（碳纤维）</div>
+        <div class="st"><span>2 天</span></div>
+        <div class="st"><span>下次：BP 初筛</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">② 线上路演</span><span class="c">0</span></div>
+        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">③ 保密协议</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">智驾千里（自动驾驶芯片）</div>
+        <div class="st"><span>47 天</span><span class="warn">⚠ 停滞</span></div>
+        <div class="st"><span>下次：跟进 NDA</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">④ 尽调/访谈</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">磐石量子（量子测量）</div>
+        <div class="st"><span>9 天</span></div>
+        <div class="st"><span>下次：路径B·资料包</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑤ 立项</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">青禾农业（智慧种植）</div>
+        <div class="st"><span>33 天</span><span class="warn">⚠ 停滞</span></div>
+        <div class="st"><span>下次：立项会排期</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑥ 投资人路演</span><span class="c">0</span></div>
+        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑦ 投决</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">聚变能源科技（核聚变）</div>
+        <div class="st"><span>6 天</span></div>
+        <div class="st"><span>下次：投决上会 ★②</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col mile">
+        <div class="kb-head"><span class="n">⑧ 基金设立</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">蓝鲸生物医药（创新药）</div>
+        <div class="st"><span>3 天</span></div>
+        <div class="st"><span>下次：基金注册 ★③</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col mile">
+        <div class="kb-head"><span class="n">⑨ 出资·分水岭</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">星河航天（商业卫星）</div>
+        <div class="st"><span>1 天</span></div>
+        <div class="st"><span>下次：付款 ★④</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑩ 投后管理</span><span class="c">1</span></div>
+        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-基本信息.html')">
+        <div class="nm">云雀教育（职业教育）</div>
+        <div class="st"><span>128 天</span></div>
+        <div class="st"><span>下次：季报归档</span></div>
+        <div class="foot"><span class="ab" onclick="event.stopPropagation();alert('放弃登记请回项目列表操作（演示）')">放弃</span></div>
+      </div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑪ 项目退出</span><span class="c">0</span></div>
+        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
+      </div>
+      <div class="kb-col">
+        <div class="kb-head"><span class="n">⑫ 清算注销</span><span class="c">0</span></div>
+        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
+      </div>
+        </div>
+        <div class="kb-note">未投归档项目（GP 8 · LP 2）不占泳道，检索与原因统计见「投前管道 › 未投归档」；过 ⑨ 出资（分水岭）后无放弃直至 ⑫ 清算注销（终态）。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗1：放弃登记（两级原因树） ===== -->
+<div class="modal-overlay" id="abandonModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">放弃登记</h3>
+      <span class="modal-close" onclick="closeAbandon()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="warn-strip"><span>⚠</span><span>放弃后项目进入「未投归档」，<b>不可回流管道</b>；如再接触需按新项目建档（关联原档案）。停滞 ≠ 放弃——仅推进缓慢请使用「停滞处置」。</span></div>
+      <div class="f-row"><label>项目 / 所处阶段（自动带出）</label>
+        <div class="f-readonly"><span id="abPrj">—</span><span style="color:#d9d9d9">|</span><span id="abStage">—</span><span style="margin-left:auto;color:var(--text-3);font-size:12px;">时间戳自动记录</span></div>
+      </div>
+      <div class="f-row"><label>一级 · 放弃主体 <span class="req">*</span>（按所处阶段自动判定，可人工改）</label>
+        <div style="display:flex;gap:10px;">
+          <label id="cardGp" style="flex:1;display:flex;align-items:center;gap:8px;border:2px solid var(--primary);border-radius:6px;padding:10px 12px;cursor:pointer;background:var(--primary-bg);">
+            <input type="radio" name="subject" data-kind="gp" checked style="accent-color:var(--primary);">
+            <span class="subject-badge subject-gp">GP 放弃</span>
+            <span style="font-size:12px;color:var(--text-2);">管理人主动放弃（①~⑦ 投决前）</span>
+          </label>
+          <label id="cardLp" style="flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--input-border);border-radius:6px;padding:10px 12px;cursor:pointer;">
+            <input type="radio" name="subject" data-kind="lp" style="accent-color:var(--primary);">
+            <span class="subject-badge subject-lp">LP 放弃</span>
+            <span style="font-size:12px;color:var(--text-2);">投决会否决（出资人不认可）</span>
+          </label>
+        </div>
+        <div class="f-hint" id="subjectHint"></div>
+      </div>
+      <div class="f-row"><label>二级 · 叶子原因 <span class="req">*</span>（按主体过滤）</label>
+        <select class="f-select" id="leafReason">
+          <option value="">请选择 GP 放弃原因</option>
+          <optgroup label="① 看 BP 后不看"><option>明显超出投资范围</option></optgroup>
+          <optgroup label="② 线上路演后"><option>专业问题答不出/逻辑薄弱</option><option>团队能力不足</option></optgroup>
+          <optgroup label="④ 访谈/尽调后"><option>工厂萧条、订单匮乏</option><option>财务数据重大偏差</option><option>疑似造假</option></optgroup>
+          <optgroup label="⑤ 立项时"><option>创始人信用风险/人品问题</option><option>债务纠纷（老板否决）</option></optgroup>
+          <optgroup label="⑥ 投资人路演后"><option>全体投资人明确不出资</option></optgroup>
+          <optgroup label="⑦ 投决前主动撤回"><option>估值未谈拢（打折未成）</option><option>对赌条款设置不合理</option></optgroup>
+        </select>
+        <div class="f-hint">主体切换为 LP 后，选项切换为 LP 叶子原因（不看好行业/赛道/风险异议/估值异议/政策合规）</div>
+      </div>
+      <div class="f-row"><label>自定义补充</label>
+        <input class="f-input" id="reasonCustom" placeholder="预置原因之外的具体说明（选填）">
+      </div>
+      <div class="f-row"><label>备注 + 附件</label>
+        <textarea class="f-input" rows="2" placeholder="备注说明（选填）"></textarea>
+        <div style="margin-top:8px;" class="upload-zone" onclick="this.querySelector('input').click()">点击或拖拽上传附件（选填）<input type="file" style="display:none"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="mfoot-tip">未投归档将按 GP/LP 分口径统计</span>
+      <button class="btn btn-default" onclick="closeAbandon()">取 消</button>
+      <button class="btn btn-primary" onclick="closeAbandon();alert('已登记并转入「未投归档」（演示）· 按 GP/LP 分口径统计')">确认放弃并归档</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗2：新建项目（BP 上传即建档） ===== -->
+<div class="modal-overlay" id="newModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">新建项目 · BP 上传即建档</h3>
+      <span class="modal-close" onclick="closeNewModal()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>BP 文件 <span class="req">*</span></label>
+        <div class="upload-zone" onclick="this.querySelector('input').click()">点击或拖拽上传 BP（PDF/PPT/DOC）<input type="file" style="display:none"><br><span style="font-size:12px;">上传后自动建档并入「BP包」逻辑包，进入 ① 接触/收BP</span></div>
+      </div>
+      <div class="f-row"><label>项目/企业名称 <span class="req">*</span></label><input class="f-input" placeholder="与 BP 一致"></div>
+      <div style="display:flex;gap:12px;">
+        <div class="f-row" style="flex:1;"><label>行业赛道 <span class="req">*</span></label>
+          <select class="f-select"><option value="">请选择（字典）</option><option>人工智能</option><option>先进制造·新能源</option><option>医疗健康</option><option>半导体</option><option>低空经济</option><option>教育</option><option>新材料</option><option>农业科技</option><option>量子科技</option></select>
+        </div>
+        <div class="f-row" style="flex:1;"><label>轮次</label>
+          <select class="f-select"><option value="">请选择</option><option>天使轮</option><option>Pre-A</option><option>A 轮</option><option>B 轮</option><option>定增</option></select>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div class="f-row" style="flex:1;"><label>项目来源</label><input class="f-input" placeholder="谁介绍 / 主动接洽"></div>
+        <div class="f-row" style="flex:1;"><label>对方联系人</label><input class="f-input" placeholder="姓名 / 职务 / 电话"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeNewModal()">取 消</button>
+      <button class="btn btn-primary" onclick="closeNewModal();alert('已建档并入 ① 接触/收BP（演示）')">上传并建档</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 业务脚本：筛选折叠 ===== */
+(function () {
+  var btn = document.getElementById('btnCollapse');
+  if (!btn) return;
+  var ico = document.getElementById('collapseIco');
+  var txt = document.getElementById('collapseTxt');
+  var rows = document.querySelectorAll('.collapse-row');
+  btn.addEventListener('click', function () {
+    var collapsed = txt.textContent === '展开';
+    rows.forEach(function (r) { r.style.display = collapsed ? 'flex' : 'none'; });
+    txt.textContent = collapsed ? '收起' : '展开';
+    ico.style.transform = collapsed ? 'rotate(180deg)' : '';
+  });
+})();
+
+</script>
+
+<script>
+/* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */
+function go(url) { location.href = url; }
+document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link) {
+  link.addEventListener('click', function () { link.parentElement.classList.toggle('open'); });
+});
+(function () {
+  var btn = document.getElementById('sysSwitchBtn');
+  var pop = document.getElementById('sysPop');
+  btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { pop.classList.remove('show'); });
+})();
+</script>
+</body>
+</html>

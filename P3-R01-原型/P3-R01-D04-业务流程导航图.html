@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>业务流程导航图 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff;
+  --page-bg:#f3f5f9; --border:#f0f0f0;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c;
+  --danger:#ff4d4f; --warn:#fa8c16;
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.6; margin:0; }
+.wrap { max-width:1240px; margin:0 auto; padding:32px 24px 48px; }
+.eyebrow { color:var(--text-3); font-size:12px; letter-spacing:.5px; margin:0 0 6px; font-family:Consolas,monospace; }
+h1 { font-size:22px; margin:0 0 8px; }
+.sub { color:var(--text-2); margin:0 0 24px; }
+.sub b { color:var(--text); }
+.sec { background:#fff; border:1px solid #eceff3; border-radius:10px; padding:18px 20px; margin-bottom:18px; box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07); }
+.sec-head { display:flex; align-items:baseline; gap:12px; margin-bottom:4px; flex-wrap:wrap; }
+.sec-title { font-size:16px; font-weight:600; }
+.sec-title .no { color:var(--primary); font-family:Consolas,monospace; font-size:13px; margin-right:6px; }
+.sec-note { font-size:12px; color:var(--text-3); }
+.lane-label { font-size:12px; color:var(--text-2); margin:12px 0 6px; }
+.lane-label b { color:var(--text); }
+.flow { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; row-gap:14px; }
+.node { display:flex; flex-direction:column; justify-content:center; width:128px; min-height:58px; background:#fff; border:1px solid #d9d9d9; border-radius:8px; padding:8px 10px; box-sizing:border-box; text-decoration:none; color:var(--text); transition:all .16s ease; }
+.node:hover { border-color:var(--primary); box-shadow:0 4px 12px -4px rgba(22,119,255,.35); transform:translateY(-1px); }
+.node .st { font-size:13px; font-weight:600; }
+.node .nm { font-size:13px; font-weight:600; }
+.node .ds { font-size:11px; color:var(--text-3); margin-top:2px; }
+.node.milestone { border-color:var(--primary); background:#f6faff; }
+.node.milestone .nm { color:var(--primary); }
+.node.archive { border-color:#d9d9d9; background:#fafafa; }
+.node.danger { border-color:#ffa39e; background:#fff1f0; }
+.node.danger .nm { color:var(--danger); }
+.arrow { display:flex; align-items:center; padding:0 6px; color:#b4bcca; font-size:14px; flex:none; }
+.arrow.blue { color:var(--primary); }
+.arrow.red { color:var(--danger); }
+.arrow.dashed { color:#8c8c8c; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.chip { border:1px solid var(--border); background:#fafafa; border-radius:11px; padding:1px 10px; font-size:12px; color:var(--text-2); }
+.chip b { color:var(--primary); font-weight:600; }
+.foot { color:var(--text-3); font-size:12px; margin-top:6px; }
+a.lk { color:var(--primary); text-decoration:none; }
+a.lk:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">P3-R01-D04 · V1.0 原型业务流程导航（2026-09-07 随 A12 上线）</p>
+  <h1>业务流程导航图</h1>
+  <p class="sub">投资项目管理系统原型 V1.5 · <b>21</b> 个页面 · 主线＝十二阶段 <b>①~⑫</b>（投前管道①~⑦宽口径入库 → 分水岭 ⑧基金设立 / ⑨出资 → 投后⑩~⑫）＋ 六节点在线审批 ＋ 退出三段递进 ＋ 基金-项目 1:1 ＋ 放弃→未投归档支线 · <b>实体节点点击直达</b></p>
+
+  <!-- ============ 一、主线：十二阶段 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">主线</span>十二阶段 ①~⑫</span>
+      <span class="sec-note">分水岭＝⑧基金设立 / ⑨出资（过⑦投决后进入)；宽口径入库：①上传 BP 即建档</span>
+    </div>
+    <div class="lane-label"><b>投前管道 ①~⑦</b>（宽口径入库 · 任一阶段可放弃）</div>
+    <div class="flow">
+      <a class="node" href="项目库/P3-R01-F01-项目列表.html"><span class="nm">① 接触/收BP</span><span class="ds">项目列表 · 建档</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F01-项目列表.html"><span class="nm">② 线上路演</span><span class="ds">项目列表</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F01-项目列表.html"><span class="nm">③ 保密协议签署</span><span class="ds">项目列表 · NDA</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F03-项目详情-材料库.html"><span class="nm">④ 尽调/访谈</span><span class="ds">推进弹窗 · 双路径</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F02-项目详情-基本信息.html"><span class="nm">⑤ 立项</span><span class="ds">立项审批 ⑤</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F02-项目详情-基本信息.html"><span class="nm">⑥ 投资人路演</span><span class="ds">详情 · 跟进动态</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="项目库/P3-R01-F02-项目详情-基本信息.html"><span class="nm">⑦ 投决</span><span class="ds">投决上会 ⑦</span></a>
+    </div>
+    <div class="lane-label"><b>分水岭与投后 ⑧~⑫</b></div>
+    <div class="flow">
+      <a class="node milestone" href="基金管理/P3-R01-F07-基金列表.html"><span class="nm">⑧ 基金设立</span><span class="ds">基金列表 · 1:1 关联</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node milestone" href="LP 管理/P3-R01-F10-出资记录.html"><span class="nm">⑨ 出资</span><span class="ds">LP 出资 · 付款审批 ⑨</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="投后管理/P3-R01-F22-投后项目.html"><span class="nm">⑩ 投后管理</span><span class="ds">投后项目列表</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="退出与分配/P3-R01-F23-退出项目.html"><span class="nm">⑪ 退出</span><span class="ds">退出项目列表 · 三段</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="退出与分配/P3-R01-F17-清算注销.html"><span class="nm">⑫ 清算注销</span><span class="ds">五步清算 · 注销审批</span></a>
+    </div>
+  </div>
+
+  <!-- ============ 二、支线：放弃与未投归档 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">支线</span>放弃 → 未投归档（不可回流）</span>
+      <span class="sec-note">放弃两级原因树：主体自动判定 GP＝①~⑦投决前主动放弃 / LP＝⑦投决会否决 · 未投归档不可回流，再接触按新项目建档</span>
+    </div>
+    <div class="flow">
+      <a class="node" href="项目库/P3-R01-F01-项目列表.html"><span class="nm">①~⑦ 任一阶段</span><span class="ds">GP 放弃 · 管理人主动</span></a>
+      <span class="arrow red">→</span>
+      <a class="node danger" href="项目库/P3-R01-F01-项目列表.html"><span class="nm">⑦ 投决会否决</span><span class="ds">LP 放弃 · 两级原因树</span></a>
+      <span class="arrow red">→</span>
+      <a class="node archive" href="统计报表/P3-R01-F19-放弃原因分布.html"><span class="nm">未投归档</span><span class="ds">GP/LP 分口径 · 不可回流</span></a>
+      <span class="arrow dashed">→</span>
+      <a class="node" href="统计报表/P3-R01-F19-放弃原因分布.html"><span class="nm">放弃原因分布</span><span class="ds">主体×节点×末级原因</span></a>
+    </div>
+  </div>
+
+  <!-- ============ 三、支线：基金与 LP 出资 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">支线</span>基金-项目 1:1 与 LP 认缴/实缴两步</span>
+      <span class="sec-note">单基金单项目基准架构（预留 1:N 扩展）· LP 认定通过后其主体方可出资 · 认缴登记后方可登记实缴</span>
+    </div>
+    <div class="flow">
+      <a class="node" href="基金管理/P3-R01-F07-基金列表.html"><span class="nm">基金列表</span><span class="ds">⑧ 设立后进台账</span></a>
+      <span class="arrow blue">⇄</span>
+      <a class="node" href="基金管理/P3-R01-F08-基金详情.html"><span class="nm">基金详情</span><span class="ds">1:1 唯一关联</span></a>
+      <span class="arrow dashed">｜</span>
+      <a class="node" href="LP 管理/P3-R01-F09-LP名录.html"><span class="nm">LP 台账</span><span class="ds">一 LP 多主体 · 认定</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="LP 管理/P3-R01-F10-出资记录.html"><span class="nm">LP 出资</span><span class="ds">认缴 → 实缴两步</span></a>
+    </div>
+  </div>
+
+  <!-- ============ 四、投后段展开 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">⑩</span>投后段展开（列表 → 详情）</span>
+      <span class="sec-note">数据源自项目库，按段切片 · F11 投后事项为详情页（列表行进入，A05 口径）</span>
+    </div>
+    <div class="flow">
+      <a class="node milestone" href="投后管理/P3-R01-F22-投后项目.html"><span class="nm">投后项目</span><span class="ds">F22 · 段列表</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="投后管理/P3-R01-F11-投后时间线.html"><span class="nm">投后事项</span><span class="ds">F11 · 事件时间线</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="投后管理/P3-R01-F12-报告归档.html"><span class="nm">报告归档</span><span class="ds">F12 · 季报/年报/专项</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="投后管理/P3-R01-F13-风险预警.html"><span class="nm">风险预警</span><span class="ds">F13 · 推送卡片</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="投后管理/P3-R01-F14-提醒中心.html"><span class="nm">提醒中心</span><span class="ds">F14 · 规则+到期</span></a>
+    </div>
+  </div>
+
+  <!-- ============ 五、退出三段与分配 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">⑪⑫</span>退出三段递进与分配</span>
+      <span class="sec-note">分批次退出（分红/股权转让/IPO 减持）→ 批次回款后按 LP 出资比例生成收益分配单 → 基金清算五步</span>
+    </div>
+    <div class="flow">
+      <a class="node milestone" href="退出与分配/P3-R01-F23-退出项目.html"><span class="nm">退出项目</span><span class="ds">F23 · 段列表</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="退出与分配/P3-R01-F15-项目退出.html"><span class="nm">项目退出</span><span class="ds">F15 · 分批次 BAT</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="退出与分配/P3-R01-F16-收益分配.html"><span class="nm">收益分配</span><span class="ds">F16 · 分配单+登记付款</span></a>
+      <span class="arrow blue">→</span>
+      <a class="node" href="退出与分配/P3-R01-F17-清算注销.html"><span class="nm">清算注销</span><span class="ds">F17 · 五步 · 全部退出校验</span></a>
+    </div>
+  </div>
+
+  <!-- ============ 六、六节点在线审批 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">审批</span>六节点在线审批</span>
+      <span class="sec-note">各业务页「提交审批」统一汇总至审批中心 · 双轨驳回：退回＝带痕修改重提 / 否决＝终态（A09）· 撤回与抄送我</span>
+    </div>
+    <div class="flow">
+      <a class="node milestone" href="审批中心/P3-R01-F20-审批中心.html"><span class="nm">审批中心</span><span class="ds">F20 · 待审/抄送我/发起/已审</span></a>
+      <div class="chips">
+        <span class="chip"><b>⑤</b> 立项审批</span>
+        <span class="chip"><b>⑦</b> 投决上会</span>
+        <span class="chip"><b>⑧</b> 基金注册审批</span>
+        <span class="chip"><b>⑨</b> 付款审批</span>
+        <span class="chip"><b>分配单</b> 分配审批</span>
+        <span class="chip"><b>⑫</b> 注销审批</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 七、支撑页 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title"><span class="no">支撑</span>工作台 · 统计 · 系统</span>
+      <span class="sec-note">登录默认页＝工作台 · 统计两张报表口径见标注层 · 基础数据（原字典管理）</span>
+    </div>
+    <div class="flow">
+      <a class="node" href="工作台/P3-R01-F00-工作台.html"><span class="nm">工作台</span><span class="ds">F00 · 登录默认页</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="统计报表/P3-R01-F18-阶段漏斗.html"><span class="nm">阶段漏斗</span><span class="ds">F18 · 十二阶段转化</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="统计报表/P3-R01-F19-放弃原因分布.html"><span class="nm">放弃原因分布</span><span class="ds">F19 · 三维统计</span></a>
+      <span class="arrow">→</span>
+      <a class="node" href="系统管理/P3-R01-F21-系统管理.html"><span class="nm">系统管理</span><span class="ds">F21 · 用户与角色/基础数据</span></a>
+    </div>
+  </div>
+
+  <p class="foot">节点点击直达原型页（链接为 P3-R01-原型 目录新路径）· 页面清单与口径见《P3-R01-原型说明》V1.5 与《P2-R01-D03》· 本图取代已归档的 D01-页面关系图与 D03-演示导览（见 P2-R01-A12）</p>
+</div>
+</body>
+</html>

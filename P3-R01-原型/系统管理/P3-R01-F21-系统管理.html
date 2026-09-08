@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>系统管理 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
+  --page-bg:#f3f5f9; --side-bg:#fafafa; --thead-bg:#fafbfc;
+  --border:#f0f0f0; --input-border:#d9d9d9;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c; --placeholder:#bfbfbf; --danger:#ff4d4f;
+  --warn:#fa8c16; --primary-hover:#4096ff;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.04);
+  --shadow-card:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07);
+  --shadow-pop:0 12px 36px -8px rgba(16,24,40,.2);
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.5715; min-width:1200px; margin:0; -webkit-font-smoothing:antialiased; }
+::-webkit-scrollbar { width:8px; height:8px; }
+::-webkit-scrollbar-thumb { background:#d3d9e2; border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:#b4bcca; }
+::-webkit-scrollbar-track { background:transparent; }
+html,body{height:100%;}
+body{display:flex;flex-direction:column;overflow:hidden;}
+
+/* ===== 顶栏 ===== */
+.topbar { height:44px; background:#fff; border-bottom:1px solid var(--border); box-shadow:0 1px 4px rgba(15,35,80,.06); position:relative; z-index:20; display:flex; align-items:center; flex:none; }
+.topbar .logo { width:208px; flex-shrink:0; height:44px; display:flex; align-items:center; padding-left:24px; color:var(--primary); font-size:16px; font-weight:700; letter-spacing:.5px; white-space:nowrap; }
+.topbar .tools { margin-left:auto; display:flex; align-items:center; gap:18px; padding-right:20px; color:var(--text-2); }
+.topbar .tools .ico-btn { cursor:pointer; display:inline-flex; align-items:center; }
+.topbar .manual { color:var(--primary); font-size:13px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.topbar .avatar { width:28px; height:28px; border-radius:50%; background:var(--primary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+.topbar .tools .ico-btn { transition:color .16s ease; }
+.topbar .tools .ico-btn:hover { color:var(--primary); }
+.topbar .manual { transition:color .16s ease; }
+.topbar .manual:hover { color:var(--primary-hover); }
+
+/* ===== 布局（模式 B 定高内滚） ===== */
+.body { flex:1; min-height:0; display:flex; }
+.sidebar { width:208px; flex-shrink:0; background:var(--side-bg); border-right:1px solid var(--border); display:flex; flex-direction:column; height:100%; }
+.main-col { flex:1; min-width:0; display:flex; flex-direction:column; height:100%; }
+.content { flex:1; overflow-y:auto; padding:20px 24px 36px; }
+
+/* ===== 页签条 ===== */
+.tabs { background:#fff; border-bottom:1px solid var(--border); padding:8px 16px 0; display:flex; gap:6px; overflow-x:auto; flex:none; }
+.tab { height:28px; display:inline-flex; align-items:center; gap:6px; padding:0 12px; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text-2); font-size:13px; white-space:nowrap; cursor:pointer; transition:all .16s ease; }
+.tab .close { color:var(--text-3); font-size:12px; line-height:1; }
+.tab .close:hover { color:var(--text); }
+.tab:hover { color:var(--primary); border-color:rgba(22,119,255,.35); background:#f8fbff; }
+.tab.active { background:var(--strip-bg); border-color:transparent; color:var(--primary); font-weight:600; box-shadow:inset 0 2px 0 var(--primary); }
+
+/* ===== 侧边栏菜单 ===== */
+.side-menu { flex:1; padding:8px 0; overflow-y:auto; list-style:none; margin:0; }
+.side-menu ul { list-style:none; margin:0; padding:0; }
+.sm-ico { width:16px; height:16px; flex:none; margin-right:10px; display:inline-flex; align-items:center; justify-content:center; }
+.sm-link { height:40px; display:flex; align-items:center; padding:0 24px; font-size:14px; color:#262626; cursor:pointer; white-space:nowrap; }
+.sm-link:hover { color:#1677ff; }
+.sm-arrow { margin-left:auto; display:inline-flex; color:#8c8c8c; transition:transform .2s; }
+.sm-item:not(.open) > .sm-sub { display:none; }
+.sm-item.has-sub.open > .sm-link { color:#1677ff; }
+.sm-item.has-sub.open > .sm-link .sm-arrow { transform:rotate(180deg); color:#1677ff; }
+.sm-sub .sm-link { padding-left:48px; }
+.sm-sub .sm-sub .sm-link { padding-left:64px; }
+.sm-link.selected { background:#e6f4ff; color:#1677ff; border-right:3px solid #1677ff; }
+.side-foot { position:relative; flex:none; border-top:1px solid #f0f0f0; padding:8px; }
+.sys-cur { display:flex; align-items:center; gap:8px; height:36px; padding:0 8px; border-radius:6px; cursor:pointer; color:#262626; }
+.sys-cur:hover { background:#f0f0f0; }
+.sys-badge { width:24px; height:24px; border-radius:6px; background:#1677ff; color:#fff; font-size:12px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.sys-name { flex:1; min-width:0; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sys-swap { color:#8c8c8c; display:inline-flex; flex:none; }
+.sys-pop { position:absolute; bottom:calc(100% + 4px); left:8px; right:8px; background:#fff; border:1px solid #f0f0f0; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.12); padding:6px; display:none; z-index:1000; }
+.sys-pop.show { display:block; }
+.sys-pop-title { font-size:12px; color:#8c8c8c; padding:6px 10px 8px; border-bottom:1px solid #f0f0f0; margin-bottom:4px; }
+.sys-item { display:flex; align-items:center; padding:8px 10px; font-size:13px; color:#262626; border-radius:4px; cursor:pointer; }
+.sys-item:hover { background:#f5f5f5; color:#1677ff; }
+.sys-item.current { color:#1677ff; background:#e6f4ff; font-weight:600; cursor:default; }
+.sys-item .check { margin-left:auto; }
+
+/* ===== 卡片 ===== */
+.card { background:#fff; border-radius:10px; padding:20px 24px; margin-bottom:20px; border:1px solid #eceff3; box-shadow:var(--shadow-card); }
+.card-title { position:relative; padding-left:11px; font-size:16px; font-weight:600; color:#1a1a1a; margin:0; }
+.card-title::before { content:''; position:absolute; left:0; top:3px; bottom:3px; width:3px; border-radius:2px; background:var(--primary); }
+.ct-row { display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.ct-note { margin-left:auto; font-size:12px; color:var(--text-3); }
+
+/* ===== 状态页签 ===== */
+.stabs { display:flex; padding:10px 16px 0; border-bottom:1px solid var(--border); gap:24px; background:#fff; }
+.stab { padding:0 2px 10px; font-size:13px; color:rgba(0,0,0,.65); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; user-select:none; transition:color .16s ease; }
+.stab:hover { color:var(--primary); }
+.stab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+.stab .cnt { display:inline-block; min-width:18px; height:16px; line-height:16px; text-align:center; padding:0 5px; border-radius:8px; background:#eff1f4; color:var(--text-3); font-size:11px; margin-left:4px; }
+.stab.active .cnt { background:var(--primary-bg); color:var(--primary); }
+
+/* ===== 工具行 ===== */
+.toolbar { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
+.toolbar .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
+.btn { height:30px; padding:0 15px; border-radius:6px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:4px; transition:all .16s ease; }
+.btn-default { border:1px solid var(--input-border); background:#fff; color:rgba(0,0,0,.85); }
+.btn-default:hover { color:var(--primary); border-color:var(--primary); background:#f0f7ff; }
+.btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.3); }
+.btn-primary:hover { background:#4096ff; border-color:#4096ff; box-shadow:0 4px 12px -2px rgba(22,119,255,.4); }
+
+/* ===== 表格 ===== */
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+thead th { background:var(--thead-bg); font-weight:600; color:rgba(0,0,0,.85); text-align:left; padding:11px 12px; border-bottom:1px solid #e8e8e8; }
+tbody td { padding:10px 12px; border-bottom:1px solid #f2f3f5; color:rgba(0,0,0,.85); transition:background .16s ease; }
+tbody tr:hover td { background:#f5faff; }
+tbody tr.group-row td { background:#f7f8fa; font-weight:600; color:var(--text-2); padding:8px 12px; }
+tbody tr.group-row:hover td { background:#f2f5f9; }
+tbody tr.group-row .g-cnt { font-weight:400; color:var(--text-3); margin-left:6px; }
+tbody td.leaf-name { padding-left:34px; }
+th.sticky-op, td.sticky-op { position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -6px rgba(0,0,0,.12); }
+thead th.sticky-op { background:var(--thead-bg); }
+tbody tr:hover td.sticky-op { background:#f5faff; }
+.lk { color:var(--primary); cursor:pointer; }
+.lk:hover { text-decoration:underline; }
+.ops a { color:var(--primary); cursor:pointer; margin-right:10px; }
+.ops a:hover { text-decoration:underline; }
+.ops a:last-child { margin-right:0; }
+.ops a.danger-op { color:var(--danger); }
+.tag { display:inline-block; padding:0 9px; height:22px; line-height:20px; font-size:12px; border-radius:11px; border:1px solid transparent; font-weight:500; }
+.tag-orange { color:#fa8c16; background:#fff7e6; border-color:#ffd591; }
+.tag-blue { color:var(--primary); background:var(--primary-bg); border-color:#91caff; }
+.tag-gray { color:#8c8c8c; background:#fafafa; border-color:#e8e8e8; }
+.tag-red { color:var(--danger); background:#fff1f0; border-color:#ffa39e; }
+.dim { color:var(--text-3); }
+.cb { width:13px; height:13px; accent-color:var(--primary); cursor:pointer; vertical-align:middle; }
+
+/* ===== 分页器 ===== */
+.pager { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:14px 16px; font-size:12px; color:rgba(0,0,0,.85); flex-wrap:wrap; }
+.pg-info { margin-right:8px; }
+.pg-btn { min-width:30px; height:30px; padding:0 6px; border:1px solid var(--input-border); border-radius:6px; background:#fff; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(0,0,0,.85); font-size:12px; user-select:none; transition:all .16s ease; }
+.pg-btn:hover { color:var(--primary); border-color:var(--primary); }
+.pg-btn.cur { background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.35); }
+
+/* ===== 弹窗 ===== */
+.modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,.5); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:1000; }
+.modal-overlay.show { display:flex; }
+.modal { background:#fff; border-radius:12px; width:480px; max-height:80vh; overflow-y:auto; box-shadow:var(--shadow-pop); }
+.modal-header { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.modal-title { position:relative; padding-left:11px; font-size:16px; font-weight:600; color:#1a1a1a; margin:0; }
+.modal-title::before { content:''; position:absolute; left:0; top:3px; bottom:3px; width:3px; border-radius:2px; background:var(--primary); }
+.modal-overlay.show .modal { animation:mIn .18s cubic-bezier(.2,.8,.3,1); }
+@keyframes mIn { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:none; } }
+.modal-close { cursor:pointer; font-size:20px; color:var(--text-3); line-height:1; }
+.modal-close:hover { color:var(--text); }
+.modal-body { padding:20px 24px; }
+.modal-footer { padding:12px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+
+/* 弹窗表单 */
+.f-row { margin-bottom:14px; }
+.f-row label { display:block; font-size:13px; color:rgba(0,0,0,.85); margin-bottom:6px; }
+.f-row label .req { color:var(--danger); margin-right:2px; }
+.f-input { width:100%; box-sizing:border-box; height:32px; border:1px solid var(--input-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; outline:none; transition:border-color .16s ease, box-shadow .16s ease; }
+.f-input:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
+.f-input:disabled { background:#f5f5f5; color:var(--text-2); cursor:not-allowed; }
+textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
+.f-readonly { background:#fafafa; border:1px solid var(--border); border-radius:4px; padding:7px 10px; font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:8px; }
+.f-select { width:100%; height:32px; border:1px solid var(--input-border); border-radius:6px; padding:0 8px; font-size:13px; font-family:inherit; outline:none; background:#fff; color:var(--text); transition:border-color .16s ease, box-shadow .16s ease; }
+.f-select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
+.f-hint { font-size:12px; color:var(--text-3); margin-top:4px; }
+.radio-line { display:flex; align-items:center; gap:18px; height:32px; }
+.radio-line label { display:inline-flex; align-items:center; gap:6px; font-size:13px; cursor:pointer; margin:0; }
+
+/* 角色授权菜单树 */
+.perm-tree { border:1px solid var(--border); border-radius:6px; padding:8px 14px; max-height:270px; overflow-y:auto; background:#fafbfd; }
+.perm-parent { display:flex; align-items:center; gap:7px; font-weight:600; padding:7px 0 5px; }
+.perm-child { display:flex; align-items:center; gap:7px; padding:3px 0 3px 32px; color:var(--text-2); }
+.perm-parent span, .perm-child span { cursor:pointer; }
+
+/* 基础数据（原字典管理）左右布局 */
+.dict-flex { display:flex; gap:24px; align-items:flex-start; padding:16px; }
+.dict-side { width:200px; flex:none; }
+.dict-side-title { font-size:12px; color:var(--text-3); padding:0 8px 10px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+.dict-item { height:36px; display:flex; align-items:center; gap:8px; padding:0 12px; border-radius:6px; font-size:13px; color:var(--text); cursor:pointer; transition:all .16s ease; }
+.dict-item:hover { color:#1677ff; background:#f0f6ff; }
+.dict-item.selected { background:linear-gradient(90deg,#e6f4ff,#f0f8ff); color:#1677ff; font-weight:600; box-shadow:inset 3px 0 0 var(--primary); }
+.dict-item .cnt-b { margin-left:auto; font-size:11px; color:var(--text-3); }
+.dict-main { flex:1; min-width:0; }
+.dict-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">投资项目管理</div>
+  <div class="tools">
+    <span class="ico-btn" title="刷新"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>
+    <span class="ico-btn" title="消息提醒（含停滞提醒 2 条）" style="position:relative;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i style="position:absolute;top:-5px;right:-9px;background:#fa8c16;color:#fff;font-size:10px;font-style:normal;line-height:1;padding:2px 4px;border-radius:8px;">2</i></span>
+    <span class="manual"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.3-2.7 3.8"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg>操作手册</span>
+    <span class="avatar" title="账户"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="3"/><circle cx="10" cy="13" r="0.6" fill="#fff"/><circle cx="14" cy="13" r="0.6" fill="#fff"/><path d="M12 8V4"/><circle cx="12" cy="3.4" r="0.8" fill="#fff"/></svg></span>
+  </div>
+</header>
+
+<div class="body">
+  <aside class="sidebar">
+    <ul class="side-menu">
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../工作台/P3-R01-F00-工作台.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>工作台</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../项目库/P3-R01-F01-项目列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9M3 9h18M9 21v-6h6v6"/></svg></span>项目库</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../基金管理/P3-R01-F07-基金列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>基金管理</div>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>投后管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F22-投后项目.html')">投后项目</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F12-报告归档.html')">报告归档</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F13-风险预警.html')">风险预警</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F14-提醒中心.html')">提醒中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出与分配<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F23-退出项目.html')">退出项目</div></li>
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F16-收益分配.html')">收益分配</div></li>
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F17-清算注销.html')">清算注销</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>统计报表<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F18-阶段漏斗.html')">阶段漏斗</div></li>
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F19-放弃原因分布.html')">放弃原因分布</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>审批中心<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">审批中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub open">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link selected">用户与角色</div></li>
+          <li><div class="sm-link" onclick="switchPanel('dict')">基础数据</div></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="side-foot">
+      <div class="sys-cur" id="sysSwitchBtn" title="切换系统">
+        <span class="sys-badge">投</span>
+        <span class="sys-name">投资项目管理</span>
+        <span class="sys-swap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+      </div>
+      <div class="sys-pop" id="sysPop">
+        <div class="sys-pop-title">切换系统</div>
+        <div class="sys-item current">投资项目管理<span class="check">✓</span></div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/供应链管理后台/全量订单/订单列表.html')">一兆链采供应链管理后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/商城运营后台/订单与售后/订单列表.html')">商城运营后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/WMS仓储管理/入库管理/到货通知单.html')">一兆链采WMS仓储管理</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <div class="tabs">
+      <span class="tab" onclick="go('../项目库/P3-R01-F01-项目列表.html')">项目列表 <span class="close">×</span></span>
+      <span class="tab active">系统管理 <span class="close">×</span></span>
+    </div>
+
+    <div class="content">
+      <div class="card" style="padding:0;">
+        <div class="stabs">
+          <span class="stab active" data-view="user" onclick="switchPanel('user')">用户与角色<span class="cnt">5</span></span>
+          <span class="stab" data-view="dict" onclick="switchPanel('dict')">基础数据<span class="cnt">7</span></span>
+        </div>
+
+        <!-- ===== 面板：用户与角色 ===== -->
+        <div id="panel-user">
+          <div class="toolbar">
+            <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openUser()">＋ 新建用户</button>
+            <span class="tip">授权人数上限 10 人，当前 5 人</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>用户名</th>
+                  <th>姓名</th>
+                  <th>账号</th>
+                  <th>角色</th>
+                  <th>状态</th>
+                  <th>最近登录</th>
+                  <th class="sticky-op">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="lk" onclick="openUser('lidaoyuan','吕道远','U-0001','超级管理员')">lidaoyuan</span></td>
+                  <td>吕道远</td>
+                  <td>U-0001</td>
+                  <td><span class="tag tag-blue">超级管理员</span></td>
+                  <td><span class="tag tag-blue">启用</span></td>
+                  <td>2026-08-27</td>
+                  <td class="sticky-op ops"><a onclick="openUser('lidaoyuan','吕道远','U-0001','超级管理员')">编辑</a><a onclick="openGrant('超级管理员')">授权</a><a class="danger-op" onclick="alert('不能停用当前登录账户')">停用</a></td>
+                </tr>
+                <tr>
+                  <td><span class="lk" onclick="openUser('hubo','胡博','U-0002','投资经理')">hubo</span></td>
+                  <td>胡博</td>
+                  <td>U-0002</td>
+                  <td><span class="tag tag-blue">投资经理</span></td>
+                  <td><span class="tag tag-blue">启用</span></td>
+                  <td>2026-08-27</td>
+                  <td class="sticky-op ops"><a onclick="openUser('hubo','胡博','U-0002','投资经理')">编辑</a><a onclick="openGrant('投资经理')">授权</a><a class="danger-op" onclick="alert('已停用用户：胡博')">停用</a></td>
+                </tr>
+                <tr>
+                  <td><span class="lk" onclick="openUser('jiayi','嘉怡','U-0003','投资经理')">jiayi</span></td>
+                  <td>嘉怡</td>
+                  <td>U-0003</td>
+                  <td><span class="tag tag-blue">投资经理</span></td>
+                  <td><span class="tag tag-blue">启用</span></td>
+                  <td>2026-08-26</td>
+                  <td class="sticky-op ops"><a onclick="openUser('jiayi','嘉怡','U-0003','投资经理')">编辑</a><a onclick="openGrant('投资经理')">授权</a><a class="danger-op" onclick="alert('已停用用户：嘉怡')">停用</a></td>
+                </tr>
+                <tr>
+                  <td><span class="lk" onclick="openUser('huayue','华悦','U-0004','投后专员')">huayue</span></td>
+                  <td>华悦</td>
+                  <td>U-0004</td>
+                  <td><span class="tag tag-blue">投后专员</span></td>
+                  <td><span class="tag tag-blue">启用</span></td>
+                  <td>2026-08-25</td>
+                  <td class="sticky-op ops"><a onclick="openUser('huayue','华悦','U-0004','投后专员')">编辑</a><a onclick="openGrant('投后专员')">授权</a><a class="danger-op" onclick="alert('已停用用户：华悦')">停用</a></td>
+                </tr>
+                <tr>
+                  <td><span class="lk" onclick="openUser('chenyou','陈有','U-0005','只读')">chenyou</span></td>
+                  <td>陈有</td>
+                  <td>U-0005</td>
+                  <td><span class="tag tag-gray">只读</span></td>
+                  <td><span class="tag tag-blue">启用</span></td>
+                  <td>2026-08-20</td>
+                  <td class="sticky-op ops"><a onclick="openUser('chenyou','陈有','U-0005','只读')">编辑</a><a onclick="openGrant('只读')">授权</a><a class="danger-op" onclick="alert('已停用用户：陈有')">停用</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span class="pg-info">第 1-5 条/总共 5 条</span>
+            <span class="pg-btn">‹</span>
+            <span class="pg-btn cur">1</span>
+            <span class="pg-btn">›</span>
+          </div>
+        </div>
+
+        <!-- ===== 面板：基础数据（原字典管理） ===== -->
+        <div id="panel-dict" style="display:none;">
+          <div class="dict-flex">
+            <div class="dict-side">
+              <div class="dict-side-title">字典分类</div>
+              <div class="dict-item selected" data-dict="gp" onclick="switchDict('gp',this)">放弃原因 · GP<span class="cnt-b">11</span></div>
+              <div class="dict-item" data-dict="lp" onclick="switchDict('lp',this)">放弃原因 · LP<span class="cnt-b">5</span></div>
+              <div class="dict-item" data-dict="ind" onclick="switchDict('ind',this)">行业赛道<span class="cnt-b">9</span></div>
+              <div class="dict-item" data-dict="round" onclick="switchDict('round',this)">轮次<span class="cnt-b">6</span></div>
+              <div class="dict-item" data-dict="src" onclick="switchDict('src',this)">项目来源<span class="cnt-b">5</span></div>
+              <div class="dict-item" data-dict="remind" onclick="switchDict('remind',this)">提醒类型<span class="cnt-b">4</span></div>
+              <div class="dict-item" data-dict="report" onclick="switchDict('report',this)">报告类型<span class="cnt-b">4</span></div>
+            </div>
+            <div class="dict-main">
+              <div class="ct-row" style="margin-bottom:14px;">
+                <h3 class="card-title" id="dictTitle">放弃原因 · GP</h3>
+              </div>
+              <div class="dict-toolbar">
+                <button class="btn btn-primary" onclick="openDictItem()">＋ 新增字典项</button>
+                <button class="btn btn-default" onclick="alert('已导出当前字典全部条目')">批量导出</button>
+              </div>
+
+              <!-- 字典：放弃原因 GP（按节点分组） -->
+              <div class="dict-panel" id="dp-gp">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>末级原因</th>
+                        <th>所属节点</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="group-row"><td colspan="5">① 看 BP 后不看<span class="g-cnt">1 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">明显超出投资范围</td>
+                        <td>① 看 BP 后不看</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：明显超出投资范围')">编辑</a><a class="danger-op" onclick="alert('已停用：明显超出投资范围')">停用</a></td>
+                      </tr>
+                      <tr class="group-row"><td colspan="5">② 线上路演后<span class="g-cnt">2 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">专业问题答不出/逻辑薄弱</td>
+                        <td>② 线上路演后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：专业问题答不出/逻辑薄弱')">编辑</a><a class="danger-op" onclick="alert('已停用：专业问题答不出/逻辑薄弱')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">团队能力不足</td>
+                        <td>② 线上路演后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>2</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：团队能力不足')">编辑</a><a class="danger-op" onclick="alert('已停用：团队能力不足')">停用</a></td>
+                      </tr>
+                      <tr class="group-row"><td colspan="5">④ 访谈/尽调后<span class="g-cnt">3 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">工厂萧条、订单匮乏</td>
+                        <td>④ 访谈/尽调后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：工厂萧条、订单匮乏')">编辑</a><a class="danger-op" onclick="alert('已停用：工厂萧条、订单匮乏')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">财务数据重大偏差</td>
+                        <td>④ 访谈/尽调后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>2</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：财务数据重大偏差')">编辑</a><a class="danger-op" onclick="alert('已停用：财务数据重大偏差')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">疑似造假</td>
+                        <td>④ 访谈/尽调后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>3</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：疑似造假')">编辑</a><a class="danger-op" onclick="alert('已停用：疑似造假')">停用</a></td>
+                      </tr>
+                      <tr class="group-row"><td colspan="5">⑤ 立项时<span class="g-cnt">2 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">创始人信用风险/人品问题</td>
+                        <td>⑤ 立项时</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：创始人信用风险/人品问题')">编辑</a><a class="danger-op" onclick="alert('已停用：创始人信用风险/人品问题')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">债务纠纷（老板否决）</td>
+                        <td>⑤ 立项时</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>2</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：债务纠纷（老板否决）')">编辑</a><a class="danger-op" onclick="alert('已停用：债务纠纷（老板否决）')">停用</a></td>
+                      </tr>
+                      <tr class="group-row"><td colspan="5">⑥ 投资人路演后<span class="g-cnt">1 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">全体投资人明确不出资</td>
+                        <td>⑥ 投资人路演后</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：全体投资人明确不出资')">编辑</a><a class="danger-op" onclick="alert('已停用：全体投资人明确不出资')">停用</a></td>
+                      </tr>
+                      <tr class="group-row"><td colspan="5">⑦ 投决前主动撤回<span class="g-cnt">2 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">估值未谈拢（打折未成）</td>
+                        <td>⑦ 投决前主动撤回</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：估值未谈拢（打折未成）')">编辑</a><a class="danger-op" onclick="alert('已停用：估值未谈拢（打折未成）')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">对赌条款设置不合理</td>
+                        <td>⑦ 投决前主动撤回</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>2</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：对赌条款设置不合理')">编辑</a><a class="danger-op" onclick="alert('已停用：对赌条款设置不合理')">停用</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：放弃原因 LP（按节点分组） -->
+              <div class="dict-panel" id="dp-lp" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>末级原因</th>
+                        <th>所属节点</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="group-row"><td colspan="5">⑦ 投决会否决<span class="g-cnt">5 项</span></td></tr>
+                      <tr>
+                        <td class="leaf-name">不看好行业</td>
+                        <td>⑦ 投决会否决</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>1</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：不看好行业')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好行业')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">不看好赛道</td>
+                        <td>⑦ 投决会否决</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>2</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：不看好赛道')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好赛道')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">项目风险异议</td>
+                        <td>⑦ 投决会否决</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>3</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：项目风险异议')">编辑</a><a class="danger-op" onclick="alert('已停用：项目风险异议')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">估值异议</td>
+                        <td>⑦ 投决会否决</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>4</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：估值异议')">编辑</a><a class="danger-op" onclick="alert('已停用：估值异议')">停用</a></td>
+                      </tr>
+                      <tr>
+                        <td class="leaf-name">政策/合规顾虑</td>
+                        <td>⑦ 投决会否决</td>
+                        <td><span class="tag tag-blue">启用</span></td>
+                        <td>5</td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：政策/合规顾虑')">编辑</a><a class="danger-op" onclick="alert('已停用：政策/合规顾虑')">停用</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：行业赛道（平铺） -->
+              <div class="dict-panel" id="dp-ind" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>字典项</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>人工智能</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：人工智能')">编辑</a><a class="danger-op" onclick="alert('已停用：人工智能')">停用</a></td></tr>
+                      <tr><td>先进制造·新能源</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：先进制造·新能源')">编辑</a><a class="danger-op" onclick="alert('已停用：先进制造·新能源')">停用</a></td></tr>
+                      <tr><td>医疗健康</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：医疗健康')">编辑</a><a class="danger-op" onclick="alert('已停用：医疗健康')">停用</a></td></tr>
+                      <tr><td>半导体</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：半导体')">编辑</a><a class="danger-op" onclick="alert('已停用：半导体')">停用</a></td></tr>
+                      <tr><td>低空经济</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：低空经济')">编辑</a><a class="danger-op" onclick="alert('已停用：低空经济')">停用</a></td></tr>
+                      <tr><td>教育</td><td><span class="tag tag-blue">启用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：教育')">编辑</a><a class="danger-op" onclick="alert('已停用：教育')">停用</a></td></tr>
+                      <tr><td>新材料</td><td><span class="tag tag-blue">启用</span></td><td>7</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：新材料')">编辑</a><a class="danger-op" onclick="alert('已停用：新材料')">停用</a></td></tr>
+                      <tr><td>农业科技</td><td><span class="tag tag-blue">启用</span></td><td>8</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：农业科技')">编辑</a><a class="danger-op" onclick="alert('已停用：农业科技')">停用</a></td></tr>
+                      <tr><td>量子科技</td><td><span class="tag tag-blue">启用</span></td><td>9</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：量子科技')">编辑</a><a class="danger-op" onclick="alert('已停用：量子科技')">停用</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：轮次（平铺，含停用示例） -->
+              <div class="dict-panel" id="dp-round" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>字典项</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>天使轮</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：天使轮')">编辑</a><a class="danger-op" onclick="alert('已停用：天使轮')">停用</a></td></tr>
+                      <tr><td>Pre-A</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：Pre-A')">编辑</a><a class="danger-op" onclick="alert('已停用：Pre-A')">停用</a></td></tr>
+                      <tr><td>A 轮</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：A 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：A 轮')">停用</a></td></tr>
+                      <tr><td>B 轮</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：B 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：B 轮')">停用</a></td></tr>
+                      <tr><td>定增</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：定增')">编辑</a><a class="danger-op" onclick="alert('已停用：定增')">停用</a></td></tr>
+                      <tr><td>C 轮</td><td><span class="tag tag-gray">停用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：C 轮')">编辑</a><a onclick="alert('已启用：C 轮')">启用</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：项目来源（平铺） -->
+              <div class="dict-panel" id="dp-src" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>字典项</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>主动接洽</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：主动接洽')">编辑</a><a class="danger-op" onclick="alert('已停用：主动接洽')">停用</a></td></tr>
+                      <tr><td>机构推荐</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：机构推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：机构推荐')">停用</a></td></tr>
+                      <tr><td>行业峰会</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：行业峰会')">编辑</a><a class="danger-op" onclick="alert('已停用：行业峰会')">停用</a></td></tr>
+                      <tr><td>政府引荐</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：政府引荐')">编辑</a><a class="danger-op" onclick="alert('已停用：政府引荐')">停用</a></td></tr>
+                      <tr><td>LP 推荐</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：LP 推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：LP 推荐')">停用</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：提醒类型（平铺） -->
+              <div class="dict-panel" id="dp-remind" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>字典项</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>阶段停滞提醒</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：阶段停滞提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：阶段停滞提醒')">停用</a></td></tr>
+                      <tr><td>报告逾期提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：报告逾期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：报告逾期提醒')">停用</a></td></tr>
+                      <tr><td>证照到期提醒</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：证照到期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：证照到期提醒')">停用</a></td></tr>
+                      <tr><td>付款节点提醒</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：付款节点提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：付款节点提醒')">停用</a></td></tr>
+                      <tr><td>审批超时提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：审批超时提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：审批超时提醒')">停用</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 字典：报告类型（平铺） -->
+              <div class="dict-panel" id="dp-report" style="display:none;">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>字典项</th>
+                        <th>状态</th>
+                        <th>排序</th>
+                        <th class="sticky-op">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>月报</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：月报')">编辑</a><a class="danger-op" onclick="alert('已停用：月报')">停用</a></td></tr>
+                      <tr><td>季报</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：季报')">编辑</a><a class="danger-op" onclick="alert('已停用：季报')">停用</a></td></tr>
+                      <tr><td>年报</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：年报')">编辑</a><a class="danger-op" onclick="alert('已停用：年报')">停用</a></td></tr>
+                      <tr><td>专项报告</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：专项报告')">编辑</a><a class="danger-op" onclick="alert('已停用：专项报告')">停用</a></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗1：新建 / 编辑用户 ===== -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="userModalTitle">新建用户</h3>
+      <span class="modal-close" onclick="closeUser()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>姓名 <span class="req">*</span></label><input class="f-input" id="uName" placeholder="真实姓名"></div>
+      <div class="f-row"><label>账号 <span class="req">*</span></label><input class="f-input" id="uAccount" placeholder="员工账号（如 U-0006）"></div>
+      <div class="f-row"><label>手机号</label><input class="f-input" id="uPhone" placeholder="用于登录与提醒通知（选填）"></div>
+      <div class="f-row"><label>角色 <span class="req">*</span></label>
+        <select class="f-select" id="uRole">
+          <option value="">请选择</option>
+          <option>超级管理员</option>
+          <option>投资经理</option>
+          <option>投后专员</option>
+          <option>只读</option>
+        </select>
+      </div>
+      <div class="f-row"><label>状态</label>
+        <div class="radio-line">
+          <label><input type="radio" name="uStatus" value="启用" checked style="accent-color:var(--primary);">启用</label>
+          <label><input type="radio" name="uStatus" value="停用" style="accent-color:var(--primary);">停用</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeUser()">取 消</button>
+      <button class="btn btn-primary" onclick="closeUser();alert('已保存用户信息')">保 存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗2：角色授权（菜单树） ===== -->
+<div class="modal-overlay" id="grantModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">角色授权</h3>
+      <span class="modal-close" onclick="closeGrant()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>角色名称</label><input class="f-input" id="grantRole" disabled></div>
+      <div class="f-row"><label>菜单权限 <span class="req">*</span>（勾选该角色可见的菜单）</label>
+        <div class="perm-tree" id="permTree">
+          <div class="perm-parent"><input type="checkbox" class="cb" id="ws-home"><span>工作台</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" id="pm-list"><span>项目库</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" id="pp-kanban"><span>投前管道</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" id="fm-list"><span>基金管理</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="lp"><span>LP 管理</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="lp" id="lp-book"><span>LP 台账</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="lp" id="lp-pay"><span>LP 出资</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="am"><span>投后管理</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="am" id="am-list"><span>投后项目</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="am" id="am-report"><span>报告归档</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="am" id="am-risk"><span>风险预警</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="am" id="am-remind"><span>提醒中心</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="ex"><span>退出与分配</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="ex" id="ex-list"><span>退出项目</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="ex" id="ex-dist"><span>收益分配</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="ex" id="ex-close"><span>清算注销</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="st"><span>统计报表</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="st" id="st-funnel"><span>阶段漏斗</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="st" id="st-reason"><span>放弃原因分布</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="ap"><span>审批中心</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="ap" id="ap-new"><span>审批中心</span></div>
+          <div class="perm-parent"><input type="checkbox" class="cb" data-group="sys"><span>系统管理</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="sys" id="sys-user"><span>用户与角色</span></div>
+          <div class="perm-child"><input type="checkbox" class="cb" data-group="sys" id="sys-dict"><span>基础数据</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeGrant()">取 消</button>
+      <button class="btn btn-primary" onclick="closeGrant();alert('授权已保存')">保存授权</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗3：新增字典项 ===== -->
+<div class="modal-overlay" id="dictItemModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">新增字典项</h3>
+      <span class="modal-close" onclick="closeDictItem()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>所属字典</label><div class="f-readonly" id="diDict">—</div></div>
+      <div class="f-row" id="diNodeRow" style="display:none;"><label>所属节点 <span class="req">*</span></label>
+        <select class="f-select" id="diNode">
+          <option value="">请选择节点</option>
+        </select>
+        <div class="f-hint">分组字典需先挂到节点，再录入末级原因</div>
+      </div>
+      <div class="f-row" data-note="1"><label>字典项名称 <span class="req">*</span></label><input class="f-input" id="diName" placeholder="如：明显超出投资范围"></div>
+      <div class="f-row"><label>排序号</label><input class="f-input" id="diSort" placeholder="数字越小越靠前（默认追加到末尾）"></div>
+      <div class="f-row"><label>状态</label>
+        <div class="radio-line">
+          <label><input type="radio" name="diStatus" checked style="accent-color:var(--primary);">启用</label>
+          <label><input type="radio" name="diStatus" style="accent-color:var(--primary);">停用</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeDictItem()">取 消</button>
+      <button class="btn btn-primary" onclick="closeDictItem();alert('已保存')">保 存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 业务脚本1：双页签切换 ===== */
+function switchPanel(v) {
+  document.querySelectorAll('.stab[data-view]').forEach(function (s) {
+    s.classList.toggle('active', s.getAttribute('data-view') === v);
+  });
+  document.getElementById('panel-user').style.display = (v === 'user') ? '' : 'none';
+  document.getElementById('panel-dict').style.display = (v === 'dict') ? '' : 'none';
+}
+
+/* ===== 业务脚本2：用户弹窗（新建 / 编辑） ===== */
+function openUser(username, name, account, role) {
+  var editing = !!username;
+  document.getElementById('userModalTitle').textContent = editing ? '编辑用户' : '新建用户';
+  document.getElementById('uName').value = name || '';
+  document.getElementById('uAccount').value = account || '';
+  document.getElementById('uPhone').value = editing ? '' : '';
+  document.getElementById('uRole').value = role || '';
+  document.querySelector('input[name="uStatus"][value="启用"], input[name="uStatus"]').checked = true;
+  document.getElementById('userModal').classList.add('show');
+}
+function closeUser() { document.getElementById('userModal').classList.remove('show'); }
+document.getElementById('userModal').addEventListener('click', function (e) { if (e.target === this) closeUser(); });
+
+/* ===== 业务脚本3：角色授权（按角色默认勾选 + 组头子项联动） ===== */
+var ROLE_PERMS = {
+  '超级管理员': ['ws-home', 'pm-list', 'pp-kanban', 'fm-list', 'lp-book', 'lp-pay', 'am-list', 'am-report', 'am-risk', 'am-remind', 'ex-list', 'ex-dist', 'ex-close', 'st-funnel', 'st-reason', 'ap-new', 'sys-user', 'sys-dict'],
+  '投资经理': ['ws-home', 'pm-list', 'pp-kanban', 'fm-list', 'lp-book', 'lp-pay', 'am-list', 'am-report', 'am-risk', 'am-remind', 'ex-list', 'ex-dist', 'st-funnel', 'st-reason', 'ap-new'],
+  '投后专员': ['ws-home', 'pm-list', 'am-list', 'am-report', 'am-risk', 'am-remind'],
+  '只读': ['ws-home', 'pm-list', 'st-funnel', 'st-reason']
+};
+function openGrant(role) {
+  document.getElementById('grantRole').value = role;
+  var ids = ROLE_PERMS[role] || [];
+  document.querySelectorAll('#permTree input[type="checkbox"]').forEach(function (c) {
+    c.checked = ids.indexOf(c.id) > -1;
+  });
+  syncGroupHeads();
+  document.getElementById('grantModal').classList.add('show');
+}
+function closeGrant() { document.getElementById('grantModal').classList.remove('show'); }
+document.getElementById('grantModal').addEventListener('click', function (e) { if (e.target === this) closeGrant(); });
+/* 组头勾选 → 子项全选 / 全不选 */
+document.querySelectorAll('#permTree .perm-parent input[data-group]').forEach(function (head) {
+  head.addEventListener('change', function () {
+    var g = head.getAttribute('data-group');
+    document.querySelectorAll('#permTree .perm-child input[data-group="' + g + '"]').forEach(function (c) { c.checked = head.checked; });
+  });
+});
+/* 子项变化 → 组头同步 */
+document.querySelectorAll('#permTree .perm-child input').forEach(function (c) {
+  c.addEventListener('change', syncGroupHeads);
+});
+function syncGroupHeads() {
+  document.querySelectorAll('#permTree .perm-parent input[data-group]').forEach(function (head) {
+    var g = head.getAttribute('data-group');
+    var subs = document.querySelectorAll('#permTree .perm-child input[data-group="' + g + '"]');
+    var checked = document.querySelectorAll('#permTree .perm-child input[data-group="' + g + '"]:checked');
+    head.checked = subs.length > 0 && subs.length === checked.length;
+  });
+}
+
+/* ===== 业务脚本4：基础数据（左侧分类 ↔ 右侧标题/表格联动） ===== */
+var DICTS = {
+  gp: { name: '放弃原因 · GP', note: '按放弃节点分组的末级原因，供放弃登记与统计使用', grouped: true,
+        nodes: '<option value="">请选择节点</option><option>① 看 BP 后不看</option><option>② 线上路演后</option><option>④ 访谈/尽调后</option><option>⑤ 立项时</option><option>⑥ 投资人路演后</option><option>⑦ 投决前主动撤回</option>' },
+  lp: { name: '放弃原因 · LP', note: '投决会否决的末级原因，仅在 ⑦ 投决节点可选', grouped: true,
+        nodes: '<option value="">请选择节点</option><option>⑦ 投决会否决</option>' },
+  ind: { name: '行业赛道', note: '项目建档与筛选使用的行业维度', grouped: false, nodes: '' },
+  round: { name: '轮次', note: '项目投资轮次维度', grouped: false, nodes: '' },
+  src: { name: '项目来源', note: '项目建档时的来源渠道', grouped: false, nodes: '' },
+  remind: { name: '提醒类型', note: '提醒中心可配置的提醒类别', grouped: false, nodes: '' },
+  report: { name: '报告类型', note: '投后报告归档的类别', grouped: false, nodes: '' }
+};
+var curDict = 'gp';
+function switchDict(key, el) {
+  curDict = key;
+  document.querySelectorAll('.dict-item').forEach(function (d) { d.classList.toggle('selected', d === el || d.getAttribute('data-dict') === key); });
+  document.getElementById('dictTitle').textContent = DICTS[key].name;
+  document.getElementById('dictNote').textContent = DICTS[key].note;
+  document.querySelectorAll('.dict-panel').forEach(function (p) { p.style.display = 'none'; });
+  document.getElementById('dp-' + key).style.display = '';
+}
+function openDictItem() {
+  document.getElementById('diDict').textContent = DICTS[curDict].name;
+  var grouped = DICTS[curDict].grouped;
+  document.getElementById('diNodeRow').style.display = grouped ? '' : 'none';
+  if (grouped) document.getElementById('diNode').innerHTML = DICTS[curDict].nodes;
+  document.getElementById('diName').value = '';
+  document.getElementById('diSort').value = '';
+  document.getElementById('dictItemModal').classList.add('show');
+}
+function closeDictItem() { document.getElementById('dictItemModal').classList.remove('show'); }
+document.getElementById('dictItemModal').addEventListener('click', function (e) { if (e.target === this) closeDictItem(); });
+
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeUser(); closeGrant(); closeDictItem(); } });
+</script>
+
+<script>
+/* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */
+function go(url) { location.href = url; }
+document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link) {
+  link.addEventListener('click', function () { link.parentElement.classList.toggle('open'); });
+});
+(function () {
+  var btn = document.getElementById('sysSwitchBtn');
+  var pop = document.getElementById('sysPop');
+  btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { pop.classList.remove('show'); });
+})();
+</script>
+
+
+
+<style id="proto-notes-style">
+body.proto-notes-on [data-note]{position:relative}
+body.proto-notes-on [data-note]::after{content:attr(data-note);position:absolute;top:1px;right:1px;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600;box-shadow:0 0 0 1.5px #fff;cursor:pointer;opacity:.75;transition:opacity .15s}
+body.proto-notes-on [data-note]:hover::after{opacity:1}
+@keyframes pn-blink{0%{box-shadow:0 0 0 2px #722ed1}25%{box-shadow:0 0 0 5px rgba(114,46,209,.35)}100%{box-shadow:0 0 0 2px transparent}}
+.proto-pin{display:none;position:absolute;width:300px;background:#fff;border:1px solid #f0f0f0;border-top:2px solid #722ed1;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.13);z-index:890;padding:10px 12px;font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;font-size:12px;color:#262626}
+body.proto-notes-on .proto-pin.pn-open{display:block}
+.proto-pin .pnp-close{position:absolute;top:6px;right:8px;cursor:pointer;color:#8c8c8c;font-size:14px;line-height:1;padding:2px}
+.proto-pin .pnp-close:hover{color:#262626}
+.proto-pin .pnp-t{display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;color:#262626;padding-right:16px}
+.proto-pin .pnp-n{flex:none;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600}
+.proto-pin .pnp-d{margin-top:5px;color:#595959;line-height:1.6}
+.proto-pin .pnp-b{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.proto-pin .pnp-tag{background:#f9f0ff;color:#722ed1;border-radius:3px;padding:0 6px;font-size:11px;line-height:20px}
+.proto-pin .pnp-src{margin-top:8px;padding-top:7px;border-top:1px dashed #e5dff0;font-size:11px;color:#595959;line-height:1.65}
+.proto-pin .pnp-src b{color:#722ed1;font-weight:600}
+.pn-fab{position:fixed;right:12px;bottom:12px;z-index:880;display:flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:4px;background:#fff;border:1px solid #ddd0ec;color:#722ed1;font-size:11px;font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.06);opacity:.6;transition:opacity .15s}
+.pn-fab:hover{opacity:1;border-color:#722ed1}
+body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
+.pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
+</style>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>末级原因字典</div><div class="pnp-d">按放弃节点分组的末级原因，供放弃登记（F01）与放弃统计（F19）使用；<br>分组字典需先挂到节点，再录入末级原因（两处数据同步）。</div><div class="pnp-b"><span class="pnp-tag">P21 · 系统管理</span></div><div class="pnp-src"><div class="src-item"><b>P21 系统管理</b>：用户与角色 + 基础数据（原字典管理）</div></div></div>
+<div class="pn-fab" id="protoNotesFab">标注</div></div>
+<script id="proto-notes-js">
+(function(){
+  var KEY='proto-notes-on';
+  function on(){return location.search.indexOf('notes=1')>-1||localStorage.getItem(KEY)==='1'}
+  function apply(){
+    document.body.classList.toggle('proto-notes-on',on());
+    var fab=document.getElementById('protoNotesFab');
+    if(fab){fab.innerHTML=on()?'收起':'标注 <span class="pn-fab-n">'+(document.querySelectorAll('[data-note]').length)+'</span>';fab.title=on()?'收起标注（Alt+N）':'显示标注（Alt+N）'}
+  }
+  function toggle(){var v=!on();localStorage.setItem(KEY,v?'1':'0');apply()}
+  document.addEventListener('keydown',function(e){if(e.altKey&&(e.key==='n'||e.key==='N')){e.preventDefault();toggle()}});
+  function place(el,pin){
+    var r=el.getBoundingClientRect(),sx=window.scrollX||0,sy=window.scrollY||0;
+    var w=pin.offsetWidth||248,h=pin.offsetHeight||90,vw=document.documentElement.clientWidth;
+    var x=r.right+sx+12;
+    if(x+w>sx+vw-8){var xl=r.left+sx-w-12;x=xl>=sx+8?xl:(sx+vw-w-8)}
+    var y=r.top+sy;
+    if(y+h>sy+document.documentElement.clientHeight-8)y=Math.max(sy+52,r.bottom+sy-h);
+    pin.style.left=x+'px';pin.style.top=y+'px';
+  }
+  document.addEventListener('click',function(e){
+    if(!on())return;
+    var tgt=e.target.closest?e.target.closest('[data-note]'):null;
+    if(tgt){
+      var r=tgt.getBoundingClientRect();
+      if(e.clientX>r.right-24&&e.clientY<r.top+22){
+        e.stopPropagation();e.preventDefault();
+        var pin=document.getElementById('proto-pin-'+tgt.getAttribute('data-note'));
+        if(pin){
+          if(pin.classList.contains('pn-open')){pin.classList.remove('pn-open')}
+          else{pin.classList.add('pn-open');place(tgt,pin)}
+        }
+      }
+    }
+  },true);
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    var fab=t.closest?t.closest('.pn-fab'):null;
+    if(fab){toggle();return}
+    var pc=t.closest?t.closest('.proto-pin'):null;
+    if(pc){
+      if(t.classList&&t.classList.contains('pnp-close'))pc.classList.remove('pn-open');
+      return;
+    }
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+</body>
+</html>

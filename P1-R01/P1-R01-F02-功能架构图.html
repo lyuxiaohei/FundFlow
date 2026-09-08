@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资部需求功能架构图 · 投资项目库</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #fafafa; --ink: #111827; --muted: #4b5563; --soft: #6b7280;
+    --rule: rgba(17,24,39,0.10); --rule-solid: #d1d5db;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    padding: 48px 32px 32px; max-width: 1240px; margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--soft); margin-bottom: 12px;
+  }
+  h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.75rem; line-height: 1.3; }
+  .subtitle { font-size: 13px; color: var(--muted); margin-top: 8px; max-width: 920px; line-height: 1.6; }
+  .diagram { margin-top: 28px; }
+  svg { display: block; width: 100%; height: auto; }
+  .cards { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 16px; margin-top: 32px; }
+  .card { background: #ffffff; border: 1px solid rgba(17,24,39,0.12); border-radius: 6px; padding: 20px; }
+  .card-header { display: flex; align-items: center; gap: 8px; margin: 8px 0 12px; }
+  .card-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .card h3 { font-size: 14px; font-weight: 600; }
+  .card ul { list-style: none; }
+  .card li { font-size: 12px; color: var(--muted); line-height: 1.7; padding-left: 14px; position: relative; }
+  .card li::before { content: ""; position: absolute; left: 0; top: 9px; width: 5px; height: 1px; background: var(--rule-solid); }
+  .footer {
+    margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
+    font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--soft); letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<p class="eyebrow">INVESTMENT DEPT · PROJECT VAULT · FUNCTIONAL ARCHITECTURE</p>
+<h1>投资部需求功能架构图（项目库）</h1>
+<p class="subtitle">按「用户层 → 应用功能层（募投管退段位）→ 支撑层 → 平台与集成」四层展开；应用功能层与支撑层给出全量系统菜单（「」标注，对应《A04-功能清单对照表》29 个功能点）：黑字为 V1.0 菜单，行尾 R 标签对应《A02-原始需求记录》R1~R6；灰字（V2）为 V2.0 菜单（置灰）。段位配色与《F01-类型架构对比图》一致（募紫、投蓝、管橙、退红、支撑灰，绿色为独有不投原因管理）。2026-08-26 沟通会后：Q7/Q10/Q11 已全部确认，**确认项全部并入 V1.0（17 个功能点）**——募段转实线（极简并入 V1.0）、退出改三段递进（V1.0 刚性）、投后四项（V1.0）、六节点审批（V1.0）、数据实体 1:1 定稿；财报自动收集/委派董事/尽调模板/LP 门户确认不做。底部 AI 知识库为外部独立系统块（方案B），两系统经 WorkBuddy 调用各自 MCP Server 协同（Q3 已确认独立）。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1160 1312" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <defs>
+    <marker id="arrM" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- ============ 带1：用户层 ============ -->
+  <text x="40" y="92" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.14em" fill="#6b7280">USERS</text>
+  <text x="40" y="110" font-size="11" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">用户层</text>
+
+  <rect x="144" y="76" width="976" height="52" rx="6" fill="rgba(17,24,39,0.04)" stroke="#9ca3af" stroke-width="1"/>
+  <text x="168" y="98" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投资部用户</text>
+  <text x="168" y="116" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投资部内部使用 · 共 10 人以内（Q1 已确认）</text>
+
+  <line x1="40" y1="152" x2="1120" y2="152" stroke="rgba(17,24,39,0.10)" stroke-width="1"/>
+
+  <!-- ============ 带2：应用功能层 ============ -->
+  <text x="40" y="440" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.14em" fill="#6b7280">APPLICATION</text>
+  <text x="40" y="458" font-size="11" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">应用功能层</text>
+
+  <!-- 募段（Q11 已确认 · 极简） -->
+  <rect x="144" y="216" width="152" height="468" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="160" y="244" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">募段功能</text>
+  <text x="160" y="262" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#7c3aed">Q11 已确认（08-26）· 极简</text>
+  <rect x="160" y="285" width="5" height="1" fill="#7c3aed"/>
+  <text x="172" y="290" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「LP 管理」主体/出资录入</text>
+  <rect x="160" y="309" width="5" height="1" fill="#7c3aed"/>
+  <text x="172" y="314" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「LP 资格认定」出资前认定</text>
+  <rect x="160" y="333" width="5" height="1" fill="#7c3aed"/>
+  <text x="172" y="338" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「资质材料」LPA 等上传</text>
+  <text x="160" y="656" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#7c3aed">V1.0（08-26 并入）· 无募集流程/报表（LP 门户不做）</text>
+
+  <!-- 投段：项目档案 -->
+  <rect x="308" y="216" width="396" height="160" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="324" y="242" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投 · 项目档案</text>
+  <rect x="324" y="264" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="269" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「项目总库」宽口径入库 · BP 即建档</text>
+  <text x="688" y="269" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R1</text>
+  <rect x="324" y="286" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="291" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「项目详情」基础信息字段（行业标准 · Q4）</text>
+  <rect x="324" y="308" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="313" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「材料库」逻辑包强制分类（六类 · 08-26）</text>
+  <rect x="324" y="330" width="5" height="1" fill="#d1d5db"/>
+  <text x="336" y="335" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「标签体系」扩展字段（V2）</text>
+  <rect x="324" y="352" width="5" height="1" fill="#d1d5db"/>
+  <text x="336" y="357" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「数据富化」外部数据源（V2 候选）</text>
+
+  <!-- 投段：投前管道 -->
+  <rect x="308" y="388" width="396" height="136" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="324" y="414" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投 · 投前管道（Pipeline）</text>
+  <rect x="324" y="436" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="441" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「阶段看板」十二阶段 · 10 状态标签</text>
+  <text x="688" y="441" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R2/R3</text>
+  <rect x="324" y="460" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="465" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「项目跟进」阶段流转 · 自动时间戳</text>
+  <text x="688" y="465" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R2</text>
+  <rect x="324" y="484" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="489" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「会议记录」立项会/投决会结论</text>
+  <rect x="324" y="508" width="5" height="1" fill="#2563eb"/>
+  <text x="336" y="513" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「基金管理」实体/LPA/出资（Q7 · 1:1）</text>
+
+  <!-- 投段：不投原因管理（独有） -->
+  <rect x="308" y="536" width="396" height="148" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="324" y="560" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">投 · 不投原因管理 ★</text>
+  <text x="324" y="576" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#166534">同类产品均缺失 · 投资部独有</text>
+  <rect x="324" y="596" width="5" height="1" fill="#16a34a"/>
+  <text x="336" y="601" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「放弃登记」所处阶段自动带出</text>
+  <text x="688" y="601" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R2/R3</text>
+  <rect x="324" y="618" width="5" height="1" fill="#16a34a"/>
+  <text x="336" y="623" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「原因分类」预置 + 自定义（Q5）</text>
+  <text x="688" y="623" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R4</text>
+  <rect x="324" y="640" width="5" height="1" fill="#16a34a"/>
+  <text x="336" y="645" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「未投归档」检索与统计</text>
+  <rect x="324" y="662" width="5" height="1" fill="#d1d5db"/>
+  <text x="336" y="667" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「原因树」两级扩展（V2）</text>
+
+  <!-- 管段：投后管理 -->
+  <rect x="716" y="216" width="196" height="468" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1"/>
+  <text x="732" y="242" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">管 · 投后管理</text>
+  <rect x="732" y="264" width="5" height="1" fill="#ea580c"/>
+  <text x="744" y="269" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「投后时间线」事件记录·附件时间戳</text>
+  <text x="896" y="269" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R5</text>
+  <rect x="732" y="292" width="5" height="1" fill="#ea580c"/>
+  <text x="744" y="297" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「投后文档」报告归档·手动上传</text>
+  <text x="896" y="297" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R5</text>
+  <rect x="732" y="320" width="5" height="1" fill="#d1d5db"/>
+  <text x="744" y="325" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「估值管理」（V2）</text>
+  <rect x="732" y="348" width="5" height="1" fill="#ea580c"/>
+  <text x="744" y="353" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「风险预警」股价/舆情（V1.0·08-26 并入）</text>
+  <rect x="732" y="376" width="5" height="1" fill="#ea580c"/>
+  <text x="744" y="381" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「到期提醒」对赌/回购 ≥30天（V1.0·08-26）</text>
+  <text x="732" y="656" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#b45309">四项刚性功能（08-26）· 行业标准 Q6</text>
+
+  <!-- 退段：退出与终态 -->
+  <rect x="924" y="216" width="196" height="468" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="940" y="242" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">退 · 退出与终态</text>
+  <rect x="940" y="264" width="5" height="1" fill="#dc2626"/>
+  <text x="952" y="269" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「终态标记」基金清算/注销</text>
+  <text x="1104" y="269" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" fill="#b45309" text-anchor="end">R6</text>
+  <rect x="940" y="292" width="5" height="1" fill="#dc2626"/>
+  <text x="952" y="297" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「项目退出」分批次登记（V1.0·刚性）</text>
+  <rect x="940" y="320" width="5" height="1" fill="#dc2626"/>
+  <text x="952" y="325" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「收益分配」LP 比例核算（V1.0·刚性）</text>
+  <rect x="940" y="348" width="5" height="1" fill="#dc2626"/>
+  <text x="952" y="353" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「清算注销」全部退出后启动（V1.0）</text>
+  <text x="940" y="656" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#b91c1c">退出三段递进（08-26）· 20+ 基金 1:1 基准（Q7）</text>
+
+  <line x1="40" y1="708" x2="1120" y2="708" stroke="rgba(17,24,39,0.10)" stroke-width="1"/>
+
+  <!-- ============ 带3：支撑层 ============ -->
+  <text x="40" y="802" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.14em" fill="#6b7280">SUPPORT</text>
+  <text x="40" y="820" font-size="11" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">支撑层</text>
+
+  <rect x="144" y="732" width="310" height="160" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="168" y="758" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">统计报表</text>
+  <rect x="168" y="780" width="5" height="1" fill="#6b7280"/>
+  <text x="180" y="785" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「阶段漏斗」各阶段转化/放弃率</text>
+  <rect x="168" y="804" width="5" height="1" fill="#6b7280"/>
+  <text x="180" y="809" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「原因分布」不投原因统计（独有维度）</text>
+  <rect x="168" y="828" width="5" height="1" fill="#d1d5db"/>
+  <text x="180" y="833" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「驾驶舱」组合看板（V2）</text>
+
+  <rect x="478" y="732" width="308" height="160" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="502" y="758" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">系统管理</text>
+  <rect x="502" y="780" width="5" height="1" fill="#6b7280"/>
+  <text x="514" y="785" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「用户角色」基础角色权限</text>
+  <rect x="502" y="802" width="5" height="1" fill="#d1d5db"/>
+  <text x="514" y="807" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「分支权限」多分支细粒度（V2）</text>
+  <rect x="502" y="824" width="5" height="1" fill="#6b7280"/>
+  <text x="514" y="829" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「在线审批」六节点（V1.0·Q10）</text>
+  <rect x="502" y="846" width="5" height="1" fill="#d1d5db"/>
+  <text x="514" y="851" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「开放接口」API / MCP（V2）</text>
+  <rect x="502" y="868" width="5" height="1" fill="#d1d5db"/>
+  <text x="514" y="873" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「移动端」（V2）</text>
+
+  <rect x="810" y="732" width="310" height="160" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="834" y="758" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">智能与数据</text>
+  <rect x="834" y="780" width="5" height="1" fill="#d1d5db"/>
+  <text x="846" y="785" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「数据富化」外部数据源（V2 候选）</text>
+  <rect x="834" y="804" width="5" height="1" fill="#d1d5db"/>
+  <text x="846" y="809" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「AI 摘要」BP 速览 · 经 MCP（V2）</text>
+  <rect x="834" y="828" width="5" height="1" fill="#d1d5db"/>
+  <text x="846" y="833" font-size="10" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「文档库对接」AI 知识库（V2）</text>
+
+  <line x1="40" y1="916" x2="1120" y2="916" stroke="rgba(17,24,39,0.10)" stroke-width="1"/>
+
+  <!-- ============ 带4：平台与集成 ============ -->
+  <text x="40" y="960" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.14em" fill="#6b7280">PLATFORM</text>
+  <text x="40" y="978" font-size="11" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">平台与集成</text>
+
+  <rect x="144" y="940" width="280" height="60" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="168" y="962" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">MCP Server 接口</text>
+  <text x="168" y="982" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">对外暴露项目数据 · 供智能体调用（V2.0）</text>
+
+  <rect x="448" y="940" width="224" height="60" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="472" y="962" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">私有化部署</text>
+  <text x="472" y="982" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">公司服务器 · 数据不出域（Q2）</text>
+
+  <rect x="696" y="940" width="220" height="60" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="720" y="962" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">系统独立性</text>
+  <text x="720" y="982" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">独立部署 · 独立账号（Q3 已确认）</text>
+
+  <rect x="940" y="940" width="180" height="60" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="964" y="962" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">数据实体</text>
+  <text x="964" y="982" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">项目 · 基金 1:1 基准（Q7 已确认）</text>
+
+  <!-- ============ 外部系统：AI 知识库（虚线边界，独立建设） ============ -->
+  <line x1="300" y1="1002" x2="300" y2="1094" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrM)"/>
+  <rect x="312" y="1037" width="92" height="14" rx="2" fill="#fafafa"/>
+  <text x="358" y="1048" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#6b7280" text-anchor="middle">MCP 调用 · 协同</text>
+  <text x="416" y="1048" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#9ca3af">数据不出各自系统 · 接口级松耦合</text>
+
+  <rect x="144" y="1056" width="976" height="136" rx="8" fill="rgba(17,24,39,0.02)" stroke="rgba(17,24,39,0.30)" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="164" y="1082" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">AI 知识库系统（外部 · 独立建设 · Q3 已确认）</text>
+  <text x="1100" y="1082" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="8" fill="#9ca3af" text-anchor="end">按知识库项目方案B 展开（待最终确认）</text>
+
+  <rect x="180" y="1098" width="280" height="64" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="204" y="1124" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">WorkBuddy Harness</text>
+  <text x="204" y="1144" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">智能体编排 · 连接器（方案B）</text>
+
+  <line x1="462" y1="1130" x2="490" y2="1130" stroke="#6b7280" stroke-width="1.2" marker-end="url(#arrM)"/>
+  <rect x="462" y="1116" width="28" height="12" rx="2" fill="#fafafa"/>
+  <text x="476" y="1125" font-family="'Geist Mono', monospace" font-size="7" fill="#6b7280" text-anchor="middle">MCP</text>
+
+  <rect x="494" y="1098" width="300" height="64" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="518" y="1124" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">私有化知识库</text>
+  <text x="518" y="1144" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">RAGFlow · MCP Server</text>
+
+  <rect x="828" y="1098" width="256" height="64" rx="6" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="852" y="1124" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">第三方 LLM API</text>
+  <text x="852" y="1144" font-size="10" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">DeepSeek 等 · API 调用</text>
+
+  <!-- ============ 色例 ============ -->
+  <line x1="40" y1="1216" x2="1120" y2="1216" stroke="rgba(17,24,39,0.10)" stroke-width="0.8"/>
+  <text x="40" y="1238" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" fill="#4b5563">LEGEND</text>
+
+  <rect x="108" y="1228" width="16" height="12" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="130" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">投段</text>
+
+  <rect x="180" y="1228" width="16" height="12" fill="#ffedd5" stroke="#ea580c" stroke-width="1"/>
+  <text x="202" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">管段</text>
+
+  <rect x="252" y="1228" width="16" height="12" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="274" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">退段</text>
+
+  <rect x="324" y="1228" width="16" height="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="346" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">募段（08-26 确认）</text>
+
+  <rect x="396" y="1228" width="16" height="12" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="418" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">支撑层</text>
+
+  <rect x="488" y="1228" width="16" height="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="510" y="1238" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#166534">独有能力</text>
+
+  <text x="108" y="1266" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「菜单」<tspan font-family="'Geist Mono', monospace" font-weight="600" fill="#b45309">R1</tspan> = V1.0 菜单（R 对应附件2 原始需求）</text>
+  <text x="500" y="1266" font-size="9" fill="#9ca3af" font-family="'Geist','PingFang SC','Microsoft YaHei',sans-serif">「菜单」（V2）= V2.0 菜单（置灰）</text>
+  <rect x="776" y="1256" width="16" height="12" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="798" y="1266" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">虚线框 = 原待确认项（Q1~Q11 已全部确认）</text>
+
+  <rect x="108" y="1284" width="16" height="12" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="130" y="1294" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">虚线边界 = 外部独立系统</text>
+
+  <line x1="352" y1="1290" x2="374" y2="1290" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrM)"/>
+  <text x="382" y="1294" font-family="'Geist Mono','Microsoft YaHei',monospace" font-size="9" fill="#4b5563">虚线箭头 = MCP 调用（协同）</text>
+</svg>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <p class="eyebrow">V1.0 · 跑通</p>
+    <div class="card-header"><span class="card-dot" style="background:#2563eb"></span><h3>17 个功能点（黑字菜单）</h3></div>
+    <ul>
+      <li>原始需求 11 个（R1~R6 直接对应：档案/管道/放弃/投后基础/清算终态/漏斗/权限）+ 08-26 确认并入 6 个（风险预警、到期提醒≥30天、项目退出、收益分配、募段 LP 极简、六节点在线审批）</li>
+      <li>编号 #1~8、10、11、14、16~20、29，逐条对照见《P1-R01-A04-功能清单对照表》</li>
+    </ul>
+  </div>
+  <div class="card">
+    <p class="eyebrow">V2.0 · 完善</p>
+    <div class="card-header"><span class="card-dot" style="background:#ea580c"></span><h3>8 个功能点（08-26 修订）</h3></div>
+    <ul>
+      <li>深化：估值、两级原因树、标签扩展、驾驶舱、数据富化（候选）、AI 摘要（经 MCP）、MCP Server/API、移动端；另含简道云嵌入方式深化（#29）</li>
+      <li>不做（08-26）：财报自动收集、委派董事、尽调模板、LP 门户/IR、机构管理（暂缓）；另暂缓：风控 #9</li>
+    </ul>
+  </div>
+  <div class="card">
+    <p class="eyebrow">ANCHORS</p>
+    <div class="card-header"><span class="card-dot" style="background:#16a34a"></span><h3>独有与边界</h3></div>
+    <ul>
+      <li>绿色 = 不投原因管理（市场空白，自建差异化；预置清单待业务提供，实例库已备）</li>
+      <li>Q1~Q11 已全部确认（08-25/08-26）；残留：不投原因预置清单、基金清算模块菜单归属</li>
+      <li>外部虚线块 = AI 知识库系统（独立建设 · Q3），协同经 WorkBuddy 调用两系统 MCP Server</li>
+    </ul>
+  </div>
+</div>
+
+<p class="footer">投资项目管理系统（项目库）· 依据《P1-R01-方案分析报告》V1.3 第三/四/六节、《P1-R01-A02-原始需求记录》（含 08-26 沟通会细化）与《P1-R01-A04-功能清单对照表》 · 2026-08-26 修订</p>
+
+</body>
+</html>

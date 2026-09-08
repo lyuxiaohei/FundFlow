@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>演示导览 - 投资项目管理</title><style>
+body{font-family:-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;background:#f3f5f9;color:#262626;font-size:13px;line-height:1.65;margin:0}
+.w{max-width:1280px;margin:0 auto;padding:28px 32px 60px}
+.hero{background:linear-gradient(135deg,#1677ff,#3f8cff);border-radius:14px;padding:28px 34px;color:#fff;display:flex;align-items:center;margin-bottom:22px}
+.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;font-size:13.5px;opacity:.92}
+.b{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 16px;border-radius:6px;font-size:13px;text-decoration:none;cursor:pointer;font-weight:500;border:1px solid #d9d9d9;background:#fff;color:rgba(0,0,0,.78);transition:all .16s}
+.b:hover{color:#1677ff;border-color:#1677ff;background:#f0f7ff}
+.bp{background:#1677ff;border-color:#1677ff;color:#fff}.bp:hover{background:#4096ff;border-color:#4096ff;color:#fff}
+.bw{background:#fff;border-color:#fff;color:#1677ff;font-weight:600}.bw:hover{background:#eaf3ff;color:#1677ff}
+.st{display:flex;align-items:baseline;gap:12px;margin:32px 0 14px}
+.st h2{font-size:17px;margin:0}.st .sub{font-size:12.5px;color:#8c8c8c}
+.st .no{width:24px;height:24px;border-radius:50%;background:#1677ff;color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;align-self:center}
+.c{background:#fff;border:1px solid #e8ecf1;border-radius:12px;padding:20px 24px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07)}
+.step{display:flex;gap:16px;position:relative;padding-bottom:16px}
+.step::before{content:'';position:absolute;left:16px;top:38px;bottom:0;width:2px;background:#dce6f5}
+.step:last-of-type::before{display:none}
+.sn{width:34px;height:34px;border-radius:50%;background:#1677ff;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;z-index:1;box-shadow:0 0 0 4px #e6f4ff}
+.sb{flex:1;background:#fff;border:1px solid #e8ecf1;border-radius:12px;padding:14px 18px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07)}
+.sh{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.sh h3{margin:0;font-size:14.5px}
+.sh .pg{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.talk{margin:8px 0 0;color:#595959}.talk b{color:#262626}
+.see{margin:6px 0 0;font-size:12.5px;color:#8c8c8c}.see em{font-style:normal;color:#1677ff}
+.tg{display:inline-block;padding:0 9px;height:22px;line-height:20px;font-size:12px;border-radius:11px;border:1px solid #e8e8e8;background:#fafafa;color:#8c8c8c;font-weight:500}
+.bd{display:flex;align-items:center;gap:10px;margin:16px 0 8px}
+.bd .band{height:25px;border-radius:13px;display:inline-flex;align-items:center;padding:0 13px;font-size:12.5px;font-weight:600}
+.bp1{background:#e6f4ff;color:#1677ff;border:1px solid #91caff}.bp2{background:#fff7e6;color:#fa8c16;border:1px solid #ffd591}.bp3{background:#f5f5f5;color:#595959;border:1px solid #e8e8e8}
+.bd .nt{font-size:12px;color:#8c8c8c}
+.sgs{display:flex;align-items:stretch}
+.sc{flex:1;min-width:0;position:relative;padding:0 6px}
+.sc.fx{flex:0 0 185px}
+.sx{border:1px solid #e8ecf1;border-radius:10px;background:#fff;padding:9px 7px 8px;text-align:center;height:100%;box-sizing:border-box;position:relative}
+.sx.ml{border-color:#91caff;box-shadow:inset 0 3px 0 #1677ff}
+.sn2{width:28px;height:28px;border-radius:50%;margin:0 auto 5px;background:#eef4ff;color:#1677ff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sx.ml .sn2{background:#1677ff;color:#fff}
+.snm{font-size:12.5px;font-weight:600;line-height:1.35}
+.sno{font-size:11px;color:#8c8c8c;margin-top:3px;line-height:1.4}
+.si{position:absolute;top:5px;right:6px;font-size:11px;font-weight:700}
+.ab{color:#ff4d4f}.wn{color:#fa8c16}
+.am{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:#1677ff;color:#fff;font-size:10px;line-height:1;padding:3px 7px;border-radius:8px;white-space:nowrap}
+.sa{align-self:center;color:#b9c6da;font-size:15px;flex:none}
+.lg{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:#595959}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.ai{border:1px solid #e8ecf1;border-radius:10px;padding:11px 13px;background:#fbfdff}
+.ai .at{font-weight:700;font-size:13px;color:#1677ff}.ai .as{font-size:12px;color:#595959;margin-top:3px}
+.sf{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed #e8ecf1}
+.sp{padding:3px 11px;border-radius:12px;font-size:12px;border:1px solid #d9d9d9;background:#fff}
+.sp.on{background:#e6f4ff;border-color:#91caff;color:#1677ff;font-weight:600}
+.sp.rd{background:#fff1f0;border-color:#ffa39e;color:#ff4d4f}
+.sp.og{background:#fff7e6;border-color:#ffd591;color:#fa8c16}
+.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hl{border:1px solid #e8ecf1;border-radius:12px;padding:14px 17px;background:#fff;box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07)}
+.hl h4{margin:0 0 5px;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.hl .dt{width:8px;height:8px;border-radius:50%;background:#1677ff;flex:none}
+.hl p{margin:0;font-size:12.5px;color:#595959}
+.cl{margin:0;padding-left:20px;color:#595959}.cl li{margin:4px 0}
+.ft{margin-top:28px;text-align:center;color:#8c8c8c;font-size:12px}
+</style></head><body><div class="w">
+
+<div class="hero"><div><h1>投资项目管理系统 · 首次沟通演示导览</h1><p>一句话定位：从「收到一份 BP」到「基金清算注销」的全生命周期管理 —— 宽口径建档 · 十二阶段流转 · 六节点在线审批 · 结构化放弃分析</p></div><div style="margin-left:auto"><a class="b bw" href="P3-R01-F00-工作台.html" target="_blank">▶ 从工作台开始演示</a></div></div>
+
+<div class="st"><span class="no">1</span><h2>业务主流程：十二阶段全生命周期</h2><span class="sub">①~⑦ 投前管道 → ⑧⑨ 设立与出资（分水岭）→ ⑩~⑫ 投后与退出 · 全程留时间戳</span></div>
+<div class="c">
+<div class="bd"><span class="band bp1">①~⑦ 投前管道</span><span class="nt">BP 上传即建档（宽口径）· 7 个放弃节点 · 放弃后进「未投归档」不可回流</span></div>
+<div class="sgs">
+<div class="sc"><div class="sx"><span class="si ab">⊘</span><div class="sn2">①</div><div class="snm">接触/收BP</div><div class="sno">收到即建档</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="si ab">⊘</span><div class="sn2">②</div><div class="snm">线上路演</div><div class="sno">纪要归档</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="si wn">⚠</span><div class="sn2">③</div><div class="snm">保密协议签署</div><div class="sno">停滞高发·超30天提醒</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="si ab">⊘</span><div class="sn2">④</div><div class="snm">尽调/访谈</div><div class="sno">双路径 A/B</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="am">审批①</span><span class="si ab">⊘</span><div class="sn2">⑤</div><div class="snm">立项</div><div class="sno">立项申请单</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="si ab">⊘</span><div class="sn2">⑥</div><div class="snm">投资人路演</div><div class="sno">LP 认可</div></div></div><div class="sa">›</div>
+<div class="sc"><div class="sx"><span class="am">审批②</span><span class="si ab">⊘</span><div class="sn2">⑦</div><div class="snm">投决</div><div class="sno">否决=LP放弃</div></div></div>
+</div>
+<div class="bd"><span class="band bp2">⑧⑨ 设立与出资</span><span class="nt">先设立（注册+账户）再出资打款 · 过 ⑨ 为分水岭，此后不再有「放弃」</span></div>
+<div class="sgs">
+<div class="sc fx"><div class="sx ml"><span class="am">审批③</span><div class="sn2">⑧</div><div class="snm">基金设立</div><div class="sno">基金 1:1 关联项目 · LP 认定</div></div></div><div class="sa">›</div>
+<div class="sc fx"><div class="sx ml"><span class="am">审批④</span><div class="sn2">⑨</div><div class="snm">出资</div><div class="sno">认缴/实缴两步 · 打款</div></div></div>
+</div>
+<div class="bd"><span class="band bp3">⑩~⑫ 投后与退出</span><span class="nt">投后四件套持续管理 → 退出三段刚性递进 → 基金终局</span></div>
+<div class="sgs">
+<div class="sc fx"><div class="sx"><div class="sn2">⑩</div><div class="snm">投后管理</div><div class="sno">事项/报告/预警/提醒</div></div></div><div class="sa">›</div>
+<div class="sc fx"><div class="sx"><span class="am">审批⑤</span><div class="sn2">⑪</div><div class="snm">项目退出</div><div class="sno">分批次：分红/股转/IPO减持</div></div></div><div class="sa">›</div>
+<div class="sc fx"><div class="sx"><span class="am">审批⑥</span><div class="sn2">⑫</div><div class="snm">清算注销（终态）</div><div class="sno">全部退出后方可启动</div></div></div>
+</div>
+<div class="lg"><span><span class="ab">⊘</span> 放弃节点（7 个：①②④⑤⑥⑦，⑦含 GP 主动/LP 否决）→ 未投归档不可回流</span><span><span class="wn">⚠</span> 停滞提醒（超 30 天未推进，是停滞不是放弃）</span><span><span class="tg" style="height:18px;line-height:16px;padding:0 7px;">审批n</span> 六节点审批挂接点</span></div>
+</div>
+</div></body></html>

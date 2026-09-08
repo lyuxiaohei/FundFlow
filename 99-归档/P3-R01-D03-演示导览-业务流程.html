@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>演示导览 · 业务流程 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --page-bg:#f3f5f9;
+  --border:#e8ecf1; --input-border:#d9d9d9;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c;
+  --danger:#ff4d4f; --warn:#fa8c16;
+  --shadow-card:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07);
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.65; margin:0; min-width:1200px; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1280px; margin:0 auto; padding:28px 32px 60px; }
+
+/* ===== 头部 ===== */
+.hero { background:linear-gradient(135deg,#1677ff 0%,#3f8cff 100%); border-radius:14px; padding:30px 36px; color:#fff; box-shadow:var(--shadow-card); margin-bottom:24px; display:flex; align-items:center; }
+.hero h1 { margin:0 0 6px; font-size:22px; letter-spacing:.5px; }
+.hero p { margin:0; font-size:13.5px; opacity:.92; }
+.hero .open { margin-left:auto; flex:none; }
+.btn { height:34px; padding:0 18px; border-radius:6px; font-size:13px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; text-decoration:none; transition:all .16s ease; }
+.btn-white { background:#fff; color:var(--primary); border:1px solid #fff; font-weight:600; }
+.btn-white:hover { background:#eaf3ff; }
+.btn-primary { background:var(--primary); color:#fff; border:1px solid var(--primary); }
+.btn-primary:hover { background:#4096ff; border-color:#4096ff; }
+.btn-default { background:#fff; color:rgba(0,0,0,.78); border:1px solid var(--input-border); }
+.btn-default:hover { color:var(--primary); border-color:var(--primary); background:#f0f7ff; }
+
+/* ===== 分区标题 ===== */
+.sec-title { display:flex; align-items:baseline; gap:12px; margin:34px 0 14px; }
+.sec-title h2 { font-size:17px; margin:0; font-weight:700; }
+.sec-title .sub { font-size:12.5px; color:var(--text-3); }
+.sec-title .no { width:24px; height:24px; border-radius:50%; background:var(--primary); color:#fff; font-size:13px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; align-self:center; flex:none; }
+
+.card { background:#fff; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow-card); padding:22px 26px; }
+
+/* ===== 演示动线 ===== */
+.step { display:flex; gap:18px; position:relative; padding-bottom:18px; }
+.step:not(:last-of-type)::before { content:''; position:absolute; left:17px; top:40px; bottom:0; width:2px; background:#dce6f5; }
+.step-no { width:36px; 1height:36px; border-radius:50%; background:var(--primary); color:#fff; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; z-index:1; box-shadow:0 0 0 4px #e6f4ff; }
+.step-body { flex:1; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-card); padding:16px 20px; }
+.step-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-head h3 { margin:0; font-size:14.5px; }
+.step-head .pages { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+.step-body .talk { margin:10px 0 0; color:var(--text-2); }
+.step-body .talk b { color:var(--text); }
+.step-body .see { margin:8px 0 0; font-size:12.5px; color:var(--text-3); }
+.step-body .see em { font-style:normal; color:var(--primary); }
+
+.tag { display:inline-block; padding:0 9px; height:22px; line-height:20px; font-size:12px; border-radius:11px; border:1px solid transparent; font-weight:500; white-space:nowrap; }
+.tag-blue { color:var(--primary); background:var(--primary-bg); border-color:#91caff; }
+.tag-orange { color:var(--warn); background:#fff7e6; border-color:#ffd591; }
+.tag-red { color:var(--danger); background:#fff1f0; border-color:#ffa39e; }
+.tag-gray { color:var(--text-3); background:#fafafa; border-color:#e8e8e8; }
+
+/* ===== 十二阶段带 ===== */
+.stage-band { display:flex; align-items:center; gap:10px; margin:18px 0 8px; }
+.stage-band .band { height:26px; border-radius:13px; display:inline-flex; align-items:center; padding:0 14px; font-size:12.5px; font-weight:600; }
+.band-pre { background:var(--primary-bg); color:var(--primary); border:1px solid #91caff; }
+.band-mid { background:#fff7e6; color:var(--warn); border:1px solid #ffd591; }
+.band-post { background:#f5f5f5; color:var(--text-2); border:1px solid #e8e8e8; }
+.stage-band .note { font-size:12px; color:var(--text-3); }
+.stages { display:flex; align-items:stretch; }
+.stage-col { flex:1; min-width:0; position:relative; padding:0 7px; }
+.stage-col.fix { flex:0 0 190px; }
+.stage-box { border:1px solid var(--border); border-radius:10px; background:#fff; padding:10px 8px 9px; text-align:center; height:100%; box-sizing:border-box; position:relative; }
+.stage-box.mile { border-color:#91caff; box-shadow:inset 0 3px 0 var(--primary); }
+.stage-num { width:30px; height:30px; border-radius:50%; margin:0 auto 6px; background:#eef4ff; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.stage-box.mile .stage-num { background:var(--primary); color:#fff; }
+.stage-name { font-size:12.5px; font-weight:600; line-height:1.35; }
+.stage-note { font-size:11px; color:var(--text-3); margin-top:4px; line-height:1.4; }
+.stage-ico { position:absolute; top:6px; right:7px; font-size:11px; }
+.abandon-mark { color:var(--danger); font-weight:700; }
+.warn-mark { color:var(--warn); font-weight:700; }
+.appr-mark { position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:var(--primary); color:#fff; font-size:10px; line-height:1; padding:3px 7px; border-radius:8px; white-space:nowrap; }
+.stage-arrow { align-self:center; color:#b9c6da; font-size:15px; flex:none; padding:0 1px; }
+.legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:12px; color:var(--text-2); }
+.legend span { display:inline-flex; align-items:center; gap:5px; }
+
+/* ===== 审批网格 ===== */
+.appr-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.appr-item { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:#fbfdff; }
+.appr-item .a-t { font-weight:700; font-size:13px; color:var(--primary); }
+.appr-item .a-s { font-size:12px; color:var(--text-2); margin-top:3px; }
+.state-flow { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); }
+.state-chip { padding:3px 12px; border-radius:12px; font-size:12px; border:1px solid var(--input-border); background:#fff; }
+.state-chip.s-on { background:var(--primary-bg); border-color:#91caff; color:var(--primary); font-weight:600; }
+.state-chip.s-red { background:#fff1f0; border-color:#ffa39e; color:var(--danger); }
+.state-chip.s-org { background:#fff7e6; border-color:#ffd591; color:var(--warn); }
+.state-arrow { color:#b9c6da; }
+
+/* ===== 亮点 ===== */
+.hl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.hl { border:1px solid var(--border); border-radius:12px; padding:16px 18px; background:#fff; box-shadow:var(--shadow-card); }
+.hl h4 { margin:0 0 6px; font-size:13.5px; display:flex; align-items:center; gap:8px; }
+.hl .dot { width:8px; height:8px; border-radius:50%; background:var(--primary); flex:none; }
+.hl p { margin:0; font-size:12.5px; color:var(--text-2); }
+
+/* ===== 清单 ===== */
+.check-list { margin:0; padding-left:20px; color:var(--text-2); }
+.check-list li { margin:4px 0; }
+.foot { margin-top:30px; text-align:center; color:var(--text-3); font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 头部 -->
+  <div class="hero">
+    <div>
+      <h1>投资项目管理系统 · 首次沟通演示导览</h1>
+      <p>一句话定位：从「收到一份 BP」到「基金清算注销」的全生命周期管理 —— 宽口径建档 · 十二阶段流转 · 六节点在线审批 · 结构化放弃分析</p>
+    </div>
+    <div class="open"><a class="btn btn-white" href="P3-R01-F00-工作台.html" target="_blank">▶ 从工作台开始演示</a></div>
+  </div>
+
+  <!-- 一、十二阶段全流程 -->
+  <div class="sec-title"><span class="no">1</span><h2>业务主流程：十二阶段全生命周期</h2><span class="sub">①~⑦ 投前管道 → ⑧⑨ 设立与出资（分水岭）→ ⑩~⑫ 投后与退出 · 全程留时间戳</span></div>
+  <div class="card">
+    <div class="stage-band">
+      <span class="band band-pre">①~⑦ 投前管道</span><span class="note">BP 上传即建档（宽口径）· 7 个放弃节点 · 放弃后进「未投归档」不可回流</span>
+    </div>
+    <div class="stages">
+      <div class="stage-col"><div class="stage-box"><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">①</div><div class="stage-name">接触 / 收BP</div><div class="stage-note">收到即建档</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">②</div><div class="stage-name">线上路演</div><div class="stage-note">纪要归档</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="stage-ico warn-mark">⚠</span><div id="mark" class="stage-num">③</div><div class="stage-name">保密协议签署</div><div class="stage-note">停滞高发 · 超30天提醒</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">④</div><div class="stage-name">尽调 / 访谈</div><div class="stage-note">双路径 A/B</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="appr-mark">审批①</span><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">⑤</div><div class="stage-name">立项</div><div class="stage-note">立项申请单</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">⑥</div><div class="stage-name">投资人路演</div><div class="stage-note">LP 认可</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col"><div class="stage-box"><span class="appr-mark">审批②</span><span class="stage-ico abandon-mark">⊘</span><div class="stage-num">⑦</div><div class="stage-name">投决</div><div class="stage-note">否决=LP放弃</div></div></div>
+    </div>
+    <div class="stage-band">
+      <span class="band band-mid">⑧⑨ 设立与出资</span><span class="note">先设立（注册+账户）再出资打款 · 过 ⑨ 为分水岭，此后不再有「放弃」</span>
+    </div>
+    <div class="stages">
+      <div class="stage-col fix"><div class="stage-box mile"><span class="appr-mark">审批③</span><div class="stage-num">⑧</div><div class="stage-name">基金设立</div><div class="stage-note">基金 1:1 关联项目 · LP 认定</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col fix"><div class="stage-box mile"><span class="appr-mark">审批④</span><div class="stage-num">⑨</div><div class="stage-name">出资</div><div class="stage-note">认缴/实缴两步 · 打款</div></div></div>
+    </div>
+    <div class="stage-band">
+      <span class="band band-post">⑩~⑫ 投后与退出</span><span class="note">投后四件套持续管理 → 退出三段刚性递进 → 基金终局</span>
+    </div>
+    <div class="stages">
+      <div class="stage-col fix"><div class="stage-box"><div class="stage-num">⑩</div><div class="stage-name">投后管理</div><div class="stage-note">事项 / 报告 / 预警 / 提醒</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col fix"><div class="stage-box"><span class="appr-mark">审批⑤</span><div class="stage-num">⑪</div><div class="stage-name">项目退出</div><div class="stage-note">分批次：分红/股转/IPO减持</div></div></div>
+      <div class="stage-arrow">›</div>
+      <div class="stage-col fix"><div class="stage-box"><span class="appr-mark">审批⑥</span><div class="stage-num">⑫</div><div class="stage-name">清算注销（终态）</div><div class="stage-note">全部退出后方可启动</div></div></div>
+    </div>
+    <div class="legend">
+      <span><span class="abandon-mark">⊘</span> 放弃节点（7 个：①②④⑤⑥⑦，⑦含 GP 主动/LP 否决）→ 未投归档不可回流</span>
+      <span><span class="warn-mark">⚠</span> 停滞提醒（超 30 天未推进，是停滞不是放弃）</span>
+      <span><span class="tag tag-blue" style="height:18px;line-height:16px;padding:0 7px;">审批n</span> 六节点审批挂接点</span>
+    </div>
+  </div>

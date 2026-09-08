@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>清算注销 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
+  --page-bg:#f3f5f9; --side-bg:#fafafa; --thead-bg:#fafbfc;
+  --border:#f0f0f0; --input-border:#d9d9d9;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c; --placeholder:#bfbfbf; --danger:#ff4d4f;
+  --warn:#fa8c16; --primary-hover:#4096ff;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.04);
+  --shadow-card:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07);
+  --shadow-pop:0 12px 36px -8px rgba(16,24,40,.2);
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.5715; min-width:1200px; margin:0; -webkit-font-smoothing:antialiased; }
+::-webkit-scrollbar { width:8px; height:8px; }
+::-webkit-scrollbar-thumb { background:#d3d9e2; border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:#b4bcca; }
+::-webkit-scrollbar-track { background:transparent; }
+.topbar { height:44px; background:#fff; border-bottom:1px solid var(--border); box-shadow:0 1px 4px rgba(15,35,80,.06); position:relative; z-index:20; display:flex; align-items:center; }
+.topbar .logo { width:208px; flex-shrink:0; height:44px; display:flex; align-items:center; padding-left:24px; color:var(--primary); font-size:16px; font-weight:700; letter-spacing:.5px; white-space:nowrap; }
+.topbar .tools { margin-left:auto; display:flex; align-items:center; gap:18px; padding-right:20px; color:var(--text-2); }
+.topbar .tools .ico-btn { cursor:pointer; display:inline-flex; align-items:center; position:relative; }
+.topbar .manual { color:var(--primary); font-size:13px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.topbar .avatar { width:28px; height:28px; border-radius:50%; background:var(--primary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+.topbar .tools .ico-btn { transition:color .16s ease; }
+.topbar .tools .ico-btn:hover { color:var(--primary); }
+.topbar .manual { transition:color .16s ease; }
+.topbar .manual:hover { color:var(--primary-hover); }
+.body { display:flex; align-items:stretch; }
+.sidebar { width:208px; flex-shrink:0; background:var(--side-bg); border-right:1px solid var(--border); display:flex; flex-direction:column; min-height:calc(100vh - 44px); }
+.main-col { flex:1; min-width:0; display:flex; flex-direction:column; }
+.tabs { background:#fff; border-bottom:1px solid var(--border); padding:8px 16px 0; display:flex; gap:6px; overflow-x:auto; }
+.tab { height:28px; display:inline-flex; align-items:center; gap:6px; padding:0 12px; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text-2); font-size:13px; white-space:nowrap; cursor:pointer; transition:all .16s ease; }
+.tab .close { color:var(--text-3); font-size:12px; line-height:1; }
+.tab .close:hover { color:var(--text); }
+.tab:hover { color:var(--primary); border-color:rgba(22,119,255,.35); background:#f8fbff; }
+.tab.active { background:var(--strip-bg); border-color:transparent; color:var(--primary); font-weight:600; box-shadow:inset 0 2px 0 var(--primary); }
+.side-menu { flex:1; padding:8px 0 64px; overflow-y:auto; list-style:none; margin:0; }
+.side-menu ul { list-style:none; margin:0; padding:0; }
+.sm-ico { width:16px; height:16px; flex:none; margin-right:10px; display:inline-flex; align-items:center; justify-content:center; }
+.sm-link { height:40px; display:flex; align-items:center; padding:0 24px; font-size:14px; color:#262626; cursor:pointer; white-space:nowrap; }
+.sm-link:hover { color:#1677ff; }
+.sm-arrow { margin-left:auto; display:inline-flex; color:#8c8c8c; transition:transform .2s; }
+.sm-item:not(.open) > .sm-sub { display:none; }
+.sm-item.has-sub.open > .sm-link { color:#1677ff; }
+.sm-item.has-sub.open > .sm-link .sm-arrow { transform:rotate(180deg); color:#1677ff; }
+.sm-sub .sm-link { padding-left:48px; }
+.sm-sub .sm-sub .sm-link { padding-left:64px; }
+.sm-link.selected { background:#e6f4ff; color:#1677ff; border-right:3px solid #1677ff; }
+.side-foot { position:relative; flex:none; border-top:1px solid #f0f0f0; padding:8px; }
+.sys-cur { display:flex; align-items:center; gap:8px; height:36px; padding:0 8px; border-radius:6px; cursor:pointer; color:#262626; }
+.sys-cur:hover { background:#f0f0f0; }
+.sys-badge { width:24px; height:24px; border-radius:6px; background:#1677ff; color:#fff; font-size:12px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.sys-name { flex:1; min-width:0; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sys-swap { color:#8c8c8c; display:inline-flex; flex:none; }
+.sys-pop { position:absolute; bottom:calc(100% + 4px); left:8px; right:8px; background:#fff; border:1px solid #f0f0f0; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.12); padding:6px; display:none; z-index:1000; }
+.sys-pop.show { display:block; }
+.sys-pop-title { font-size:12px; color:#8c8c8c; padding:6px 10px 8px; border-bottom:1px solid #f0f0f0; margin-bottom:4px; }
+.sys-item { display:flex; align-items:center; padding:8px 10px; font-size:13px; color:#262626; border-radius:4px; cursor:pointer; }
+.sys-item:hover { background:#f5f5f5; color:#1677ff; }
+.sys-item.current { color:#1677ff; background:#e6f4ff; font-weight:600; cursor:default; }
+.sys-item .check { margin-left:auto; }
+.side-foot { position:fixed; left:0; bottom:0; width:208px; background:var(--side-bg, #fff); z-index:30; }
+.content { padding:20px 24px 36px; }
+.card { background:#fff; border-radius:10px; padding:20px 24px; margin-bottom:20px; border:1px solid #eceff3; box-shadow:var(--shadow-card); }
+.card-title { position:relative; padding-left:11px; font-size:16px; font-weight:600; color:#1a1a1a; margin-bottom:20px; }
+.card-title::before { content:''; position:absolute; left:0; top:3px; bottom:3px; width:3px; border-radius:2px; background:var(--primary); }
+.btn { height:30px; padding:0 15px; border-radius:6px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:4px; transition:all .16s ease; }
+.btn-default { border:1px solid var(--input-border); background:#fff; color:rgba(0,0,0,.85); }
+.btn-default:hover { color:var(--primary); border-color:var(--primary); background:#f0f7ff; }
+.btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.3); }
+.btn-primary:hover { background:#4096ff; border-color:#4096ff; box-shadow:0 4px 12px -2px rgba(22,119,255,.4); }
+button.btn-primary:disabled, button.btn-default:disabled { background:#f5f5f5; border-color:#d9d9d9; color:#8c8c8c; box-shadow:none; cursor:not-allowed; }
+.link-btn { border:none; background:none; color:var(--primary); font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; font-family:inherit; padding:0 4px; transition:color .16s ease; }
+.link-btn:hover { color:var(--primary-hover); }
+.link-btn.disabled { color:var(--text-3); cursor:not-allowed; }
+.link-btn.disabled:hover { color:var(--text-3); }
+.f-select { height:32px; border:1px solid var(--input-border); border-radius:6px; padding:0 8px; font-size:13px; font-family:inherit; outline:none; background:#fff; color:var(--text); transition:border-color .16s ease, box-shadow .16s ease; }
+.f-select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
+.f-hint { font-size:12px; color:var(--text-3); margin-top:4px; }
+.upload-zone { border:1px dashed var(--input-border); border-radius:8px; padding:22px 16px; text-align:center; color:var(--text-3); font-size:13px; cursor:pointer; background:#fafbfd; transition:all .16s ease; }
+.upload-zone:hover { border-color:var(--primary); color:var(--primary); background:#f0f7ff; }
+.upload-zone .up-strong { color:var(--primary); }
+.warn-strip { background:#fff7e6; border:1px solid #ffd591; border-left:3px solid #fa8c16; border-radius:8px; padding:8px 12px; font-size:12px; color:#ad4e00; margin-bottom:14px; display:flex; gap:6px; align-items:flex-start; }
+.tag { display:inline-block; padding:0 9px; height:22px; line-height:20px; font-size:12px; border-radius:11px; border:1px solid transparent; font-weight:500; }
+.tag-blue { color:var(--primary); background:var(--primary-bg); border-color:#91caff; }
+.tag-orange { color:#fa8c16; background:#fff7e6; border-color:#ffd591; }
+.tag-gray { color:#8c8c8c; background:#fafafa; border-color:#e8e8e8; }
+.lk { color:var(--primary); cursor:pointer; }
+.lk:hover { text-decoration:underline; }
+
+/* ===== 右侧栏与时间线（rail.feed） ===== */
+.detail-wrap { display:flex; gap:20px; align-items:flex-start; }
+.detail-main { flex:1; min-width:0; }
+.rail { flex:none; width:300px; position:sticky; top:20px; }
+.rail .card { margin-bottom:0; }
+.rail .card + .card { margin-top:20px; }
+.rail-more { float:right; font-size:12px; font-weight:400; color:var(--primary); cursor:pointer; }
+.feed { margin-top:-6px; }
+.feed-item { position:relative; padding:0 0 16px 20px; }
+.feed-item:last-child { padding-bottom:2px; }
+.feed-item::before { content:''; position:absolute; left:5px; top:14px; bottom:-2px; width:2px; background:#e8ebf0; }
+.feed-item:last-child::before { display:none; }
+.feed-dot { position:absolute; left:0; top:3px; box-sizing:border-box; width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #91caff; }
+.feed-item.cur .feed-dot { background:var(--primary); border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-bg); }
+.feed-title { display:flex; align-items:center; gap:6px; font-size:13px; }
+.feed-title .tag { height:18px; line-height:16px; padding:0 6px; font-size:11px; }
+.feed-desc { font-size:12px; color:var(--text-2); margin-top:4px; }
+.feed-meta { font-size:11px; color:var(--text-3); margin-top:4px; }
+
+/* ===== 本页增补：基金选择 / 概况行 / 五步骤条 / 操作区 / 材料行 ===== */
+.pick-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.pick-l { flex:none; font-size:13px; color:rgba(0,0,0,.85); }
+.pick-row .f-select { width:420px; }
+.fund-meta { display:flex; gap:36px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px dashed #e8ebf0; font-size:12px; }
+.fm { display:inline-flex; align-items:center; gap:2px; }
+.fm b { font-weight:500; color:rgba(0,0,0,.45); margin-right:8px; font-size:12px; }
+.steps { display:flex; max-width:960px; margin:6px auto 0; }
+.step { flex:1; position:relative; text-align:center; }
+.step-line { position:absolute; top:19px; left:calc(-50% + 34px); right:calc(50% + 34px); height:2px; background:#e8ebf0; }
+.step:first-child .step-line { display:none; }
+.step.s-done .step-line, .step.s-cur .step-line { background:var(--primary); }
+.step-node { position:relative; z-index:1; width:40px; height:40px; border-radius:50%; margin:0 auto; background:#fff; border:2px solid #d9dee6; color:#8c8c8c; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; transition:all .16s ease; }
+.step.s-done .step-node { background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 4px 10px -2px rgba(22,119,255,.35); }
+.step.s-cur .step-node { border-color:var(--primary); color:var(--primary); background:#fff; animation:pulse 2s ease-out infinite; }
+@keyframes pulse {
+  0% { box-shadow:0 0 0 0 rgba(22,119,255,.32); }
+  100% { box-shadow:0 0 0 12px rgba(22,119,255,0); }
+}
+.step-label { margin-top:10px; font-size:13px; font-weight:600; color:var(--text); }
+.step-note { margin-top:2px; font-size:11px; color:var(--text-3); }
+.step.s-done .step-note, .step.s-cur .step-note { color:var(--primary); }
+.step.s-todo .step-label { color:var(--text-3); font-weight:400; }
+.op-desc { color:var(--text-2); margin:0 0 14px; }
+.op-grid { display:flex; gap:16px; align-items:stretch; }
+.op-grid .upload-zone { flex:1; display:flex; flex-direction:column; justify-content:center; }
+.op-acts { flex:none; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+.op-acts .btn { height:32px; font-size:13px; }
+.op-acts .link-btn { font-size:13px; }
+.blk-meta { font-size:12px; color:var(--text-2); margin-bottom:14px; }
+.doc-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px dashed #e8ebf0; font-size:12px; }
+.doc-row:last-child { border-bottom:none; padding-bottom:0; }
+.doc-row .doc-ico { width:30px; height:30px; flex:none; border-radius:6px; background:var(--primary-bg); display:inline-flex; align-items:center; justify-content:center; }
+.doc-name { font-weight:500; color:rgba(0,0,0,.85); }
+.doc-meta { color:var(--text-3); font-size:11px; margin-top:1px; }
+.doc-row .link-btn { margin-left:auto; }
+.feed-empty { font-size:12px; color:var(--text-3); padding:8px 0; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">投资项目管理</div>
+  <div class="tools">
+    <span class="ico-btn" title="刷新"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>
+    <span class="ico-btn" title="消息提醒（含停滞提醒 2 条）" style="position:relative;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i style="position:absolute;top:-5px;right:-9px;background:#fa8c16;color:#fff;font-size:10px;font-style:normal;line-height:1;padding:2px 4px;border-radius:8px;">2</i></span>
+    <span class="manual"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.3-2.7 3.8"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg>操作手册</span>
+    <span class="avatar" title="账户"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="3"/><circle cx="10" cy="13" r="0.6" fill="#fff"/><circle cx="14" cy="13" r="0.6" fill="#fff"/><path d="M12 8V4"/><circle cx="12" cy="3.4" r="0.8" fill="#fff"/></svg></span>
+  </div>
+</header>
+
+<div class="body">
+  <aside class="sidebar">
+    <ul class="side-menu">
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../工作台/P3-R01-F00-工作台.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>工作台</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../项目库/P3-R01-F01-项目列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9M3 9h18M9 21v-6h6v6"/></svg></span>项目库</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../基金管理/P3-R01-F07-基金列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>基金管理</div>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>投后管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F22-投后项目.html')">投后项目</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F12-报告归档.html')">报告归档</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F13-风险预警.html')">风险预警</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F14-提醒中心.html')">提醒中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub open">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出与分配<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('P3-R01-F23-退出项目.html')">退出项目</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F16-收益分配.html')">收益分配</div></li>
+          <li><div class="sm-link selected">清算注销</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>统计报表<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F18-阶段漏斗.html')">阶段漏斗</div></li>
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F19-放弃原因分布.html')">放弃原因分布</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>审批中心<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">审批中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F21-系统管理.html')">用户与角色</div></li>
+          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F21-系统管理.html')">基础数据</div></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="side-foot">
+      <div class="sys-cur" id="sysSwitchBtn" title="切换系统">
+        <span class="sys-badge">投</span><span class="sys-name">投资项目管理</span>
+        <span class="sys-swap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+      </div>
+      <div class="sys-pop" id="sysPop">
+        <div class="sys-pop-title">切换系统</div>
+        <div class="sys-item current">投资项目管理<span class="check">✓</span></div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/供应链管理后台/全量订单/订单列表.html')">一兆链采供应链管理后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/商城运营后台/订单与售后/订单列表.html')">商城运营后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/WMS仓储管理/入库管理/到货通知单.html')">一兆链采WMS仓储管理</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <div class="tabs">
+      <span class="tab" onclick="go('P3-R01-F15-项目退出.html')">项目退出·磐石精密制造 <span class="close">×</span></span>
+      <span class="tab active">清算注销 <span class="close">×</span></span>
+    </div>
+
+    <div class="content detail-wrap">
+      <div class="detail-main">
+        <!-- 基金选择 + 概况 -->
+        <div class="card">
+          <div class="pick-row">
+            <label class="pick-l">清算基金</label>
+            <select class="f-select" id="fundSel" onchange="renderFund(this.value)">
+              <option value="FUND-2025-011" selected>FUND-2025-011 深圳磐石一期股权投资合伙企业（清算中）</option>
+              <option value="FUND-2026-002">FUND-2026-002 苏州工业园区星河航天投资合伙企业（存续中）</option>
+              <option value="FUND-2024-005">FUND-2024-005 上海临港智造股权投资合伙企业（已注销）</option>
+            </select>
+            <span id="fundTag"><span class="tag tag-orange">清算中 · 步骤 3/5</span></span>
+          </div>
+          <div class="fund-meta" id="fundMeta"></div>
+        </div>
+
+        <!-- 横向五步骤条 -->
+        <div class="card">
+          <div class="card-title">清算注销进度<span id="stepBadge" style="margin-left:10px;font-size:12px;font-weight:400;"></span></div>
+          <div class="steps" id="stepsBar"></div>
+        </div>
+
+        <!-- 当前步骤操作区（三态） -->
+        <div class="card" id="opCard"></div>
+      </div>
+
+      <aside class="rail">
+        <!-- 步骤① 关联上传记录 -->
+        <div class="card">
+          <div class="card-title">步骤材料<span class="rail-more" onclick="alert('材料归档：清算全流程材料统一归档，可按步骤筛选')">全部 ›</span></div>
+          <div id="docList"></div>
+        </div>
+        <!-- 清算事件记录 -->
+        <div class="card">
+          <div class="card-title">清算事件记录</div>
+          <div class="feed" id="feedList"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 业务脚本：基金三态联动（清算中 / 未启动 / 已注销） ===== */
+var CHECK_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+var FILE_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1677ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+var FUNDS = {
+  'FUND-2025-011': {
+    tag: '<span class="tag tag-orange">清算中 · 步骤 3/5</span>',
+    badge: '',
+    meta: '<span class="fm"><b>关联项目</b><span class="lk" onclick="go(\'P3-R01-F02-项目详情-基本信息.html\')">磐石精密制造</span><span class="tag tag-blue">已退出</span></span>'
+      + '<span class="fm"><b>退出完成度</b>100%</span>'
+      + '<span class="fm"><b>成立日期</b>2025-03-10</span>'
+      + '<span class="fm"><b>注册资本</b>4,000 万元</span>',
+    steps: [
+      { t: '清算报告生成', s: 'done', note: '2026-06-20' },
+      { t: '资产处置', s: 'done', note: '2026-07-15' },
+      { t: '税务办理', s: 'cur', note: '进行中（预计 09-10）' },
+      { t: '剩余财产分配', s: 'todo', note: '未开始' },
+      { t: '工商注销', s: 'todo', note: '未开始' }
+    ],
+    op: '<div class="card-title">③ 税务办理<span style="margin-left:10px;font-size:12px;font-weight:400;color:var(--text-3);">当前步骤 3/5</span></div>'
+      + '<p class="op-desc">办理基金清算期间的增值税、所得税清缴；完税凭证上传归档后，可推进至「剩余财产分配」并发起分配审批。</p>'
+      + '<div class="op-grid">'
+      + '<div class="upload-zone" onclick="this.querySelector(\'input\').click()">点击或拖拽上传<span class="up-strong">完税凭证</span>（税务局开具 / 扫描件）<input type="file" style="display:none"></div>'
+      + '<div class="op-acts">'
+      + '<button class="btn btn-primary" onclick="alert(\'已推进：剩余财产分配 待发起分配审批\')">推进至 ④ 剩余财产分配</button>'
+      + '<a class="link-btn" onclick="go(\'P3-R01-F20-审批中心.html\')">查看分配审批 →</a>'
+      + '</div></div>',
+    docs: [
+      { name: '清算报告-磐石一期.pdf', tag: '<span class="tag tag-blue">已上传</span>', meta: '步骤① 清算报告生成 · 2026-06-20 · 胡博', act: '预览' }
+    ],
+    feed: [
+      { t: '税务申报材料提交', d: '增值税 / 所得税清算申报材料已递交主管税务机关', m: '2026-08-22 · 胡博', cur: true },
+      { t: '资产处置完成', d: '转让对价 3,000 万元到账', m: '2026-07-15' },
+      { t: '清算报告上传', d: '清算报告-磐石一期.pdf 归档至步骤材料', m: '2026-06-20 · 胡博' },
+      { t: '发起清算审批通过', d: '清算方案经审批中心核准', m: '2026-06-15', tag: '<span class="tag tag-gray">已通过</span>' }
+    ]
+  },
+  'FUND-2026-002': {
+    tag: '<span class="tag tag-blue">存续中 · 未启动清算</span>',
+    badge: '',
+    meta: '<span class="fm"><b>关联项目</b><span>星河航天</span><span class="tag tag-orange">未退出</span></span>'
+      + '<span class="fm"><b>退出完成度</b>0%</span>'
+      + '<span class="fm"><b>成立日期</b>2026-08-10</span>'
+      + '<span class="fm"><b>注册资本</b>8,000 万元</span>',
+    steps: [
+      { t: '清算报告生成', s: 'todo', note: '未开始' },
+      { t: '资产处置', s: 'todo', note: '未开始' },
+      { t: '税务办理', s: 'todo', note: '未开始' },
+      { t: '剩余财产分配', s: 'todo', note: '未开始' },
+      { t: '工商注销', s: 'todo', note: '未开始' }
+    ],
+    op: '<div class="card-title">发起清算</div>'
+      + '<div class="warn-strip"><span>⚠</span><span>发起清算前系统校验：关联项目须已全部退出</span></div>'
+      + '<div class="blk-meta">当前关联项目：星河航天（⑨ 出资 · 付款审批中）· 退出完成度 0%</div>'
+      + '<button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="alert(\'校验未通过：关联项目「星河航天」未全部退出，不可发起清算\')">发起清算</button>'
+      + '<div class="f-hint" style="margin-top:10px;">基金存续中，待关联项目全部完成退出（⑪）后方可发起清算审批</div>',
+    docs: [],
+    feed: []
+  },
+  'FUND-2024-005': {
+    tag: '<span class="tag tag-gray">已注销</span>',
+    badge: '<span class="tag tag-gray">已注销 2025-06-20</span>',
+    meta: '<span class="fm"><b>关联项目</b><span class="lk" onclick="go(\'P3-R01-F02-项目详情-基本信息.html\')">临港智造</span><span class="tag tag-gray">已注销归档</span></span>'
+      + '<span class="fm"><b>退出完成度</b>100%</span>'
+      + '<span class="fm"><b>成立日期</b>2024-06-28</span>'
+      + '<span class="fm"><b>注册资本</b>3,000 万元</span>',
+    steps: [
+      { t: '清算报告生成', s: 'done', note: '2025-02-15' },
+      { t: '资产处置', s: 'done', note: '2025-03-20' },
+      { t: '税务办理', s: 'done', note: '2025-04-18' },
+      { t: '剩余财产分配', s: 'done', note: '2025-05-30' },
+      { t: '工商注销', s: 'done', note: '2025-06-20' }
+    ],
+    op: '<div class="card-title">⑤ 工商注销<span style="margin-left:10px;"><span class="tag tag-gray">已注销 2025-06-20</span></span></div>'
+      + '<p class="op-desc">五步清算流程已全部完成，基金主体已注销并转入归档，全流程材料可在归档中查阅。</p>'
+      + '<div class="op-acts" style="flex-direction:row;">'
+      + '<button class="btn btn-primary" disabled>上传材料</button>'
+      + '<button class="btn btn-primary" disabled>推进至下一步</button>'
+      + '<a class="link-btn disabled">查看分配审批 →</a>'
+      + '</div>'
+      + '<div class="f-hint" style="margin-top:10px;">流程已完结，操作已锁定</div>',
+    docs: [
+      { name: '清算报告-临港智造.pdf', tag: '<span class="tag tag-gray">已归档</span>', meta: '步骤① 清算报告生成 · 2025-02-15 · 陈有', act: '预览' },
+      { name: '工商注销核准通知书.pdf', tag: '<span class="tag tag-gray">已归档</span>', meta: '步骤⑤ 工商注销 · 2025-06-20 · 陈有', act: '预览' }
+    ],
+    feed: [
+      { t: '工商注销完成', d: '注销核准通知书领取，基金转入归档', m: '2025-06-20 · 陈有' },
+      { t: '剩余财产分配完成', d: '按 LP 出资比例分配完毕', m: '2025-05-30' },
+      { t: '税务清缴完成', d: '增值税 / 所得税清算完毕', m: '2025-04-18' },
+      { t: '发起清算审批通过', d: '清算方案经审批中心核准', m: '2025-01-20', tag: '<span class="tag tag-gray">已通过</span>' }
+    ]
+  }
+};
+var STEP_NO = ['①', '②', '③', '④', '⑤'];
+function renderFund(fid) {
+  var f = FUNDS[fid];
+  document.getElementById('fundTag').innerHTML = f.tag;
+  document.getElementById('stepBadge').innerHTML = f.badge;
+  document.getElementById('fundMeta').innerHTML = f.meta;
+  var stepsHtml = '';
+  f.steps.forEach(function (s, i) {
+    stepsHtml += '<div class="step s-' + s.s + '">'
+      + '<span class="step-line"></span>'
+      + '<span class="step-node">' + (s.s === 'done' ? CHECK_SVG : (i + 1)) + '</span>'
+      + '<div class="step-label">' + STEP_NO[i] + ' ' + s.t + '</div>'
+      + '<div class="step-note">' + s.note + '</div>'
+      + '</div>';
+  });
+  document.getElementById('stepsBar').innerHTML = stepsHtml;
+  document.getElementById('opCard').innerHTML = f.op;
+  var docsHtml = '';
+  if (f.docs.length) {
+    f.docs.forEach(function (d) {
+      docsHtml += '<div class="doc-row">'
+        + '<span class="doc-ico">' + FILE_SVG + '</span>'
+        + '<span><span class="doc-name">' + d.name + '</span> ' + d.tag + '<span class="doc-meta">' + d.meta + '</span></span>'
+        + '<a class="link-btn" onclick="alert(\'材料预览：' + d.name + '\')">' + d.act + '</a>'
+        + '</div>';
+    });
+  } else {
+    docsHtml = '<div class="feed-empty">发起清算后，清算报告等材料将在此归档</div>';
+  }
+  document.getElementById('docList').innerHTML = docsHtml;
+  var feedHtml = '';
+  if (f.feed.length) {
+    f.feed.forEach(function (it) {
+      feedHtml += '<div class="feed-item' + (it.cur ? ' cur' : '') + '">'
+        + '<span class="feed-dot"></span>'
+        + '<div class="feed-title"><b>' + it.t + '</b>' + (it.tag || '') + '</div>'
+        + '<div class="feed-desc">' + it.d + '</div>'
+        + '<div class="feed-meta">' + it.m + '</div>'
+        + '</div>';
+    });
+  } else {
+    feedHtml = '<div class="feed-empty">暂无清算事件（未发起清算）</div>';
+  }
+  document.getElementById('feedList').innerHTML = feedHtml;
+}
+renderFund('FUND-2025-011');
+</script>
+
+<script>
+/* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */
+function go(url) { location.href = url; }
+document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link) {
+  link.addEventListener('click', function () { link.parentElement.classList.toggle('open'); });
+});
+(function () {
+  var btn = document.getElementById('sysSwitchBtn');
+  var pop = document.getElementById('sysPop');
+  btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { pop.classList.remove('show'); });
+})();
+</script>
+</body>
+</html>

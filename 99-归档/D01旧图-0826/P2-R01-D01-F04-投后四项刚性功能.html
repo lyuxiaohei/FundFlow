@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图4 · 投后四项刚性功能</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fafafa; --ink:#111827; --muted:#4b5563; --soft:#6b7280;
+          --rule:rgba(17,24,39,0.10); --accent:#2563eb; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink);
+    font-family:'Geist','PingFang SC','Microsoft YaHei',sans-serif;
+    padding:48px 32px 32px; max-width:1180px; margin:0 auto; }
+  .eyebrow { font-family:'Geist Mono',monospace; font-size:8px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--soft); margin-bottom:12px; }
+  h1 { font-family:'Instrument Serif','PingFang SC',serif; font-weight:400; font-size:1.75rem; line-height:1.3; }
+  .subtitle { font-size:13px; color:var(--muted); margin-top:8px; max-width:980px; line-height:1.7; }
+  .diagram { margin-top:24px; }
+  svg { display:block; width:100%; height:auto; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid var(--rule);
+    font-family:'Geist Mono',monospace; font-size:9px; color:var(--soft); letter-spacing:0.08em; }
+</style>
+</head>
+<body>
+<p class="eyebrow">ATTACHMENT 7 · FIG.4 · POST-INVESTMENT</p>
+<h1>图 4 · 投后四项刚性功能（⑩ 持续）</h1>
+<p class="subtitle">2026-08-26 沟通会确认的四项刚性功能，全部并入 V1.0。同轮确认不做：财报自动收集（报告归档手动上传即可）、委派董事管理；估值管理留 V2.0。风险预警与到期提醒的数据源对接（企查查/同花顺）为候选增强。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1120 700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <!-- 顶部容器条 -->
+  <rect x="60" y="64" width="1000" height="48" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1.2"/>
+  <rect x="60" y="64" width="6" height="48" rx="3" fill="#2563eb"/>
+  <text x="90" y="92" font-size="13" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">⑩ 投后管理（持续）· 已投项目</text>
+  <text x="1040" y="92" font-size="9" fill="#6b7280" text-anchor="end" font-family="'Geist Mono',monospace">⑧ 出资后进入 · 持续至 ⑪ 退出</text>
+
+  <!-- 连接线：容器 → 四卡 -->
+  <line x1="560" y1="112" x2="560" y2="148" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- 卡1 投后时间线 -->
+  <rect x="60" y="148" width="488" height="212" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.12)" stroke-width="1"/>
+  <rect x="84" y="172" width="44" height="14" rx="2" fill="none" stroke="rgba(17,24,39,0.40)" stroke-width="0.8"/>
+  <text x="106" y="182" font-size="7" fill="#111827" fill-opacity="0.8" text-anchor="middle" font-family="'Geist Mono',monospace" letter-spacing="0.08em">#10</text>
+  <text x="84" y="212" font-size="14" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">投后时间线 · 事件记录</text>
+  <text x="84" y="244" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 事件类型不强制细分：股东会 / 董事会决议</text>
+  <text x="84" y="268" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 重大经营变动、定期访谈纪要</text>
+  <text x="84" y="292" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 附件上传 + 时间戳固化（留痕）</text>
+  <text x="84" y="332" font-size="9" fill="#6b7280" font-family="'Geist Mono',monospace">实体：post_event · R5</text>
+
+  <!-- 卡2 投后文档 -->
+  <rect x="572" y="148" width="488" height="212" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.12)" stroke-width="1"/>
+  <rect x="596" y="172" width="44" height="14" rx="2" fill="none" stroke="rgba(17,24,39,0.40)" stroke-width="0.8"/>
+  <text x="618" y="182" font-size="7" fill="#111827" fill-opacity="0.8" text-anchor="middle" font-family="'Geist Mono',monospace" letter-spacing="0.08em">#11</text>
+  <text x="596" y="212" font-size="14" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">投后文档 · 报告归档</text>
+  <text x="596" y="244" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 季报 / 年报 / 专项报告（上市减持、清算报告）</text>
+  <text x="596" y="268" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 手动上传（08-26 确认不做自动收集）</text>
+  <text x="596" y="292" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 上传人与时间留痕</text>
+  <text x="596" y="332" font-size="9" fill="#6b7280" font-family="'Geist Mono',monospace">实体：post_report · R5</text>
+
+  <!-- 卡3 风险预警 -->
+  <rect x="60" y="392" width="488" height="212" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.12)" stroke-width="1"/>
+  <rect x="84" y="416" width="44" height="14" rx="2" fill="none" stroke="rgba(37,99,235,0.50)" stroke-width="0.8"/>
+  <text x="106" y="426" font-size="7" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace" letter-spacing="0.08em">#14</text>
+  <text x="84" y="456" font-size="14" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">风险预警</text>
+  <text x="84" y="488" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 监控已投企业二级市场股价走势</text>
+  <text x="84" y="512" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 行业舆情：指定网站定时收集汇总、定期推送</text>
+  <text x="84" y="536" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 数据源候选：企查查 / 同花顺</text>
+  <text x="84" y="576" font-size="9" fill="#6b7280" font-family="'Geist Mono',monospace">实体：risk_alert · 08-26 点亮并入 V1.0</text>
+
+  <!-- 卡4 到期提醒 -->
+  <rect x="572" y="392" width="488" height="212" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.12)" stroke-width="1"/>
+  <rect x="596" y="416" width="44" height="14" rx="2" fill="none" stroke="rgba(37,99,235,0.50)" stroke-width="0.8"/>
+  <text x="618" y="426" font-size="7" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace" letter-spacing="0.08em">#16</text>
+  <text x="596" y="456" font-size="14" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">到期提醒</text>
+  <text x="596" y="488" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 对赌协议到期、回购触发</text>
+  <text x="596" y="512" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 关键条款履约、资质续期</text>
+  <text x="596" y="536" font-size="11" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">· 前置 ≥ 30 天系统提醒（可配置提醒对象）</text>
+  <text x="596" y="576" font-size="9" fill="#6b7280" font-family="'Geist Mono',monospace">实体：alert_rule · 08-26 点亮并入 V1.0</text>
+
+  <!-- Legend -->
+  <line x1="60" y1="640" x2="1060" y2="640" stroke="rgba(17,24,39,0.10)" stroke-width="0.8"/>
+  <text x="60" y="664" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.14em" fill="#4b5563">LEGEND</text>
+  <text x="140" y="664" font-family="'Geist Mono',monospace" font-size="9" fill="#4b5563">#n = 附件4 功能点编号 ｜ #14/#16 蓝 tag = 08-26 点亮并入 V1.0</text>
+  <text x="620" y="664" font-family="'Geist Mono',monospace" font-size="9" fill="#9ca3af">不做：财报自动收集 · 委派董事 ｜ V2：估值管理</text>
+</svg>
+</div>
+
+<p class="footer">投资项目管理系统（项目库）· P2-R01-D01 · 图4 · 投后四项刚性功能 · 2026-08-26</p>
+</body>
+</html>

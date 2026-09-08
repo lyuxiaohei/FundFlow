@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>P2-R01-D01-F04 · 投后四项刚性功能</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#fafafa;--paper2:#f0f2f5;--ink:#111827;--muted:#4b5563;--soft:#6b7280;--rule:rgba(17,24,39,.10);--accent:#2563eb;--tint:rgba(37,99,235,.08)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);font-family:'Geist',sans-serif;color:var(--ink);padding:40px 48px}
+  .eyebrow{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--soft);text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;line-height:1.2}
+  .sub{color:var(--soft);font-size:13px;margin-top:6px}
+  .fig{margin:28px 0 8px;overflow-x:auto}
+  svg{display:block;max-width:100%;height:auto}
+  .colophon{border-top:1px solid var(--rule);margin-top:24px;padding-top:12px;font-family:'Geist Mono',monospace;font-size:10px;color:var(--soft);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<p class="eyebrow">P2-R01-D01-F04 · ⑩ 投后管理 · 四项刚性功能</p>
+<h1>投后四项刚性功能</h1>
+<p class="sub">08-26 确认并入 V1.0：事件记录 · 报告归档（手动）· 风险预警 · 到期提醒 ≥30 天；同轮确认不做：财报自动收集、委派董事</p>
+
+<div class="fig">
+<svg viewBox="0 0 1160 780" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4b5563"/></marker>
+    <marker id="arrA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+  <!-- 模块框（先画） -->
+  <rect x="60" y="56" width="500" height="240" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="600" y="56" width="500" height="240" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="60" y="336" width="500" height="240" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <rect x="600" y="336" width="500" height="240" rx="8" fill="#f0f2f5" stroke="rgba(17,24,39,.14)" stroke-width="1"/>
+  <text x="76" y="80" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">A · 投后事项（事件记录）#10</text>
+  <text x="616" y="80" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">B · 投后文档（报告归档）#11</text>
+  <text x="76" y="360" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">C · 风险预警 #14</text>
+  <text x="616" y="360" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280" letter-spacing=".14em">D · 到期提醒 #16 · 前置 ≥30 天</text>
+
+  <!-- 模块内链条 -->
+  <g font-family="'Geist',sans-serif">
+    <!-- A -->
+    <g>
+      <rect x="84" y="100" width="180" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="174" y="122" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">事件登记</text>
+      <text x="174" y="138" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">时间线形式</text>
+    </g>
+    <line x1="264" y1="126" x2="316" y2="126" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="320" y="100" width="216" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="428" y="118" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">决议 / 重大变动 / 访谈</text>
+      <text x="428" y="136" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">股东会·董事会·经营·访谈纪要</text>
+    </g>
+    <line x1="428" y1="152" x2="428" y2="216" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="320" y="220" width="216" height="48" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="428" y="240" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">附件 + 时间戳固化</text>
+      <text x="428" y="256" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">决议扫描件等</text>
+    </g>
+
+    <!-- B -->
+    <g>
+      <rect x="624" y="100" width="180" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="714" y="122" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">报告上传</text>
+      <text x="714" y="138" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">手动 · 不做自动收集</text>
+    </g>
+    <line x1="804" y1="126" x2="856" y2="126" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="860" y="100" width="216" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="968" y="118" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">季报 / 年报 / 专项报告</text>
+      <text x="968" y="136" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">上市减持·清算等 · 按期归档</text>
+    </g>
+    <line x1="968" y1="152" x2="968" y2="216" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="860" y="220" width="216" height="48" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="968" y="240" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">上传留痕</text>
+      <text x="968" y="256" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">file_id · uploaded_by/at</text>
+    </g>
+
+    <!-- C -->
+    <g>
+      <rect x="84" y="384" width="180" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="174" y="406" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">股价监控</text>
+      <text x="174" y="422" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">二级市场走势</text>
+    </g>
+    <line x1="264" y1="410" x2="316" y2="410" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="320" y="384" width="216" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="428" y="402" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">舆情定时收集</text>
+      <text x="428" y="420" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">指定网站 · 定期汇总推送</text>
+    </g>
+    <line x1="428" y1="436" x2="428" y2="500" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="320" y="504" width="216" height="48" rx="6" fill="rgba(17,24,39,.02)" stroke="rgba(17,24,39,.30)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="428" y="524" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">可接企查查 / 同花顺</text>
+      <text x="428" y="540" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">数据源候选 · 对接为候选</text>
+    </g>
+
+    <!-- D -->
+    <g>
+      <rect x="624" y="384" width="180" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="714" y="406" font-size="12" font-weight="600" fill="#111827" text-anchor="middle">提醒规则</text>
+      <text x="714" y="422" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">alert_rule 配置</text>
+    </g>
+    <line x1="804" y1="410" x2="856" y2="410" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="860" y="384" width="216" height="52" rx="6" fill="#fff" stroke="#111827" stroke-width="1"/>
+      <text x="968" y="402" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">对赌到期 / 回购触发</text>
+      <text x="968" y="420" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">关键条款履约 · 资质续期</text>
+    </g>
+    <line x1="968" y1="436" x2="968" y2="500" stroke="#4b5563" stroke-width="1.2" marker-end="url(#arr)"/>
+    <g>
+      <rect x="860" y="504" width="216" height="48" rx="6" fill="rgba(17,24,39,.05)" stroke="#4b5563" stroke-width="1"/>
+      <text x="968" y="524" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">到期日临近判定</text>
+      <text x="968" y="540" font-family="'Geist Mono',monospace" font-size="8" fill="#6b7280" text-anchor="middle">advance_days ≥30 只可调大</text>
+    </g>
+
+    <!-- 提醒汇聚（focal） -->
+    <path d="M 428 552 L 428 616 L 560 640" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrA)"/>
+    <path d="M 968 552 L 968 616 L 640 640" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrA)"/>
+    <g>
+      <rect x="440" y="616" width="280" height="56" rx="8" fill="rgba(37,99,235,.08)" stroke="#2563eb" stroke-width="1.2"/>
+      <text x="580" y="640" font-size="13" font-weight="600" fill="#111827" text-anchor="middle">系统提醒 · 消息中心</text>
+      <text x="580" y="658" font-family="'Geist Mono',monospace" font-size="8" fill="#4b5563" text-anchor="middle">notify_to 角色/用户 · 前置 ≥30 天</text>
+    </g>
+    <text x="330" y="600" font-family="'Geist Mono',monospace" font-size="8" fill="#2563eb" text-anchor="middle">舆情推送</text>
+    <text x="876" y="600" font-family="'Geist Mono',monospace" font-size="8" fill="#2563eb" text-anchor="middle">到期前置提醒</text>
+  </g>
+
+  <!-- 底注 -->
+  <line x1="60" y1="716" x2="1100" y2="716" stroke="rgba(17,24,39,.10)" stroke-width="0.8"/>
+  <text x="60" y="740" font-family="'Instrument Serif',serif" font-style="italic" font-size="14" fill="#4b5563">⑩ 投后管理为持续态：自 ⑨ 出资完成后进入，直至 ⑪ 项目退出（分批次）——四项功能贯穿全程。</text>
+  <text x="60" y="764" font-family="'Geist Mono',monospace" font-size="9" fill="#6b7280">数据实体：post_event · post_report · risk_alert · alert_rule（P2-R01-D02 3.9~3.12）</text>
+</svg>
+</div>
+
+<p class="colophon">投资项目库 · P2-R01-D01 图4 · 2026-08-27 重绘（阶段引用更新为 ⑧设立⑨出资 口径）</p>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>风险预警 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
+  --page-bg:#f3f5f9; --side-bg:#fafafa; --thead-bg:#fafbfc;
+  --border:#f0f0f0; --input-border:#d9d9d9;
+  --text:#262626; --text-2:#595959; --text-3:#8c8c8c; --placeholder:#bfbfbf; --danger:#ff4d4f;
+  --warn:#fa8c16; --primary-hover:#4096ff;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.04);
+  --shadow-card:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.07);
+  --shadow-pop:0 12px 36px -8px rgba(16,24,40,.2);
+}
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif; background:var(--page-bg); color:var(--text); font-size:13px; line-height:1.5715; min-width:1200px; margin:0; -webkit-font-smoothing:antialiased; }
+::-webkit-scrollbar { width:8px; height:8px; }
+::-webkit-scrollbar-thumb { background:#d3d9e2; border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:#b4bcca; }
+::-webkit-scrollbar-track { background:transparent; }
+html,body{height:100%;}
+body{display:flex;flex-direction:column;overflow:hidden;}
+
+/* ===== 顶栏 ===== */
+.topbar { height:44px; background:#fff; border-bottom:1px solid var(--border); box-shadow:0 1px 4px rgba(15,35,80,.06); position:relative; z-index:20; display:flex; align-items:center; flex:none; }
+.topbar .logo { width:208px; flex-shrink:0; height:44px; display:flex; align-items:center; padding-left:24px; color:var(--primary); font-size:16px; font-weight:700; letter-spacing:.5px; white-space:nowrap; }
+.topbar .tools { margin-left:auto; display:flex; align-items:center; gap:18px; padding-right:20px; color:var(--text-2); }
+.topbar .tools .ico-btn { cursor:pointer; display:inline-flex; align-items:center; }
+.topbar .manual { color:var(--primary); font-size:13px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.topbar .avatar { width:28px; height:28px; border-radius:50%; background:var(--primary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+.topbar .tools .ico-btn { transition:color .16s ease; }
+.topbar .tools .ico-btn:hover { color:var(--primary); }
+.topbar .manual { transition:color .16s ease; }
+.topbar .manual:hover { color:var(--primary-hover); }
+
+/* ===== 布局（模式 B 定高内滚） ===== */
+.body { flex:1; min-height:0; display:flex; }
+.sidebar { width:208px; flex-shrink:0; background:var(--side-bg); border-right:1px solid var(--border); display:flex; flex-direction:column; height:100%; }
+.main-col { flex:1; min-width:0; display:flex; flex-direction:column; height:100%; }
+.content { flex:1; overflow-y:auto; padding:20px 24px 36px; }
+
+/* ===== 页签条 ===== */
+.tabs { background:#fff; border-bottom:1px solid var(--border); padding:8px 16px 0; display:flex; gap:6px; overflow-x:auto; flex:none; }
+.tab { height:28px; display:inline-flex; align-items:center; gap:6px; padding:0 12px; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text-2); font-size:13px; white-space:nowrap; cursor:pointer; transition:all .16s ease; }
+.tab .close { color:var(--text-3); font-size:12px; line-height:1; }
+.tab .close:hover { color:var(--text); }
+.tab:hover { color:var(--primary); border-color:rgba(22,119,255,.35); background:#f8fbff; }
+.tab.active { background:var(--strip-bg); border-color:transparent; color:var(--primary); font-weight:600; box-shadow:inset 0 2px 0 var(--primary); }
+
+/* ===== 侧边栏菜单 ===== */
+.side-menu { flex:1; padding:8px 0; overflow-y:auto; list-style:none; margin:0; }
+.side-menu ul { list-style:none; margin:0; padding:0; }
+.sm-ico { width:16px; height:16px; flex:none; margin-right:10px; display:inline-flex; align-items:center; justify-content:center; }
+.sm-link { height:40px; display:flex; align-items:center; padding:0 24px; font-size:14px; color:#262626; cursor:pointer; white-space:nowrap; }
+.sm-link:hover { color:#1677ff; }
+.sm-arrow { margin-left:auto; display:inline-flex; color:#8c8c8c; transition:transform .2s; }
+.sm-item:not(.open) > .sm-sub { display:none; }
+.sm-item.has-sub.open > .sm-link { color:#1677ff; }
+.sm-item.has-sub.open > .sm-link .sm-arrow { transform:rotate(180deg); color:#1677ff; }
+.sm-sub .sm-link { padding-left:48px; }
+.sm-sub .sm-sub .sm-link { padding-left:64px; }
+.sm-link.selected { background:#e6f4ff; color:#1677ff; border-right:3px solid #1677ff; }
+.side-foot { position:relative; flex:none; border-top:1px solid #f0f0f0; padding:8px; }
+.sys-cur { display:flex; align-items:center; gap:8px; height:36px; padding:0 8px; border-radius:6px; cursor:pointer; color:#262626; }
+.sys-cur:hover { background:#f0f0f0; }
+.sys-badge { width:24px; height:24px; border-radius:6px; background:#1677ff; color:#fff; font-size:12px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.sys-name { flex:1; min-width:0; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sys-swap { color:#8c8c8c; display:inline-flex; flex:none; }
+.sys-pop { position:absolute; bottom:calc(100% + 4px); left:8px; right:8px; background:#fff; border:1px solid #f0f0f0; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.12); padding:6px; display:none; z-index:1000; }
+.sys-pop.show { display:block; }
+.sys-pop-title { font-size:12px; color:#8c8c8c; padding:6px 10px 8px; border-bottom:1px solid #f0f0f0; margin-bottom:4px; }
+.sys-item { display:flex; align-items:center; padding:8px 10px; font-size:13px; color:#262626; border-radius:4px; cursor:pointer; }
+.sys-item:hover { background:#f5f5f5; color:#1677ff; }
+.sys-item.current { color:#1677ff; background:#e6f4ff; font-weight:600; cursor:default; }
+.sys-item .check { margin-left:auto; }
+
+/* ===== 卡片 ===== */
+.card { background:#fff; border-radius:10px; padding:20px 24px; margin-bottom:20px; border:1px solid #eceff3; box-shadow:var(--shadow-card); }
+
+/* ===== 筛选区 ===== */
+.filter { padding:16px 16px 6px; }
+.fgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px 16px; }
+.fi { display:flex; align-items:center; min-width:0; }
+.fi label { flex:none; width:96px; text-align:right; margin-right:8px; font-size:12px; color:rgba(0,0,0,.85); white-space:nowrap; }
+.ctl { flex:1; min-width:0; height:30px; border:1px solid var(--input-border); border-radius:6px; display:flex; align-items:center; padding:0 8px; background:#fff; font-size:12px; transition:border-color .16s ease, box-shadow .16s ease; }
+.ctl input { flex:1; min-width:0; border:none; outline:none; font-size:12px; font-family:inherit; color:rgba(0,0,0,.85); background:transparent; }
+.ctl input::placeholder { color:var(--placeholder); }
+.ctl:hover { border-color:var(--primary-hover); }
+.ctl:focus-within { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
+.ctl.sel { justify-content:space-between; cursor:pointer; }
+.ctl.sel .v.ph { color:var(--placeholder); }
+.ctl.sel svg { width:12px; height:12px; color:rgba(0,0,0,.35); flex:none; }
+.fbtns { display:flex; align-items:center; gap:8px; padding-bottom:10px; }
+.link-btn { border:none; background:none; color:var(--primary); font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; font-family:inherit; padding:0 4px; transition:color .16s ease; }
+.link-btn:hover { color:var(--primary-hover); }
+.btn { height:30px; padding:0 15px; border-radius:6px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:4px; transition:all .16s ease; }
+.btn-default { border:1px solid var(--input-border); background:#fff; color:rgba(0,0,0,.85); }
+.btn-default:hover { color:var(--primary); border-color:var(--primary); background:#f0f7ff; }
+.btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.3); }
+.btn-primary:hover { background:#4096ff; border-color:#4096ff; box-shadow:0 4px 12px -2px rgba(22,119,255,.4); }
+
+/* ===== 状态页签 ===== */
+.stabs { display:flex; padding:10px 16px 0; border-bottom:1px solid var(--border); gap:24px; background:#fff; }
+.stab { padding:0 2px 10px; font-size:13px; color:rgba(0,0,0,.65); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; user-select:none; transition:color .16s ease; }
+.stab:hover { color:var(--primary); }
+.stab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+.stab .cnt { display:inline-block; min-width:18px; height:16px; line-height:16px; text-align:center; padding:0 5px; border-radius:8px; background:#eff1f4; color:var(--text-3); font-size:11px; margin-left:4px; }
+.stab.active .cnt { background:var(--primary-bg); color:var(--primary); }
+.stab.stab-warn .cnt { background:#fff7e6; color:#fa8c16; }
+.stab.stab-red .cnt { background:#fff1f0; color:#ff4d4f; }
+.stab-red { color:#ff4d4f; }
+
+/* ===== 工具行 ===== */
+.toolbar { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
+.toolbar .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
+
+/* ===== 标签 ===== */
+.tag { display:inline-block; padding:0 9px; height:22px; line-height:20px; font-size:12px; border-radius:11px; border:1px solid transparent; font-weight:500; }
+.tag-orange { color:#fa8c16; background:#fff7e6; border-color:#ffd591; }
+.tag-blue { color:var(--primary); background:var(--primary-bg); border-color:#91caff; }
+.tag-gray { color:#8c8c8c; background:#fafafa; border-color:#e8e8e8; }
+.tag-red { color:var(--danger); background:#fff1f0; border-color:#ffa39e; }
+.lk { color:var(--primary); cursor:pointer; }
+.lk:hover { text-decoration:underline; }
+.ops a { color:var(--primary); cursor:pointer; margin-right:10px; }
+.ops a:hover { text-decoration:underline; }
+.ops a:last-child { margin-right:0; }
+
+/* ===== 本页：预警卡片流 ===== */
+.alerts { padding:16px; }
+.alert-card { position:relative; display:flex; align-items:stretch; background:#fff; border:1px solid #eceff3; border-radius:10px; box-shadow:var(--shadow-card); margin-bottom:12px; overflow:hidden; transition:border-color .16s ease, box-shadow .16s ease; }
+.alert-card:hover { border-color:#d4e5ff; box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px -6px rgba(22,119,255,.12); }
+.alert-card.unread::before { content:''; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--danger); z-index:1; }
+.al-ico { flex:none; width:68px; display:flex; align-items:center; justify-content:center; border-right:1px solid #f0f2f5; background:#fbfcfe; }
+.al-ico .al-ico-c { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.al-red .al-ico .al-ico-c { background:#fff1f0; color:var(--danger); }
+.al-orange .al-ico .al-ico-c { background:#fff7e6; color:var(--warn); }
+.al-main { flex:1; min-width:0; padding:12px 16px 10px; }
+.al-head { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.al-title { display:inline-flex; align-items:center; gap:6px; font-size:14px; color:var(--text); }
+.al-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--danger); flex:none; box-shadow:0 0 0 3px rgba(255,77,79,.14); }
+.alert-card:not(.unread) .al-dot { display:none; }
+.al-time { margin-left:auto; font-size:12px; color:var(--text-3); white-space:nowrap; }
+.al-desc { font-size:13px; color:var(--text-2); margin-top:6px; }
+.al-foot { margin-top:8px; display:flex; align-items:center; flex-wrap:wrap; }
+.al-note { font-size:12px; color:var(--text-3); margin-left:12px; }
+.al-note b { color:var(--text-2); font-weight:600; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">投资项目管理</div>
+  <div class="tools">
+    <span class="ico-btn" title="刷新"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>
+    <span class="ico-btn" title="消息提醒（含停滞提醒 2 条）" style="position:relative;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><i style="position:absolute;top:-5px;right:-9px;background:#fa8c16;color:#fff;font-size:10px;font-style:normal;line-height:1;padding:2px 4px;border-radius:8px;">2</i></span>
+    <span class="manual"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.2 9a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.3-2.7 3.8"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg>操作手册</span>
+    <span class="avatar" title="账户"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="3"/><circle cx="10" cy="13" r="0.6" fill="#fff"/><circle cx="14" cy="13" r="0.6" fill="#fff"/><path d="M12 8V4"/><circle cx="12" cy="3.4" r="0.8" fill="#fff"/></svg></span>
+  </div>
+</header>
+
+<div class="body">
+  <aside class="sidebar">
+    <ul class="side-menu">
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../工作台/P3-R01-F00-工作台.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>工作台</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../项目库/P3-R01-F01-项目列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9M3 9h18M9 21v-6h6v6"/></svg></span>项目库</div>
+      </li>
+      <li class="sm-item">
+        <div class="sm-link" onclick="go('../基金管理/P3-R01-F07-基金列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>基金管理</div>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub open">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>投后管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('P3-R01-F22-投后项目.html')">投后项目</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F12-报告归档.html')">报告归档</div></li>
+          <li><div class="sm-link selected">风险预警</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F14-提醒中心.html')">提醒中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出与分配<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F23-退出项目.html')">退出项目</div></li>
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F16-收益分配.html')">收益分配</div></li>
+          <li><div class="sm-link" onclick="go('../退出与分配/P3-R01-F17-清算注销.html')">清算注销</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>统计报表<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F18-阶段漏斗.html')">阶段漏斗</div></li>
+          <li><div class="sm-link" onclick="go('../统计报表/P3-R01-F19-放弃原因分布.html')">放弃原因分布</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>审批中心<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">审批中心</div></li>
+        </ul>
+      </li>
+      <li class="sm-item has-sub">
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <ul class="sm-sub">
+          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F21-系统管理.html')">用户与角色</div></li>
+          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F21-系统管理.html')">基础数据</div></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="side-foot">
+      <div class="sys-cur" id="sysSwitchBtn" title="切换系统">
+        <span class="sys-badge">投</span>
+        <span class="sys-name">投资项目管理</span>
+        <span class="sys-swap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+      </div>
+      <div class="sys-pop" id="sysPop">
+        <div class="sys-pop-title">切换系统</div>
+        <div class="sys-item current">投资项目管理<span class="check">✓</span></div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/供应链管理后台/全量订单/订单列表.html')">一兆链采供应链管理后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/商城运营后台/订单与售后/订单列表.html')">商城运营后台</div>
+        <div class="sys-item" onclick="go('../../../5-【ACTIVE】自研系统/01. 自研系统原型-当前版本/WMS仓储管理/入库管理/到货通知单.html')">一兆链采WMS仓储管理</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <div class="tabs">
+      <span class="tab" onclick="go('P3-R01-F11-投后时间线.html')">投后事项 · 云雀教育 <span class="close">×</span></span>
+      <span class="tab active">风险预警 <span class="close">×</span></span>
+    </div>
+
+    <div class="content">
+      <!-- 筛选 -->
+      <div class="card filter">
+        <div class="fgrid">
+          <div class="fi"><label>预警类型：</label>
+            <div class="ctl sel"><span class="v ph">全部</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="fi"><label>信息来源：</label>
+            <div class="ctl sel"><span class="v ph">全部</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="fi"><label>关联项目：</label>
+            <div class="ctl sel"><span class="v ph">全部</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="fi" style="justify-content:flex-end;">
+            <div class="fbtns">
+              <button class="btn btn-default">重置</button>
+              <button class="btn btn-primary">查询</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预警卡片流 -->
+      <div class="card" style="padding:0;">
+        <div class="stabs">
+          <span class="stab active">全部<span class="cnt">5</span></span>
+          <span class="stab stab-red">未读<span class="cnt" id="cntUnread">3</span></span>
+          <span class="stab stab-warn">已读未处理<span class="cnt" id="cntReadUntreated">1</span></span>
+          <span class="stab">已处理<span class="cnt">1</span></span>
+        </div>
+        <div class="toolbar">
+          <button class="link-btn" style="margin-left:auto;" onclick="markAllRead()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>全部标记已读</button>
+        </div>
+        <div class="alerts">
+
+          <!-- 1 · 股价 · 系统 · 磐石精密制造 · 未读 -->
+          <div class="alert-card unread al-red" id="al1">
+            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg></span></div>
+            <div class="al-main">
+              <div class="al-head">
+                <span class="al-title"><span class="al-dot"></span><b>股价跌破减持参考线</b></span>
+                <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span>
+                <span class="al-time">2026-08-27 09:32</span>
+              </div>
+              <div class="al-desc">收盘价 18.6 元，低于减持方案参考价 19.0 元，连续 5 个交易日，建议结合 9 月减持窗口评估退出批次执行 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">磐石精密制造</span></div>
+              <div class="al-foot ops" id="alFoot1">
+                <a onclick="markRead('al1','alFoot1')">标记已读</a>
+                <a onclick="go('../退出与分配/P3-R01-F15-项目退出.html')">登记退出</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 · 舆情 · 企查查 · 云雀教育 · 未读 -->
+          <div class="alert-card unread al-orange" id="al2">
+            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l16-6v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span></div>
+            <div class="al-main">
+              <div class="al-head">
+                <span class="al-title"><span class="al-dot"></span><b>法定代表人变更</b></span>
+                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span>
+                <span class="al-time">2026-08-26 16:05</span>
+              </div>
+              <div class="al-desc">市场主体信息变更，需核实是否影响投后条款 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">云雀教育</span></div>
+              <div class="al-foot ops" id="alFoot2">
+                <a onclick="markRead('al2','alFoot2')">标记已读</a>
+                <a onclick="handleAlert('al2','alFoot2','alState2')">处理</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 · 舆情 · 同花顺 · 云雀教育 · 未读 -->
+          <div class="alert-card unread al-orange" id="al3">
+            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16"/><path d="M6 18V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10"/><path d="M6 12h12"/><line x1="9" y1="9.5" x2="9" y2="9.51"/><line x1="12" y1="9.5" x2="12" y2="9.51"/><line x1="15" y1="9.5" x2="15" y2="9.51"/></svg></span></div>
+            <div class="al-main">
+              <div class="al-head">
+                <span class="al-title"><span class="al-dot"></span><b>媒体报道：营收下滑传闻</b></span>
+                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">同花顺</span>
+                <span class="al-time">2026-08-25 11:20</span>
+              </div>
+              <div class="al-desc">需与投后访谈数据交叉核实 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">云雀教育</span></div>
+              <div class="al-foot ops" id="alFoot3">
+                <a onclick="markRead('al3','alFoot3')">标记已读</a>
+                <a onclick="handleAlert('al3','alFoot3','alState3')">处理</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 · 股价 · 系统 · 磐石精密制造 · 已读未处理 -->
+          <div class="alert-card al-red" id="al4">
+            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span></div>
+            <div class="al-main">
+              <div class="al-head">
+                <span class="al-title"><b>减持窗口开启提示</b></span>
+                <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span><span class="tag tag-gray" id="alState4">已读未处理</span>
+                <span class="al-time">2026-08-20 09:00</span>
+              </div>
+              <div class="al-desc">IPO 减持窗口 2026-09-01 开启，可登记退出批次 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">磐石精密制造</span></div>
+              <div class="al-foot ops" id="alFoot4">
+                <a onclick="handleAlert('al4','alFoot4','alState4')">标记已处理</a>
+                <a onclick="go('../退出与分配/P3-R01-F15-项目退出.html')">登记退出</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5 · 舆情 · 企查查 · 星河航天 · 已处理 -->
+          <div class="alert-card al-orange" id="al5">
+            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l16-6v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span></div>
+            <div class="al-main">
+              <div class="al-head">
+                <span class="al-title"><b>新增被执行人信息</b></span>
+                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span><span class="tag tag-blue">已处理</span>
+                <span class="al-time">2026-08-18 14:40</span>
+              </div>
+              <div class="al-desc">触发被执行人信息预警 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">星河航天</span></div>
+              <div class="al-foot">
+                <span class="al-note">处理说明：<b>已核实为同名企业，误报</b> · 2026-08-19 · 胡博</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 业务脚本：预警已读 / 处理 ===== */
+function markRead(cardId, footId) {
+  var card = document.getElementById(cardId);
+  var wasUnread = card.classList.contains('unread');
+  card.classList.remove('unread');
+  var foot = document.getElementById(footId);
+  var links = foot.querySelectorAll('a');
+  for (var i = 0; i < links.length; i++) {
+    if (links[i].textContent.indexOf('标记已读') > -1) { links[i].remove(); break; }
+  }
+  if (wasUnread) { syncReadCnt(-1); }
+}
+function syncReadCnt(delta) {
+  var cu = document.getElementById('cntUnread');
+  var cr = document.getElementById('cntReadUntreated');
+  if (cu) { cu.textContent = Math.max(0, parseInt(cu.textContent, 10) + (delta < 0 ? -1 : 0)); }
+  if (cr) { cr.textContent = Math.max(0, parseInt(cr.textContent, 10) + (delta < 0 ? 1 : delta)); }
+}
+function handleAlert(cardId, footId, stateId) {
+  var card = document.getElementById(cardId);
+  card.classList.remove('unread');
+  var state = document.getElementById(stateId);
+  if (state) { state.className = 'tag tag-blue'; state.textContent = '已处理'; }
+  var foot = document.getElementById(footId);
+  foot.classList.remove('ops');
+  foot.innerHTML = '<span class="al-note"><b>已处理</b> · 2026-08-27 · 华悦</span>';
+}
+function markAllRead() {
+  var cu = document.getElementById('cntUnread');
+  var unreadCnt = cu ? parseInt(cu.textContent, 10) || 0 : 0;
+  document.querySelectorAll('.alert-card.unread').forEach(function (card) {
+    card.classList.remove('unread');
+  });
+  document.querySelectorAll('.al-foot a').forEach(function (a) {
+    if (a.textContent.indexOf('标记已读') > -1) a.remove();
+  });
+  if (cu) { cu.textContent = 0; }
+  var cr = document.getElementById('cntReadUntreated');
+  if (cr) { cr.textContent = (parseInt(cr.textContent, 10) || 0) + unreadCnt; }
+  alert('已全部标记为已读');
+}
+</script>
+
+<script>
+/* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */
+function go(url) { location.href = url; }
+document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link) {
+  link.addEventListener('click', function () { link.parentElement.classList.toggle('open'); });
+});
+(function () {
+  var btn = document.getElementById('sysSwitchBtn');
+  var pop = document.getElementById('sysPop');
+  btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { pop.classList.remove('show'); });
+})();
+</script>
+</body>
+</html>

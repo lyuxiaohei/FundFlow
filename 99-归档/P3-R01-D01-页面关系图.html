@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P3-R01-D01 页面关系图 · 投资项目管理</title>
+<style>
+:root{--primary:#1677ff;--primary-bg:#e6f4ff;--danger:#cf1322;--ok:#389e0d;--warn:#d46b08;
+--text-1:rgba(0,0,0,.88);--text-2:rgba(0,0,0,.65);--text-3:rgba(0,0,0,.45);
+--border:#e5e7eb;--thead-bg:#f8fafc;--card-bg:#fff;--bg:#f5f6f8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text-1);font-size:14px;line-height:1.6;}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 24px 60px;}
+h1{font-size:20px;margin-bottom:4px;}
+.sub{color:var(--text-3);font-size:12.5px;margin-bottom:18px;}
+h2{font-size:16px;margin:34px 0 12px;padding-left:10px;border-left:3px solid var(--primary);}
+h2 .n{color:var(--text-3);font-weight:400;font-size:12.5px;margin-left:8px;}
+.meta{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px 28px;font-size:13px;}
+.meta b{color:var(--text-2);font-weight:400;margin-right:6px;}
+.meta .v{font-weight:600;}
+.stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;}
+.stat .s{flex:1;min-width:130px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;text-align:center;}
+.stat .num{font-size:24px;font-weight:700;color:var(--primary);}
+.stat .lbl{font-size:12px;color:var(--text-3);}
+.tag{display:inline-block;padding:1px 8px;border-radius:4px;font-size:12px;line-height:18px;white-space:nowrap;}
+.t-direct{background:var(--primary-bg);color:var(--primary);}
+.t-group{background:#f0f7ff;color:#0958d9;border:1px solid #d6e7ff;}
+.t-detail{background:#fff7e6;color:#d46b08;border:1px solid #ffe0b2;}
+.t-modal{background:#f6ffed;color:#389e0d;border:1px solid #d3f0bb;}
+.t-tab{background:#f9f0ff;color:#722ed1;border:1px solid #efdbff;}
+.t-arch{background:#fafafa;color:var(--text-3);border:1px dashed #d9d9d9;text-decoration:line-through;}
+.t-merge{background:#fff1f0;color:#cf1322;border:1px solid #ffccc7;}
+/* 菜单树 */
+.tree{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:18px 22px;font-size:13.5px;}
+.tree .lv1{display:flex;align-items:center;gap:8px;padding:6px 0;flex-wrap:wrap;}
+.tree .lv1+.lv1{border-top:1px dashed #eee;}
+.tree .idx{width:118px;color:var(--text-2);flex:none;}
+.tree .kids{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.tree .pg{background:#fafbfd;border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:12.5px;}
+.tree .pg b{color:var(--primary);font-weight:600;font-family:ui-monospace,monospace;font-size:11.5px;margin-right:4px;}
+/* 页面卡片 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));gap:14px;}
+.pc{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.pc .hd{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.pc .code{font-family:ui-monospace,monospace;font-size:12px;color:var(--primary);background:var(--primary-bg);padding:1px 8px;border-radius:4px;font-weight:600;}
+.pc .nm{font-weight:600;font-size:14.5px;}
+.pc .row{font-size:12.5px;color:var(--text-2);margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:baseline;}
+.pc .row .k{flex:none;width:58px;color:var(--text-3);}
+.pc a{color:var(--primary);text-decoration:none;}
+.pc .lk{font-family:ui-monospace,monospace;font-size:11.5px;background:#f8fafc;border:1px solid #eef1f5;border-radius:4px;padding:0 6px;}
+/* 关系表 */
+table{width:100%;border-collapse:collapse;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:13px;}
+th{background:var(--thead-bg);text-align:left;padding:9px 14px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:8px 14px;border-bottom:1px solid #f0f2f5;vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+td .arr{color:var(--primary);font-weight:700;margin:0 6px;}
+.mono{font-family:ui-monospace,monospace;font-size:12px;}
+.cnt{display:inline-block;min-width:22px;text-align:center;background:#f0f5ff;color:var(--primary);border-radius:9px;font-size:11.5px;padding:0 6px;}
+.note{background:#fffbe6;border:1px solid #ffe58f;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:14px;}
+.note b{color:#d48806;}
+.arch{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:13px;}
+.arch p{margin:6px 0;}
+.foot{margin-top:30px;font-size:12px;color:var(--text-3);border-top:1px solid var(--border);padding-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>P3-R01-D01 页面关系图</h1>
+<div class="sub">投资项目管理系统高保真原型 · 菜单 → 页面 → 详情页 → 弹窗 → 跨页跳转 全量关系（V1.3 基线 19 页源文件逐页扫描生成，file:// 直开；09-03 A09 增 F00、09-04 A10 菜单六项更名已同步）</div>
+
+<div class="meta">
+  <span><b>文档编码</b><span class="v mono">P3-R01-D01</span></span>
+  <span><b>挂靠</b><span class="v">P3-R01（原型说明）</span></span>
+  <span><b>基线版本</b><span class="v">原型说明 V1.3（2026-09-04：A09 增 F00 工作台、A10 菜单六项更名，现 19 页）</span></span>
+  <span><b>生成方式</b><span class="v">源文件逐页解析（侧栏 / 页签条 / 内容区 go(·) / modal-title 全量提取）</span></span>
+</div>
+
+<div class="stat">
+  <div class="s"><div class="num">9</div><div class="lbl">一级菜单（3 直达 + 6 组）</div></div>
+  <div class="s"><div class="num">19</div><div class="lbl">在用页面（P3-R01/）</div></div>
+  <div class="s"><div class="num">3</div><div class="lbl">对象详情页（F02/F03/F08，不进菜单）</div></div>
+  <div class="s"><div class="num">26</div><div class="lbl">弹窗（14 页有弹窗）</div></div>
+  <div class="s"><div class="num">19</div><div class="lbl">内容区业务跳转链路</div></div>
+  <div class="s"><div class="num">3</div><div class="lbl">已并入/归档页（F04/F05/F06）</div></div>
+</div>
+
+<h2>一、全局导航地图（侧栏菜单 → 页面）<span class="n">全站 19 页侧栏一致；详情页不进菜单（A05 口径：需先知"哪一个对象"的页面走列表行进入）</span></h2>
+<div class="tree">
+  <div class="lv1"><span class="idx">工作台 <span class="tag t-direct">直达</span></span><div class="kids"><span class="pg"><b>F00</b>工作台<span style="color:var(--text-3);">（登录默认页：待办/申请/停滞提醒/业务速览，A09 增）</span></span></div></div>
+  <div class="lv1"><span class="idx">项目库 <span class="tag t-direct">直达</span></span><div class="kids"><span class="pg"><b>F01</b>项目列表<span style="color:var(--text-3);">（列表视图 ⇄ 泳道视图，V1.1 内嵌十二列看板）</span></span></div></div>
+  <div class="lv1"><span class="idx">基金管理 <span class="tag t-direct">直达</span></span><div class="kids"><span class="pg"><b>F07</b>基金列表</span></div></div>
+  <div class="lv1"><span class="idx">LP 管理 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F09</b>LP 台账</span><span class="pg"><b>F10</b>LP 出资</span></div></div>
+  <div class="lv1"><span class="idx">投后管理 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F11</b>投后事项</span><span class="pg"><b>F12</b>报告归档</span><span class="pg"><b>F13</b>风险预警</span><span class="pg"><b>F14</b>提醒中心</span></div></div>
+  <div class="lv1"><span class="idx">退出与分配 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F15</b>项目退出</span><span class="pg"><b>F16</b>收益分配</span><span class="pg"><b>F17</b>清算注销</span></div></div>
+  <div class="lv1"><span class="idx">统计报表 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F18</b>阶段漏斗</span><span class="pg"><b>F19</b>放弃原因分布</span></div></div>
+  <div class="lv1"><span class="idx">审批中心 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F20</b>审批中心<span style="color:var(--text-3);">（发起审批 + 我的审批 两个菜单项同页）</span></span></div></div>
+  <div class="lv1"><span class="idx">系统管理 <span class="tag t-group">组</span></span><div class="kids"><span class="pg"><b>F21</b>系统管理<span style="color:var(--text-3);">（用户与角色 + 基础数据 两个菜单项同页）</span></span></div></div>
+</div>
+<div class="note"><b>口径注记：</b>「投前管道 → 阶段看板（F06）」菜单项已于 09-02 V1.1 删除——看板并入 F01「泳道视图」，F06 移至 <span class="mono">99-归档/</span>；F21 权限树仍保留「投前管道」授权项（原子项 id <span class="mono">pp-kanban</span> 保留口径）。菜单编号对照 <span class="mono">P2-R01-D03</span> 菜单树（2 项目库（原项目总库，09-04 更名） / 4 基金管理 / 5.x LP / 6.x 投后 / 7.x 退出 / 8.x 统计 / 9.x 审批 / 10.x 系统；3 投前管道已删）。</div>
+
+<h2>二、菜单页面 × 弹窗 × 出链清单<span class="n">弹窗按源文件 modal-title 全量提取；出链仅列内容区业务跳转（不含侧栏/页签条）</span></h2>
+<div class="grid">
+
+  <div class="pc"><div class="hd"><span class="code">F00</span><span class="nm">工作台</span><span class="tag t-direct">菜单·1 号位直达</span></div>
+    <div class="row"><span class="k">结构</span>问候条 + 快捷入口 4 + 我的待办 3 / 停滞提醒 2 / 我的申请 2 / 业务速览 4（四卡布局）</div>
+    <div class="row"><span class="k">弹窗</span>无（纯聚合展示，A09 新增，登录默认页）</div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F20 待办/申请 ×5</span><span class="lk">→F01 停滞/F01 快捷 ×2</span><span class="lk">→F02 停滞卡 ×2</span><span class="lk">→F07/F12/F18/F13/F10 速览快捷 ×5</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F01</span><span class="nm">项目列表</span><span class="tag t-direct">菜单·项目库</span></div>
+    <div class="row"><span class="k">结构</span>列表视图 ⇄ 泳道视图（switchView 切换，V1.1 看板内嵌）；十二阶段筛选 + 状态页签</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新建项目</span><span class="tag t-modal">放弃登记</span><span style="color:var(--text-3);">（原 F05 放弃登记并入此弹窗）</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 详情 ×10</span><span class="lk">泳道卡片 →F02 ×8</span></div>
+    <div class="row"><span class="k">行内</span>详情 / 推进 / 放弃（直调弹窗）/ 停滞处置 / 转入投后</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F07</span><span class="nm">基金列表</span><span class="tag t-direct">菜单·基金管理</span></div>
+    <div class="row"><span class="k">结构</span>筛选（状态/注册地/日期）+ 7 行台账；1:1 关联项目列</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新建基金</span><span style="color:var(--text-3);">（含关联项目单选 + 预关联标注）</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F08 详情/基金名 ×21</span><span class="lk">→F02 关联项目 ×4</span><span class="lk">→F17 清算中行 ×1</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F09</span><span class="nm">LP 台账</span><span class="tag t-group">菜单·LP 管理</span></div>
+    <div class="row"><span class="k">结构</span>一 LP 多主体展开/收起（主体子表 ×7）</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新建 LP</span><span class="tag t-modal">新建出资主体</span><span class="tag t-modal">LP 认定</span><span class="tag t-modal">上传资质材料</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F08 所属基金 ×4</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F10</span><span class="nm">LP 出资</span><span class="tag t-group">菜单·LP 管理</span></div>
+    <div class="row"><span class="k">结构</span>按基金切换（三套数据联动汇总/进度条）</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新增出资记录</span><span class="tag t-modal">登记实缴</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F08 返回基金详情 ×1</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F11</span><span class="nm">投后事项</span><span class="tag t-group">菜单·投后管理</span></div>
+    <div class="row"><span class="k">结构</span>项目切换 + 圆点时间线六事件</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新增投后事件</span></div>
+    <div class="row"><span class="k">出链</span>无（本页为多页跳转的汇聚终点之一）</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F12</span><span class="nm">报告归档</span><span class="tag t-group">菜单·投后管理</span></div>
+    <div class="row"><span class="k">结构</span>报告期三级联动（季报→季度 / 年报→年度 / 专项→专项类型）+ 逾期⚠行</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">上传报告</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 项目 ×5</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F13</span><span class="nm">风险预警</span><span class="tag t-group">菜单·投后管理</span></div>
+    <div class="row"><span class="k">结构</span>推送卡片流（股价红/舆情黄）+ 已读/处理页签</div>
+    <div class="row"><span class="k">弹窗</span>无（alert 交互：查看/处理说明）</div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 关联项目 ×5</span><span class="lk">→F15 登记退出 ×2</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F14</span><span class="nm">提醒中心</span><span class="tag t-group">菜单·投后管理</span></div>
+    <div class="row"><span class="k">结构</span>提醒规则 / 到期提醒双区 + 前置天数校验</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新建提醒规则</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 关联对象 ×3</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F15</span><span class="nm">项目退出</span><span class="tag t-group">菜单·退出与分配</span></div>
+    <div class="row"><span class="k">结构</span>按项目切换持仓汇总 + 分批次表</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">登记退出批次</span><span style="color:var(--text-3);">（收益自动算）</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F16 发起收益分配 ×2</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F16</span><span class="nm">收益分配</span><span class="tag t-group">菜单·退出与分配</span></div>
+    <div class="row"><span class="k">结构</span>分配单主子行展开 + 合计校验</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">生成分配单</span><span class="tag t-modal">登记付款</span></div>
+    <div class="row"><span class="k">出链</span>无内容区出链（经页签条回 F15；F20 可跳入）</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F17</span><span class="nm">清算注销</span><span class="tag t-group">菜单·退出与分配</span></div>
+    <div class="row"><span class="k">结构</span>基金三态切换 + 五步骤条 + 步骤材料/事件记录</div>
+    <div class="row"><span class="k">弹窗</span>无（alert 交互）</div>
+    <div class="row"><span class="k">出链</span>无内容区出链（经页签条回 F15；F07/F08/F20 可跳入）</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F18</span><span class="nm">阶段漏斗</span><span class="tag t-group">菜单·统计报表</span></div>
+    <div class="row"><span class="k">结构</span>纯 CSS 漏斗 12 行 + GP/LP 分列明细</div>
+    <div class="row"><span class="k">弹窗</span>无（alert 交互：导出/刷新）</div>
+    <div class="row"><span class="k">出链</span>与 F19 页签条互跳</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F19</span><span class="nm">放弃原因分布</span><span class="tag t-group">菜单·统计报表</span></div>
+    <div class="row"><span class="k">结构</span>主体×节点×末级原因三维过滤 + 堆叠图 + 明细表</div>
+    <div class="row"><span class="k">弹窗</span>无（alert 交互：未投归档详情）</div>
+    <div class="row"><span class="k">出链</span>与 F18 页签条互跳</div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F20</span><span class="nm">审批中心</span><span class="tag t-group">菜单·审批中心（双入口同页）</span></div>
+    <div class="row"><span class="k">结构</span>我的待审 / 我发起的 / 已审 三面板（六节点审批流汇总）</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">审批处理</span><span class="tag t-modal">发起审批</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 业务对象 ×7</span><span class="lk">→F16 分配单 ×1</span><span class="lk">→F17 清算 ×1</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F21</span><span class="nm">系统管理</span><span class="tag t-group">菜单·系统管理（双入口同页）</span></div>
+    <div class="row"><span class="k">结构</span>用户与角色（授权菜单树）+ 基础数据（原字典管理·放弃原因两级维护）</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">新建用户</span><span class="tag t-modal">角色授权</span><span class="tag t-modal">新增字典项</span></div>
+    <div class="row"><span class="k">出链</span>无内容区出链</div>
+  </div>
+
+</div>
+
+<h2>三、对象详情页（不进菜单，列表行进入）<span class="n">A05 口径；侧栏高亮挂来源列表项</span></h2>
+<div class="grid">
+
+  <div class="pc"><div class="hd"><span class="code">F02</span><span class="nm">项目详情 · 基本信息</span><span class="tag t-detail">详情页</span></div>
+    <div class="row"><span class="k">入口</span>F01 行「详情」/ 项目名 · 泳道卡片 · F07/F08/F12/F13/F14/F20 共 6 页跳入（全站汇聚点）</div>
+    <div class="row"><span class="k">页签</span><span class="tag t-tab">基本信息（本页）</span><span class="tag t-tab">材料库 →F03</span></div>
+    <div class="row"><span class="k">结构</span>项目概况 / 来源信息 / 投资意向 / 阶段与负责 四块表单 + 右栏「跟进动态」（①~⑦ 时间线 + 推进/纪要操作，原 F04 并入）</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">推进阶段</span><span class="tag t-modal">记会议纪要</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F03 材料库页签 ×1</span><span class="lk">→F01 放弃登记 ×1</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F03</span><span class="nm">项目详情 · 材料库</span><span class="tag t-detail">详情页</span></div>
+    <div class="row"><span class="k">入口</span>F02 页签「材料库」</div>
+    <div class="row"><span class="k">页签</span><span class="tag t-tab">基本信息 →F02</span><span class="tag t-tab">材料库（本页）</span></div>
+    <div class="row"><span class="k">结构</span>资料包六类统计 + 文件表（可见范围/同名替换）+ 右栏「跟进动态」</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">上传材料</span><span class="tag t-modal">推进阶段</span><span class="tag t-modal">记会议纪要</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F02 基本信息页签 ×1</span><span class="lk">→F01 放弃登记 ×1</span></div>
+  </div>
+
+  <div class="pc"><div class="hd"><span class="code">F08</span><span class="nm">基金详情</span><span class="tag t-detail">详情页</span></div>
+    <div class="row"><span class="k">入口</span>F07 行「详情」/ 基金名 · F09 所属基金 · F10 返回基金详情</div>
+    <div class="row"><span class="k">页签</span><span class="tag t-tab">基本信息</span><span class="tag t-tab">LPA 与工商文件</span><span class="tag t-tab">出资记录</span><span class="tag t-tab">项目关联</span><span class="tag t-tab">清算进度</span><span style="color:var(--text-3);">（页内 JS 切换，不换页）</span></div>
+    <div class="row"><span class="k">结构</span>基金概况 / 管理信息 + 文件列表 + 出资汇总 + 右栏「基金动态」</div>
+    <div class="row"><span class="k">弹窗</span><span class="tag t-modal">上传文件</span></div>
+    <div class="row"><span class="k">出链</span><span class="lk">→F10 查看全部 LP 出资 ×2</span><span class="lk">→F02 项目关联 ×1</span><span class="lk">→F17 查看清算台账 ×1</span></div>
+  </div>
+
+</div>
+
+<h2>四、跨页跳转全表<span class="n">内容区业务跳转（一）；顶部多页签条回跳（二）——两类入口分开列</span></h2>
+
+<table>
+  <tr><th style="width:90px;">来源页</th><th style="width:90px;">目标页</th><th style="width:66px;">次数</th><th>入口语义（源码 go(·) 实测）</th></tr>
+  <tr><td class="mono">F00</td><td class="mono">F01/F02/F07/F12/F13/F18/F20</td><td><span class="cnt">19</span></td><td>快捷入口、待办/申请/停滞卡片、业务速览（登录默认页发散入口）</td></tr>
+  <tr><td class="mono">F01</td><td class="mono">F02</td><td><span class="cnt">16</span></td><td>列表行「详情」×8 + 泳道视图卡片点击 ×8</td></tr>
+  <tr><td class="mono">F02</td><td class="mono">F03</td><td><span class="cnt">1</span></td><td>详情内页签「材料库」</td></tr>
+  <tr><td class="mono">F03</td><td class="mono">F02</td><td><span class="cnt">1</span></td><td>详情内页签「基本信息」</td></tr>
+  <tr><td class="mono">F02 / F03</td><td class="mono">F01</td><td><span class="cnt">2</span></td><td>头部按钮「放弃登记」回项目列表（各 1）</td></tr>
+  <tr><td class="mono">F07</td><td class="mono">F08</td><td><span class="cnt">21</span></td><td>列表行「详情」/ 基金名链接</td></tr>
+  <tr><td class="mono">F07</td><td class="mono">F02</td><td><span class="cnt">4</span></td><td>「关联项目」列项目名 → 项目详情</td></tr>
+  <tr><td class="mono">F07</td><td class="mono">F17</td><td><span class="cnt">1</span></td><td>清算中基金行 → 清算注销台账</td></tr>
+  <tr><td class="mono">F08</td><td class="mono">F10</td><td><span class="cnt">2</span></td><td>「查看全部 LP 出资」</td></tr>
+  <tr><td class="mono">F08</td><td class="mono">F02</td><td><span class="cnt">1</span></td><td>「项目关联」页签 → 项目详情</td></tr>
+  <tr><td class="mono">F08</td><td class="mono">F17</td><td><span class="cnt">1</span></td><td>「查看清算台账」</td></tr>
+  <tr><td class="mono">F09</td><td class="mono">F08</td><td><span class="cnt">4</span></td><td>主体子表「所属基金」→ 基金详情</td></tr>
+  <tr><td class="mono">F10</td><td class="mono">F08</td><td><span class="cnt">1</span></td><td>「返回基金详情 ›」</td></tr>
+  <tr><td class="mono">F12</td><td class="mono">F02</td><td><span class="cnt">5</span></td><td>报告行「项目」→ 项目详情</td></tr>
+  <tr><td class="mono">F13</td><td class="mono">F02</td><td><span class="cnt">5</span></td><td>预警卡「关联项目」→ 项目详情</td></tr>
+  <tr><td class="mono">F13</td><td class="mono">F15</td><td><span class="cnt">2</span></td><td>减持窗口提示卡「登记退出」</td></tr>
+  <tr><td class="mono">F14</td><td class="mono">F02</td><td><span class="cnt">3</span></td><td>到期提醒「关联对象」→ 项目详情</td></tr>
+  <tr><td class="mono">F15</td><td class="mono">F16</td><td><span class="cnt">2</span></td><td>「发起收益分配」/ 批次行跳收益分配</td></tr>
+  <tr><td class="mono">F20</td><td class="mono">F02</td><td><span class="cnt">7</span></td><td>审批单「关联业务」项目/基金对象 → 项目详情</td></tr>
+  <tr><td class="mono">F20</td><td class="mono">F16 / F17</td><td><span class="cnt">2</span></td><td>分配/注销类审批单 → 对应台账（各 1）</td></tr>
+  <tr><td class="mono" style="color:var(--text-3);">页签条</td><td class="mono" style="color:var(--text-3);">F01/F07/F08/F11/F15/F18/F19</td><td><span class="cnt">15</span></td><td>顶部多页签工作台回跳（F02/F03/F07/F15/F20/F21→F01、F08/F09→F07 或 F08、F10→F08、F13/F12→F11、F16/F17→F15、F18⇄F19）</td></tr>
+</table>
+
+<h2>五、已并入 / 归档页面（防误恢复口径）</h2>
+<div class="arch">
+  <p><span class="tag t-arch">F04 跟进时间线</span> → 08-28 并入 <b>F02/F03 右栏「跟进动态」</b>（完整 ①~⑦ 时间线 + 推进/纪要弹窗），文件在 <span class="mono">99-归档/</span>，见 P2-R01-A06 事件记录。</p>
+  <p><span class="tag t-merge">F05 放弃登记</span> → 并入 <b>F01「放弃登记」弹窗</b>（主体自动判定 + GP/LP 两级原因级联），无独立页面。</p>
+  <p><span class="tag t-arch">F06 阶段看板</span> → 09-02（V1.1）十二列看板内嵌为 <b>F01「泳道视图」</b>，看板卡片「放弃」直调 F01 放弃弹窗；菜单「投前管道」项删除，文件在 <span class="mono">99-归档/</span>。</p>
+</div>
+
+<div class="foot">
+  数据来源：P3-R01/ 19 页源文件（侧栏 sm-link / 页签条 tab / 内容区 go(·) / modal-title 全量正则提取，2026-09-02）；口径依据 P3-R01-原型说明 V1.3、P2-R01-A05（详情页退出菜单）、P2-R01-A06（菜单拍平/F04 下线）、P2-R01-A08（UI 用词统一）、P2-R01-A09（工作台/审批双轨）、P2-R01-A10（菜单六项更名）。本图为快照型设计文档，页面结构再变更时需同步更新（挂靠 P3-R01，编码 P3-R01-D01）。
+</div>
+
+</div>
+</body>
+</html>

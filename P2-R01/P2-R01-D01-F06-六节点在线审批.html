@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图6 · 六节点在线审批</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fafafa; --ink:#111827; --muted:#4b5563; --soft:#6b7280;
+          --rule:rgba(17,24,39,0.10); --accent:#2563eb; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink);
+    font-family:'Geist','PingFang SC','Microsoft YaHei',sans-serif;
+    padding:48px 32px 32px; max-width:1180px; margin:0 auto; }
+  .eyebrow { font-family:'Geist Mono',monospace; font-size:8px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--soft); margin-bottom:12px; }
+  h1 { font-family:'Instrument Serif','PingFang SC',serif; font-weight:400; font-size:1.75rem; line-height:1.3; }
+  .subtitle { font-size:13px; color:var(--muted); margin-top:8px; max-width:980px; line-height:1.7; }
+  .diagram { margin-top:24px; }
+  svg { display:block; width:100%; height:auto; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid var(--rule);
+    font-family:'Geist Mono',monospace; font-size:9px; color:var(--soft); letter-spacing:0.08em; }
+</style>
+</head>
+<body>
+<p class="eyebrow">ATTACHMENT D01 · FIG.6 · SIX-NODE APPROVAL</p>
+<h1>图 6 · 六节点在线审批（横切能力 · V1.0）</h1>
+<p class="subtitle">立项 / 投决 / 基金注册 / 付款 / 分配 / 注销六类业务单据走统一审批流（Q10 已确认）。系统内置、可独立运行；嵌入简道云 OA「投资产业」板块的方式随 V2.0 深化。审批通过自动回写业务单据、推进状态；驳回退回发起人修改重提。</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1120 880" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4b5563"/>
+    </marker>
+    <marker id="arrA" viewBox="0 0 8 8" refX="7" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- ===== 箭头（先画线后画框） ===== -->
+  <!-- 触发容器 → 发起审批（单线汇聚） -->
+  <line x1="288" y1="324" x2="348" y2="324" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="318" y="316" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">发起</text>
+  <!-- 发起 → 审批节点 -->
+  <line x1="472" y1="360" x2="472" y2="432" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr)"/>
+  <!-- 审批节点 → 结论 -->
+  <line x1="472" y1="496" x2="472" y2="556" stroke="#4b5563" stroke-width="1.6" marker-end="url(#arr)"/>
+  <!-- 结论 → 通过（右） -->
+  <line x1="592" y1="600" x2="696" y2="600" stroke="#2563eb" stroke-width="1.6" marker-end="url(#arrA)"/>
+  <text x="644" y="590" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">通过</text>
+  <!-- 结论 → 驳回（下） -->
+  <line x1="472" y1="644" x2="472" y2="696" stroke="#4b5563" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="484" y="676" font-size="8" fill="#6b7280" font-family="'Geist Mono',monospace">驳回</text>
+  <!-- 退回块 → 回环 → 发起顶部（左通道） -->
+  <path d="M 372 724 H 316 V 260 H 472 V 284" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="394" y="252" font-size="8" fill="#6b7280" font-family="'Geist Mono',monospace">修改后重提</text>
+  <!-- 简道云虚线关联 -->
+  <line x1="524" y1="806" x2="636" y2="806" stroke="#4b5563" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+
+  <!-- ===== 左：业务触发容器 ===== -->
+  <rect x="64" y="120" width="224" height="384" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.30)" stroke-width="1"/>
+  <text x="84" y="148" font-size="12" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">业务触发点</text>
+  <text x="268" y="148" font-size="8" fill="#9ca3af" text-anchor="end" font-family="'Geist Mono',monospace">6 类</text>
+
+  <rect x="80" y="168" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="186" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">立项申请</text>
+  <text x="176" y="202" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★① · 尽调通过后提请</text>
+
+  <rect x="80" y="224" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="242" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">投决上会</text>
+  <text x="176" y="258" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★② · 投资人路演认可后</text>
+
+  <rect x="80" y="280" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="298" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">基金注册</text>
+  <text x="176" y="314" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★③ · 出资后基金设立</text>
+
+  <rect x="80" y="336" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="354" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">付款指令</text>
+  <text x="176" y="370" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★④ · 投决通过执行出资</text>
+
+  <rect x="80" y="392" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="410" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">收益分配</text>
+  <text x="176" y="426" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★⑤ · LP 分配明细确认后</text>
+
+  <rect x="80" y="448" width="192" height="44" rx="6" fill="#fafafa" stroke="#111827" stroke-width="1"/>
+  <text x="176" y="466" font-size="11" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">注销申请</text>
+  <text x="176" y="482" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">★⑥ · 清算流程完结前</text>
+
+  <!-- ===== 中：审批主链 ===== -->
+  <rect x="352" y="288" width="240" height="72" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1.2"/>
+  <text x="472" y="316" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">发起审批</text>
+  <text x="472" y="338" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">biz_type 六枚举 · 附业务材料</text>
+
+  <rect x="352" y="432" width="240" height="64" rx="6" fill="#ffffff" stroke="#111827" stroke-width="1"/>
+  <text x="472" y="458" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">审批节点</text>
+  <text x="472" y="478" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">按节点配置审批人 · 逐级流转</text>
+
+  <polygon points="472,556 592,600 472,644 352,600" fill="#ffffff" stroke="#111827" stroke-width="1.2"/>
+  <text x="472" y="604" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">审批结论</text>
+
+  <!-- ===== 右：通过结果 ===== -->
+  <rect x="700" y="572" width="240" height="56" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="820" y="594" font-size="12" font-weight="600" fill="#111827" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">回写业务单据 · 状态推进</text>
+  <text x="820" y="614" font-size="8" fill="#2563eb" text-anchor="middle" font-family="'Geist Mono',monospace">留痕 approval.* · 触达下一流程</text>
+
+  <!-- 右侧说明卡 -->
+  <rect x="700" y="336" width="240" height="176" rx="8" fill="#ffffff" stroke="rgba(17,24,39,0.12)" stroke-width="1"/>
+  <text x="724" y="364" font-size="10" font-weight="600" fill="#111827" font-family="'Geist','PingFang SC',sans-serif">挂接的业务流程</text>
+  <text x="724" y="390" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★① 立项 → D01 图 2</text>
+  <text x="724" y="412" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★② 投决 → D01 图 2</text>
+  <text x="724" y="434" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★③ 注册 → D01 图 2</text>
+  <text x="724" y="456" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★④ 付款 → D01 图 2</text>
+  <text x="724" y="478" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★⑤ 分配 → D01 图 5</text>
+  <text x="724" y="500" font-size="9" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">★⑥ 注销 → D01 图 5</text>
+
+  <!-- ===== 驳回退回块 ===== -->
+  <rect x="372" y="700" width="200" height="48" rx="6" fill="rgba(17,24,39,0.02)" stroke="#111827" stroke-opacity="0.20" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="472" y="720" font-size="11" font-weight="600" fill="#4b5563" text-anchor="middle" font-family="'Geist','PingFang SC',sans-serif">退回发起人</text>
+  <text x="472" y="738" font-size="8" fill="#6b7280" text-anchor="middle" font-family="'Geist Mono',monospace">修改后重新提交</text>
+
+  <!-- ===== 底部：简道云外部块 ===== -->
+  <rect x="64" y="780" width="460" height="52" rx="8" fill="rgba(17,24,39,0.02)" stroke="#111827" stroke-opacity="0.30" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="88" y="802" font-size="11" font-weight="600" fill="#4b5563" font-family="'Geist','PingFang SC',sans-serif">简道云 OA「投资产业」板块嵌入（外部）</text>
+  <text x="88" y="820" font-size="8" fill="#6b7280" font-family="'Geist Mono',monospace">嵌入方式随 V2.0 深化（Q10）· 独立运行时无需 OA</text>
+  <text x="648" y="810" font-size="8" fill="#9ca3af" font-family="'Geist','PingFang SC',sans-serif">审批流可脱离 OA 独立运行</text>
+
+  <!-- ===== Legend ===== -->
+  <line x1="700" y1="668" x2="1088" y2="668" stroke="rgba(17,24,39,0.10)" stroke-width="0.8"/>
+  <text x="700" y="690" font-family="'Geist Mono',monospace" font-size="8" letter-spacing="0.14em" fill="#4b5563">LEGEND</text>
+  <text x="700" y="710" font-family="'Geist Mono',monospace" font-size="9" fill="#4b5563">★①~⑥ = 六类审批触发</text>
+  <text x="700" y="728" font-family="'Geist Mono',monospace" font-size="9" fill="#4b5563">蓝线/蓝框 = 通过路径</text>
+  <text x="700" y="746" font-family="'Geist Mono',monospace" font-size="9" fill="#4b5563">虚线 = 驳回回环 / 外部边界</text>
+</svg>
+</div>
+
+<p class="footer">投资项目管理系统（项目库）· P2-R01-D01 · 图6 · 六节点在线审批 · 2026-08-26</p>
+</body>
+</html>
