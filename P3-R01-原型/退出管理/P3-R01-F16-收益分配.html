@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>项目退出 - 投资项目管理</title>
+<title>收益分配 - 投资项目管理</title>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -85,6 +85,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .stab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
 .stab .cnt { display:inline-block; min-width:18px; height:16px; line-height:16px; text-align:center; padding:0 5px; border-radius:8px; background:#eff1f4; color:var(--text-3); font-size:11px; margin-left:4px; }
 .stab.active .cnt { background:var(--primary-bg); color:var(--primary); }
+.stab.stab-warn .cnt { background:#fff7e6; color:#fa8c16; }
 
 /* ===== 工具行 ===== */
 .toolbar { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
@@ -153,25 +154,50 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
 .btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.3); }
 .btn-primary:hover { background:#4096ff; border-color:#4096ff; box-shadow:0 4px 12px -2px rgba(22,119,255,.4); }
 
-/* ===== 本页增补：项目选择 + 持仓概况 ===== */
-.pick-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-.pick-l { flex:none; font-size:13px; color:rgba(0,0,0,.85); }
-.pick-row .f-select { width:340px; }
-.pick-meta { display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap; }
-.pm { font-size:12px; color:var(--text-2); }
-.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:18px; }
+/* ===== 本页增补：汇总统计 + 主子行 + 明细小表 ===== */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
 .stat { background:#fafbfd; border:1px solid #eef1f5; border-radius:8px; padding:14px 16px; transition:all .16s ease; }
 .stat:hover { border-color:#d6e6ff; background:#f8fbff; }
 .stat-l { font-size:12px; color:var(--text-3); }
-.stat-v { font-size:22px; font-weight:700; color:#1a1a1a; margin-top:4px; line-height:1.2; }
+.stat-v { font-size:20px; font-weight:700; color:#1a1a1a; margin-top:4px; line-height:1.2; }
 .stat-v small { font-size:12px; font-weight:400; color:var(--text-3); margin-left:3px; }
 .stat-s { font-size:11px; color:var(--text-3); margin-top:4px; }
 .num-pos { color:var(--primary); }
-.fr-note { margin-left:auto; font-size:11px; color:var(--text-3); }
-.empty-cell { text-align:center; color:var(--text-3); padding:40px 12px !important; }
+.num-warn { color:var(--warn); }
+.exp-arrow { display:inline-flex; width:16px; height:16px; align-items:center; justify-content:center; color:var(--text-3); cursor:pointer; transition:transform .16s ease; font-size:12px; user-select:none; }
+.exp-arrow:hover { color:var(--primary); }
+.exp-arrow.open { transform:rotate(90deg); }
+tr.sub-row > td { background:#f8fbff !important; padding:0 12px 12px 40px; border-bottom:1px solid #f2f3f5; }
+tr.sub-row:hover > td { background:#f8fbff !important; }
+.lp-table { width:100%; border-collapse:collapse; font-size:12px; background:#f8fbff; border:1px solid #e3edf8; border-radius:6px; }
+.lp-table th { background:#eef6ff; font-weight:600; color:rgba(0,0,0,.85); text-align:left; padding:8px 12px; border-bottom:1px solid #e3edf8; }
+.lp-table td { padding:9px 12px; color:rgba(0,0,0,.85); border-bottom:1px solid #edf3fb; white-space:nowrap; }
+.lp-table tr:last-child td { border-bottom:none; }
+.lp-sub { display:block; font-size:11px; color:var(--text-3); margin-top:1px; }
+.lp-table .ops a { color:var(--primary); cursor:pointer; }
+.lp-table .ops a:hover { text-decoration:underline; }
+/* 弹窗内：来源批次单选 + LP 分配明细 */
+.bat-opt { display:flex; align-items:center; gap:8px; border:1px solid var(--input-border); border-radius:6px; padding:10px 12px; margin-bottom:8px; cursor:pointer; font-size:13px; transition:all .16s ease; }
+.bat-opt:hover { border-color:var(--primary); background:#f8fbff; }
+.bat-opt.on { border-color:var(--primary); background:var(--primary-bg); }
+.bat-opt.dis { cursor:not-allowed; color:var(--text-3); background:#fafafa; }
+.bat-opt .bat-note { color:var(--text-3); font-size:12px; }
+.bat-opt input[type="radio"] { accent-color:var(--primary); cursor:pointer; }
+.bat-opt.dis input[type="radio"] { cursor:not-allowed; }
+.mini-table { width:100%; border-collapse:collapse; font-size:12px; }
+.mini-table th { background:var(--thead-bg); font-weight:600; color:rgba(0,0,0,.85); text-align:left; padding:8px 10px; border:1px solid #e8ecf2; }
+.mini-table td { padding:7px 10px; border:1px solid #e8ecf2; color:rgba(0,0,0,.85); }
+.mini-table tr.total td { background:#fafbfd; font-weight:600; }
+.cell-input { width:110px; box-sizing:border-box; height:28px; border:1px solid var(--input-border); border-radius:6px; padding:0 8px; font-size:12px; font-family:inherit; outline:none; text-align:right; transition:border-color .16s ease, box-shadow .16s ease; }
+.cell-input:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
+.sum-tip { margin-top:8px; font-size:12px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; gap:6px; }
+.sum-tip.ok { color:var(--primary); background:var(--primary-bg); border:1px solid #91caff; }
+.sum-tip.err { color:var(--danger); background:#fff1f0; border:1px solid #ffa39e; }
+.sec-t { font-size:13px; font-weight:600; color:rgba(0,0,0,.85); margin:2px 0 8px; }
+.sec-t .req { color:var(--danger); margin-right:2px; }
 
 /* 金额/数量列右对齐（admin-ui-spec data-table 口径） */
-th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5), th:nth-child(7), td:nth-child(7), th:nth-child(8), td:nth-child(8), th:nth-child(9), td:nth-child(9) { text-align:right; font-variant-numeric:tabular-nums; }
+th:nth-child(3), td:nth-child(3) { text-align:right; font-variant-numeric:tabular-nums; }
 /* end td-num-right */
 </style>
 </head>
@@ -216,10 +242,10 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
         </ul>
       </li>
       <li class="sm-item has-sub open">
-        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出与分配<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+        <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="22"/></svg></span>退出管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link selected">退出项目</div></li>
-          <li><div class="sm-link" onclick="go('P3-R01-F16-收益分配.html')">收益分配</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F23-退出项目.html')">退出项目</div></li>
+          <li><div class="sm-link selected">收益分配</div></li>
           <li><div class="sm-link" onclick="go('P3-R01-F17-清算注销.html')">清算注销</div></li>
         </ul>
       </li>
@@ -259,123 +285,109 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
 
   <div class="main-col">
     <div class="tabs">
-      <span class="tab" onclick="go('P3-R01-F23-退出项目.html')">退出项目 <span class="close">×</span></span>
-      <span class="tab active">项目退出·磐石精密制造 <span class="close">×</span></span>
+      <span class="tab" onclick="go('P3-R01-F15-项目退出.html')">项目退出·磐石精密制造 <span class="close">×</span></span>
+      <span class="tab active">收益分配 <span class="close">×</span></span>
     </div>
 
     <div class="content">
-      <!-- 项目选择 + 持仓概况 -->
+      <!-- 分配汇总 -->
       <div class="card">
-        <div class="pick-row">
-          <label class="pick-l">退出项目</label>
-          <select class="f-select" id="prjSel" onchange="switchPrj(this.value)">
-            <option value="PRJ-2025-0016" selected>磐石精密制造（PRJ-2025-0016 · 已退出）</option>
-            <option value="PRJ-2026-0004">星河航天（PRJ-2026-0004 · ⑨ 出资）</option>
-            <option value="PRJ-2026-0005">云雀教育（PRJ-2026-0005 · ⑩ 投后）</option>
-          </select>
-          <span class="pick-meta" id="prjMeta">
-            <span class="tag tag-blue">已退出</span>
-            <span class="pm">负责人 胡博</span>
-            <span class="pm">基金 FUND-2025-011 深圳磐石一期股权投资合伙企业</span>
-            <span class="tag tag-orange">基金清算中</span>
-          </span>
-        </div>
         <div class="stats">
           <div class="stat">
-            <div class="stat-l">持有份额</div>
-            <div class="stat-v" id="stHold">2,000<small>万份</small></div>
-            <div class="stat-s" id="stHoldS">单位成本 2.00 元/份</div>
+            <div class="stat-l">可分配来源批次</div>
+            <div class="stat-v">BAT-2026-001<small>2,800 万元</small></div>
+            <div class="stat-s">股权转让 · 2026-05-18 完成 · 磐石精密制造</div>
           </div>
           <div class="stat">
-            <div class="stat-l">投资本金</div>
-            <div class="stat-v" id="stCost">4,000<small>万元</small></div>
-            <div class="stat-s" id="stCostS">2,000 万份 × 2.00 元/份</div>
+            <div class="stat-l">进行中分配单</div>
+            <div class="stat-v">1<small>张</small></div>
+            <div class="stat-s">DST-2026-001 · 分配中</div>
           </div>
           <div class="stat">
-            <div class="stat-l">累计回款</div>
-            <div class="stat-v" id="stBack">3,000<small>万元</small></div>
-            <div class="stat-s" id="stBackS">分红 200 万 + 股权转让 2,800 万</div>
+            <div class="stat-l">已付款</div>
+            <div class="stat-v num-pos">1,680<small>万元</small></div>
+            <div class="stat-s">宁波梅山远创 60% · 2026-06-10 凭证已传</div>
           </div>
           <div class="stat">
-            <div class="stat-l">累计收益</div>
-            <div class="stat-v num-pos" id="stGain">1,000<small>万元</small></div>
-            <div class="stat-s" id="stGainS">收益率 25%（对本金 4,000 万元）</div>
+            <div class="stat-l">待付款</div>
+            <div class="stat-v num-warn">1,120<small>万元</small></div>
+            <div class="stat-s">悦达上海 40% · 待登记付款</div>
           </div>
         </div>
-        <div class="f-hint" id="holdHint" style="margin-top:14px;">剩余持仓 1,000 万份（剩余成本 2,000 万元）· 同一项目可分多批次退出，本金按单位成本 2.00 元/份分摊</div>
       </div>
 
-      <!-- 退出批次列表 -->
+      <!-- 分配单列表（主行 + 展开子行） -->
       <div class="card" style="padding:0;">
+        <div class="stabs" id="dstStabs">
+          <span class="stab active" data-f="all">全部<span class="cnt">1</span></span>
+          <span class="stab" data-f="unpaid">待付款<span class="cnt">1</span></span>
+          <span class="stab" data-f="paid">已付款<span class="cnt">1</span></span>
+        </div>
         <div class="toolbar">
-          <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openBatModal()">＋ 登记退出批次</button>
-          <button class="btn btn-default" onclick="go('P3-R01-F16-收益分配.html')">发起收益分配</button>
+          <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openGenModal()">＋ 生成分配单</button>
         </div>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th data-note="1">批次编号</th>
-                <th>退出类型</th>
-                <th>退出价格（元/份）</th>
-                <th>数量（万份）</th>
-                <th>退出金额（万元）</th>
-                <th>退出日期</th>
-                <th>分摊本金（万元）</th>
-                <th>批次收益（万元）</th>
-                <th>批次收益率</th>
+                <th style="width:36px"></th>
+                <th>分配单编号</th>
+                <th>来源批次</th>
+                <th>可分配金额（万元）</th>
                 <th>状态</th>
+                <th>创建时间</th>
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody id="rowsData">
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2025-001 分红 0.10 元/份 × 2,000 万份 = 200 万元，2025-11-20 已完成')">BAT-2025-001</span></td>
-                <td><span class="tag tag-blue">分红</span></td>
-                <td>0.10</td>
-                <td>2,000</td>
-                <td>200</td>
-                <td>2025-11-20</td>
-                <td>0</td>
-                <td class="num-pos">200</td>
-                <td>—</td>
-                <td><span class="tag tag-blue">已完成</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2025-001 分红 0.10 元/份 × 2,000 万份 = 200 万元，2025-11-20 已完成')">查看</a><a onclick="alert('编辑批次：BAT-2025-001')">编辑</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2026-001 股权转让 1,000 万份 × 2.80 元/份 = 2,800 万元，本金回收 2,000 万、批次收益 800 万')">BAT-2026-001</span></td>
-                <td><span class="tag tag-blue">股权转让</span></td>
-                <td>2.80</td>
-                <td>1,000</td>
+            <tbody>
+              <tr class="main-row">
+                <td><span class="exp-arrow open" onclick="toggleSub(this)" title="展开 / 收起">▸</span></td>
+                <td><span class="lk" onclick="alert('分配单详情：DST-2026-001 基于批次 BAT-2026-001（股权转让 2,800 万元），按 LP 出资比例分配：宁波梅山远创 60% = 1,680 万元、悦达上海 40% = 1,120 万元')">DST-2026-001</span></td>
+                <td><span class="lk" onclick="alert('来源批次：BAT-2026-001 股权转让 · 1,000 万份 × 2.80 元/份 = 2,800 万元 · 2026-05-18 完成')">BAT-2026-001</span> · 股权转让</td>
                 <td>2,800</td>
-                <td>2026-05-18</td>
-                <td>2,000</td>
-                <td class="num-pos">800</td>
-                <td>40%</td>
-                <td><span class="tag tag-blue">已完成</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2026-001 股权转让 1,000 万份 × 2.80 元/份 = 2,800 万元，本金回收 2,000 万、批次收益 800 万')">查看</a><a onclick="alert('编辑批次：BAT-2026-001')">编辑</a><a onclick="go('P3-R01-F16-收益分配.html')">收益分配</a></td>
+                <td><span class="tag tag-blue">分配中</span></td>
+                <td>2026-05-25</td>
+                <td class="sticky-op ops"><a onclick="openPay('悦达（上海）资产管理有限公司','1,120 万元')">登记付款</a><a onclick="alert('分配单详情：DST-2026-001 基于批次 BAT-2026-001（股权转让 2,800 万元），按 LP 出资比例分配：宁波梅山远创 60% = 1,680 万元、悦达上海 40% = 1,120 万元')">查看</a></td>
               </tr>
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2026-002 IPO 减持 1,000 万份 × 预计 3.50 元/份 = 预计 3,500 万元，预计 2026-09 窗口执行')">BAT-2026-002</span></td>
-                <td><span class="tag tag-orange">IPO 减持</span></td>
-                <td>预计 3.50</td>
-                <td>1,000</td>
-                <td>预计 3,500</td>
-                <td>预计 2026-09</td>
-                <td>预计 2,000</td>
-                <td class="num-pos">预计 1,500</td>
-                <td>预计 75%</td>
-                <td><span class="tag tag-orange">待执行</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2026-002 IPO 减持 1,000 万份 × 预计 3.50 元/份 = 预计 3,500 万元，预计 2026-09 窗口执行')">查看</a><a onclick="alert('编辑批次：BAT-2026-002')">编辑</a></td>
+              <tr class="sub-row">
+                <td colspan="7">
+                  <table class="lp-table">
+                    <thead>
+                      <tr>
+                        <th>出资主体</th>
+                        <th>出资比例</th>
+                        <th data-note="1">分配金额（万元）</th>
+                        <th>付款状态</th>
+                        <th>付款日期</th>
+                        <th>凭证 / 操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr data-pay="paid">
+                        <td>宁波梅山远创投资合伙企业<span class="lp-sub">LP-A 宁波梅山远见投资有限公司</span></td>
+                        <td>60%</td>
+                        <td class="num-pos">1,680</td>
+                        <td><span class="tag tag-blue">已付款</span></td>
+                        <td>2026-06-10</td>
+                        <td class="ops"><a onclick="alert('付款凭证：付款凭证-宁波梅山远创-20260610.pdf（已上传）')">查看凭证</a></td>
+                      </tr>
+                      <tr data-pay="unpaid">
+                        <td>悦达（上海）资产管理有限公司<span class="lp-sub">LP-B 江苏悦达产业资本</span></td>
+                        <td>40%</td>
+                        <td class="num-pos">1,120</td>
+                        <td><span class="tag tag-orange">待付款</span></td>
+                        <td>—</td>
+                        <td class="ops"><a onclick="openPay('悦达（上海）资产管理有限公司','1,120 万元')">登记付款</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
               </tr>
-            </tbody>
-            <tbody id="rowEmpty" style="display:none;">
-              <tr><td colspan="11" class="empty-cell">该项目尚未登记退出批次 · 进入⑪ 项目退出阶段后可分批次登记</td></tr>
             </tbody>
           </table>
         </div>
         <div class="pager">
-          <span class="pg-info" id="pgInfo">第 1-3 条/总共 3 条</span>
+          <span class="pg-info">第 1-1 条/总共 1 条</span>
           <span class="pg-btn">‹</span>
           <span class="pg-btn cur">1</span>
           <span class="pg-btn">›</span>
@@ -386,129 +398,166 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
   </div>
 </div>
 
-<!-- ===== 弹窗：登记退出批次 ===== -->
-<div class="modal-overlay" id="batModal">
+<!-- ===== 弹窗1：生成分配单 ===== -->
+<div class="modal-overlay" id="genModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">登记退出批次</h3>
-      <span class="modal-close" onclick="closeBatModal()">×</span>
+      <h3 class="modal-title">生成分配单</h3>
+      <span class="modal-close" onclick="closeGenModal()">×</span>
     </div>
     <div class="modal-body">
-      <div class="f-row"><label>退出项目（自动带出）</label>
-        <div class="f-readonly">磐石精密制造<span style="color:#d9d9d9">|</span>持仓 2,000 万份<span style="color:#d9d9d9">|</span>单位成本 2.00 元/份</div>
-      </div>
-      <div class="f-row"><label>退出类型 <span class="req">*</span></label>
-        <select class="f-select" id="exType">
-          <option value="分红">分红</option>
-          <option value="股权转让" selected>股权转让</option>
-          <option value="IPO减持">IPO 减持</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:12px;">
-        <div class="f-row" style="flex:1;"><label>退出价格（元/份）<span class="req">*</span></label>
-          <input class="f-input" id="exPrice" type="number" min="0" step="0.01" placeholder="0.00" oninput="calcExit()">
-        </div>
-        <div class="f-row" style="flex:1;"><label>数量（万份）<span class="req">*</span></label>
-          <input class="f-input" id="exQty" type="number" min="0" step="1" placeholder="0" oninput="calcExit()">
-        </div>
-      </div>
-      <div class="f-row"><label>退出日期 <span class="req">*</span></label>
-        <input class="f-input" id="exDate" type="date" value="2026-08-27">
-      </div>
-      <div class="f-row"><label>备注</label>
-        <textarea class="f-input" rows="2" placeholder="交易对手 / 减持窗口等说明（选填）"></textarea>
-      </div>
-      <div class="f-row"><label>退出金额（自动计算）</label>
-        <div class="f-readonly"><b id="calcAmount">0 万元</b><span class="fr-note">= 退出价格 × 数量</span></div>
-      </div>
-      <div class="f-row"><label>分摊本金（自动计算）</label>
-        <div class="f-readonly"><b id="calcPrincipal">0 万元</b><span class="fr-note">= 数量 × 2.00 元/份</span></div>
-      </div>
-      <div class="f-row" style="margin-bottom:0;"><label>批次收益（自动计算）</label>
-        <div class="f-readonly"><b id="calcGain">0 万元</b><span class="fr-note" id="calcRate">收益率 —</span></div>
-        <div class="f-hint">同一项目可分多批次退出，本金按单位成本 2.00 元/份分摊</div>
+      <div class="sec-t">① 选择来源批次 <span class="req">*</span></div>
+      <label class="bat-opt on" id="batAvail">
+        <input type="radio" name="srcBat" checked>
+        <span><b>BAT-2026-001</b> · 股权转让 · 可分配 <b>2,800 万元</b></span>
+        <span class="bat-note">2026-05-18 完成 · 磐石精密制造</span>
+      </label>
+      <label class="bat-opt dis">
+        <input type="radio" disabled>
+        <span>BAT-2025-001 · 分红 · 200 万元</span>
+        <span class="tag tag-gray">已分配完毕</span>
+      </label>
+      <div class="sec-t" style="margin-top:16px;">② LP 分配明细（按出资比例预填，可调整）</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th>出资主体</th>
+            <th>出资比例</th>
+            <th style="text-align:right;">分配金额（万元）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>宁波梅山远创投资合伙企业</td>
+            <td>60%</td>
+            <td style="text-align:right;"><input class="cell-input" id="amtA" value="1680" oninput="calcSum()"></td>
+          </tr>
+          <tr>
+            <td>悦达（上海）资产管理有限公司</td>
+            <td>40%</td>
+            <td style="text-align:right;"><input class="cell-input" id="amtB" value="1120" oninput="calcSum()"></td>
+          </tr>
+          <tr class="total">
+            <td colspan="2">合计（可分配 2,800 万元）</td>
+            <td style="text-align:right;" id="sumVal">2,800 万元</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="sum-tip ok" id="sumTip">合计与可分配金额一致 ✓</div>
+      <div class="f-row" style="margin:16px 0 0;"><label>③ 备注</label>
+        <textarea class="f-input" rows="2" placeholder="分配说明（选填）"></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-default" onclick="closeBatModal()">取 消</button>
-      <button class="btn btn-primary" onclick="closeBatModal();alert('已登记退出批次')">确认登记</button>
+      <button class="btn btn-default" onclick="closeGenModal()">取 消</button>
+      <button class="btn btn-primary" onclick="closeGenModal();alert('分配单已生成')">生成分配单</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗2：登记付款 ===== -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">登记付款</h3>
+      <span class="modal-close" onclick="closePayModal()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>分配单（自动带出）</label>
+        <div class="f-readonly">DST-2026-001<span style="color:#d9d9d9">|</span>来源批次 BAT-2026-001</div>
+      </div>
+      <div class="f-row"><label>出资主体</label>
+        <div class="f-readonly" id="paySubj">悦达（上海）资产管理有限公司</div>
+      </div>
+      <div class="f-row"><label>应付金额</label>
+        <div class="f-readonly" id="payDue">1,120 万元</div>
+      </div>
+      <div class="f-row"><label>本次付款金额（万元）<span class="req">*</span></label>
+        <input class="f-input" id="payAmt" type="number" min="0" step="0.01" value="1120">
+      </div>
+      <div class="f-row"><label>付款日期 <span class="req">*</span></label>
+        <input class="f-input" id="payDate" type="date" value="2026-08-27">
+      </div>
+      <div class="f-row" style="margin-bottom:0;"><label>付款凭证 <span class="req">*</span></label>
+        <div class="upload-zone" onclick="this.querySelector('input').click()">点击或拖拽上传<span class="up-strong">付款凭证</span>（银行回单 / 收据扫描件）<input type="file" style="display:none"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closePayModal()">取 消</button>
+      <button class="btn btn-primary" onclick="closePayModal();alert('已登记付款')">确认登记</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ===== 业务脚本：项目切换 + 自动计算 ===== */
-var PRJ_DATA = {
-  'PRJ-2025-0016': {
-    hold: '2,000<small>万份</small>', holdS: '单位成本 2.00 元/份',
-    cost: '4,000<small>万元</small>', costS: '2,000 万份 × 2.00 元/份',
-    back: '3,000<small>万元</small>', backS: '分红 200 万 + 股权转让 2,800 万',
-    gain: '1,000<small>万元</small>', gainS: '收益率 25%（对本金 4,000 万元）',
-    hint: '剩余持仓 1,000 万份（剩余成本 2,000 万元）· 同一项目可分多批次退出，本金按单位成本 2.00 元/份分摊',
-    meta: '<span class="tag tag-blue">已退出</span><span class="pm">负责人 胡博</span><span class="pm">基金 FUND-2025-011 深圳磐石一期股权投资合伙企业</span><span class="tag tag-orange">基金清算中</span>',
-    pg: '第 1-3 条/总共 3 条', hasRows: true
-  },
-  'PRJ-2026-0004': {
-    hold: '—', holdS: '未退出，持仓建账于出资完成后',
-    cost: '—', costS: '出资付款审批中',
-    back: '—', backS: '暂无回款',
-    gain: '—', gainS: '暂无收益',
-    hint: '星河航天处于⑨ 出资（付款审批中），尚未进入⑪ 项目退出阶段',
-    meta: '<span class="tag tag-blue">⑨ 出资</span><span class="tag tag-blue">付款审批中</span><span class="pm">负责人 胡博</span><span class="pm">基金 FUND-2026-002 苏州工业园区星河航天投资合伙企业</span><span class="tag tag-blue">存续中</span>',
-    pg: '第 0-0 条/总共 0 条', hasRows: false
-  },
-  'PRJ-2026-0005': {
-    hold: '—', holdS: '未退出，持仓以投后估值入账',
-    cost: '—', costS: '投后管理中',
-    back: '—', backS: '暂无回款',
-    gain: '—', gainS: '暂无收益',
-    hint: '云雀教育处于⑩ 投后管理阶段，尚未进入⑪ 项目退出阶段',
-    meta: '<span class="tag tag-blue">⑩ 投后管理</span><span class="tag tag-blue">投后管理中</span><span class="pm">负责人 华悦</span>',
-    pg: '第 0-0 条/总共 0 条', hasRows: false
-  }
-};
-function switchPrj(v) {
-  var d = PRJ_DATA[v];
-  document.getElementById('stHold').innerHTML = d.hold;
-  document.getElementById('stHoldS').textContent = d.holdS;
-  document.getElementById('stCost').innerHTML = d.cost;
-  document.getElementById('stCostS').textContent = d.costS;
-  document.getElementById('stBack').innerHTML = d.back;
-  document.getElementById('stBackS').textContent = d.backS;
-  document.getElementById('stGain').innerHTML = d.gain;
-  document.getElementById('stGainS').textContent = d.gainS;
-  document.getElementById('holdHint').textContent = d.hint;
-  document.getElementById('prjMeta').innerHTML = d.meta;
-  document.getElementById('rowsData').style.display = d.hasRows ? '' : 'none';
-  document.getElementById('rowEmpty').style.display = d.hasRows ? 'none' : '';
-  document.getElementById('pgInfo').textContent = d.pg;
+/* ===== 业务脚本：子行展开 + 状态页签过滤 + 合计校验 + 登记付款 ===== */
+function toggleSub(el) {
+  var sub = el.closest('tr').nextElementSibling;
+  var collapsed = sub.style.display === 'none';
+  sub.style.display = collapsed ? '' : 'none';
+  el.classList.toggle('open', collapsed);
 }
+document.querySelectorAll('#dstStabs .stab').forEach(function (s) {
+  s.addEventListener('click', function () {
+    document.querySelectorAll('#dstStabs .stab').forEach(function (x) { x.classList.remove('active'); });
+    s.classList.add('active');
+    var f = s.dataset.f;
+    /* 切换页签时自动展开分配单子行，并按子行付款状态过滤（全部=恢复） */
+    document.querySelectorAll('tr.main-row').forEach(function (m) {
+      var sub = m.nextElementSibling;
+      if (!sub || !sub.classList.contains('sub-row')) return;
+      sub.style.display = '';
+      var arrow = m.querySelector('.exp-arrow');
+      if (arrow) arrow.classList.add('open');
+    });
+    document.querySelectorAll('.lp-table tbody tr[data-pay]').forEach(function (r) {
+      r.style.display = (f === 'all' || r.dataset.pay === f) ? '' : 'none';
+    });
+  });
+});
+var DISTRIBUTABLE = 2800;
 function fmtWan(n) {
   var v = Math.round(n * 100) / 100;
   return v.toLocaleString('zh-CN', { maximumFractionDigits: 2 }) + ' 万元';
 }
-function calcExit() {
-  var price = parseFloat(document.getElementById('exPrice').value) || 0;
-  var qty = parseFloat(document.getElementById('exQty').value) || 0;
-  var amount = price * qty;
-  var principal = qty * 2.00;
-  var gain = amount - principal;
-  document.getElementById('calcAmount').textContent = fmtWan(amount);
-  document.getElementById('calcPrincipal').textContent = fmtWan(principal);
-  var gainEl = document.getElementById('calcGain');
-  gainEl.textContent = fmtWan(gain);
-  gainEl.style.color = gain < 0 ? 'var(--danger)' : '';
-  document.getElementById('calcRate').textContent = principal > 0 ? '收益率 ' + (gain / principal * 100).toFixed(1) + '%' : '收益率 —';
+function calcSum() {
+  var a = parseFloat(document.getElementById('amtA').value) || 0;
+  var b = parseFloat(document.getElementById('amtB').value) || 0;
+  var sum = a + b;
+  document.getElementById('sumVal').textContent = fmtWan(sum);
+  var tip = document.getElementById('sumTip');
+  var diff = Math.round((sum - DISTRIBUTABLE) * 100) / 100;
+  if (Math.abs(diff) < 0.005) {
+    tip.className = 'sum-tip ok';
+    tip.textContent = '合计与可分配金额一致 ✓';
+  } else {
+    tip.className = 'sum-tip err';
+    tip.textContent = '合计与可分配金额相差 ' + fmtWan(Math.abs(diff)) + '，请调整';
+  }
 }
-function openBatModal() {
-  document.getElementById('exPrice').value = '';
-  document.getElementById('exQty').value = '';
-  calcExit();
-  document.getElementById('batModal').classList.add('show');
+function openGenModal() {
+  document.getElementById('amtA').value = '1680';
+  document.getElementById('amtB').value = '1120';
+  calcSum();
+  document.getElementById('genModal').classList.add('show');
 }
-function closeBatModal() { document.getElementById('batModal').classList.remove('show'); }
-document.getElementById('batModal').addEventListener('click', function (e) { if (e.target === this) closeBatModal(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBatModal(); });
+function closeGenModal() { document.getElementById('genModal').classList.remove('show'); }
+document.getElementById('genModal').addEventListener('click', function (e) { if (e.target === this) closeGenModal(); });
+document.querySelectorAll('input[name="srcBat"]').forEach(function (r) {
+  r.addEventListener('change', function () {
+    document.getElementById('batAvail').classList.add('on');
+  });
+});
+function openPay(subj, due) {
+  document.getElementById('paySubj').textContent = subj;
+  document.getElementById('payDue').textContent = due;
+  document.getElementById('payAmt').value = due.replace(/[^\d.]/g, '');
+  document.getElementById('payDate').value = '2026-08-27';
+  document.getElementById('payModal').classList.add('show');
+}
+function closePayModal() { document.getElementById('payModal').classList.remove('show'); }
+document.getElementById('payModal').addEventListener('click', function (e) { if (e.target === this) closePayModal(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeGenModal(); closePayModal(); } });
 </script>
 
 <script>
@@ -549,7 +598,7 @@ body.proto-notes-on .proto-pin.pn-open{display:block}
 body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 .pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
 </style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>批次→分配链路</div><div class="pnp-d">批次完成回款后，按基金 LP 出资比例生成收益分配单（F16）；<br>同一项目可分多批次退出，本金按单位成本分摊。</div><div class="pnp-b"><span class="pnp-tag">P15 · 项目退出</span></div><div class="pnp-src"><div class="src-item"><b>P15 项目退出</b>：分批次退出：分红/股权转让/IPO 减持，收益自动算</div></div></div>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>分配单规则</div><div class="pnp-d">分配金额按 LP 出资比例预填、可调整，合计须与可分配金额一致（差额校验拦截）；<br>登记付款需上传付款凭证（银行回单/收据扫描件）。</div><div class="pnp-b"><span class="pnp-tag">P16 · 收益分配</span></div><div class="pnp-src"><div class="src-item"><b>P16 收益分配</b>：按 LP 出资比例生成分配单 + 登记付款</div></div></div>
 <div class="pn-fab" id="protoNotesFab">标注</div></div>
 <script id="proto-notes-js">
 (function(){
