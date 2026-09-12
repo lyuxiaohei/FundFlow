@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录 - 投资项目管理</title>
+<style>
+:root {
+  --primary:#1677ff; --primary-bg:#e6f4ff; --page-bg:#f3f5f9; --border:#f0f0f0;
+  --input-border:#d9d9d9; --text:#262626; --text-2:#595959; --text-3:#8c8c8c;
+  --danger:#ff4d4f; --primary-hover:#4096ff;
+  --shadow-card:0 1px 2px rgba(16,24,40,.04),0 6px 20px -6px rgba(16,24,40,.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif; background:var(--page-bg); color:var(--text);
+  min-height:100vh; display:flex; flex-direction:column; }
+.login-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+.login-card { width:400px; background:#fff; border:1px solid var(--border); border-radius:8px;
+  box-shadow:var(--shadow-card); padding:36px 36px 28px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.brand .logo { width:34px; height:34px; border-radius:8px; background:var(--primary); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; }
+.brand h1 { font-size:20px; font-weight:600; letter-spacing:.5px; }
+.sub { color:var(--text-3); font-size:12px; margin-bottom:26px; }
+.f-row { margin-bottom:16px; }
+.f-row label { display:block; font-size:13px; color:var(--text-2); margin-bottom:6px; }
+.f-row input, .f-row select { width:100%; height:38px; border:1px solid var(--input-border); border-radius:6px;
+  padding:0 12px; font-size:14px; color:var(--text); background:#fff; outline:none; }
+.f-row input:focus, .f-row select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.12); }
+.btn-login { width:100%; height:40px; margin-top:6px; background:var(--primary); color:#fff; border:none;
+  border-radius:6px; font-size:15px; font-weight:600; cursor:pointer; letter-spacing:6px; }
+.btn-login:hover { background:var(--primary-hover); }
+.hint { margin-top:14px; font-size:12px; color:var(--text-3); line-height:1.7; }
+.login-foot { text-align:center; padding:14px; font-size:12px; color:var(--text-3);
+  border-top:1px solid var(--border); background:#fff; }
+</style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="brand">
+        <div class="logo">投</div>
+        <h1>投资项目管理</h1>
+      </div>
+      <div class="sub">私募股权基金管理人（GP）自用 · 募投管退全流程</div>
+      <div class="f-row">
+        <label>账号</label>
+        <input id="acc" type="text" value="吕道远" placeholder="请输入账号">
+      </div>
+      <div class="f-row">
+        <label>密码</label>
+        <input id="pwd" type="password" value="demo1234" placeholder="请输入密码">
+      </div>
+      <div class="f-row">
+        <label>登录角色</label>
+        <select id="role">
+          <option>超级管理员</option>
+          <option>投资经理</option>
+          <option>投后专员</option>
+          <option>只读</option>
+        </select>
+      </div>
+      <button class="btn-login" onclick="doLogin()">登 录</button>
+      <div class="hint">演示原型：账号/密码为示例预填，角色对应系统管理·角色权限（F21）；点击「登 录」进入工作台（F00）。</div>
+    </div>
+  </div>
+  <div class="login-foot">投资项目管理 · 高保真原型（数据为演示示例） · file:// 直开</div>
+<script>
+function go(url) { location.href = url; }
+function doLogin() {
+  var acc = document.getElementById('acc').value.trim();
+  var pwd = document.getElementById('pwd').value.trim();
+  if (!acc) { alert('请输入账号'); return; }
+  if (!pwd) { alert('请输入密码'); return; }
+  go('P3-R01-F00-工作台.html');
+}
+</script>
+</body>
+</html>
