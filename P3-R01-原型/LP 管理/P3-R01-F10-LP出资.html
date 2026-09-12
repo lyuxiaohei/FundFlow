@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>投后事项 - 投资项目管理</title>
+<title>LP 出资 - 投资项目管理</title>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -79,22 +79,12 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .card { background:#fff; border-radius:10px; padding:20px 24px; margin-bottom:20px; border:1px solid #eceff3; box-shadow:var(--shadow-card); }
 
 /* ===== 筛选区 ===== */
-.filter { padding:16px 16px 6px; }
-.fgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px 16px; }
 .fi { display:flex; align-items:center; min-width:0; }
 .fi label { flex:none; width:96px; text-align:right; margin-right:8px; font-size:12px; color:rgba(0,0,0,.85); white-space:nowrap; }
-.ctl { flex:1; min-width:0; height:30px; border:1px solid var(--input-border); border-radius:6px; display:flex; align-items:center; padding:0 8px; background:#fff; font-size:12px; transition:border-color .16s ease, box-shadow .16s ease; }
-.ctl input { flex:1; min-width:0; border:none; outline:none; font-size:12px; font-family:inherit; color:rgba(0,0,0,.85); background:transparent; }
-.ctl input::placeholder { color:var(--placeholder); }
+.ctl { min-width:0; height:30px; border:1px solid var(--input-border); border-radius:6px; display:flex; align-items:center; padding:0 8px; background:#fff; font-size:12px; transition:border-color .16s ease, box-shadow .16s ease; }
 .ctl:hover { border-color:var(--primary-hover); }
 .ctl:focus-within { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
-.ctl.sel { justify-content:space-between; cursor:pointer; }
-.ctl.sel .v.ph { color:var(--placeholder); }
-.ctl.sel svg { width:12px; height:12px; color:rgba(0,0,0,.35); flex:none; }
-.ctl.range { gap:6px; }
-.ctl.range .sep { color:rgba(0,0,0,.45); flex:none; }
-.ctl select { flex:1; min-width:0; border:none; outline:none; background:transparent; font-size:12px; font-family:inherit; color:rgba(0,0,0,.85); height:28px; cursor:pointer; }
-.fbtns { display:flex; align-items:center; gap:8px; padding-bottom:10px; }
+.cb { width:13px; height:13px; accent-color:var(--primary); cursor:pointer; vertical-align:middle; }
 .link-btn { border:none; background:none; color:var(--primary); font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; font-family:inherit; padding:0 4px; transition:color .16s ease; }
 .link-btn:hover { color:var(--primary-hover); }
 .btn { height:30px; padding:0 15px; border-radius:6px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:4px; transition:all .16s ease; }
@@ -103,18 +93,60 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .btn-primary { border:1px solid var(--primary); background:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.3); }
 .btn-primary:hover { background:#4096ff; border-color:#4096ff; box-shadow:0 4px 12px -2px rgba(22,119,255,.4); }
 
+/* ===== 汇总卡 ===== */
+.sum-card { display:flex; align-items:center; gap:40px; padding:18px 28px; flex-wrap:wrap; }
+.sum-item { min-width:120px; }
+.sum-item .k { font-size:12px; color:var(--text-3); }
+.sum-item .v { font-size:20px; font-weight:700; color:var(--text); line-height:1.3; }
+.sum-item .v small { font-size:12px; font-weight:400; color:var(--text-2); margin-left:2px; }
+.sum-item .v.blue { color:var(--primary); }
+.prog-wrap { flex:1; min-width:220px; }
+.prog-label { display:flex; justify-content:space-between; font-size:12px; color:var(--text-3); margin-bottom:6px; }
+.prog-label b { color:var(--primary); font-size:13px; }
+.prog-bar { height:8px; background:#eef1f5; border-radius:4px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,#4096ff,#1677ff); transition:width .3s ease; }
+
+/* ===== 状态页签 ===== */
+.stabs { display:flex; padding:10px 16px 0; border-bottom:1px solid var(--border); gap:24px; background:#fff; }
+.stab { padding:0 2px 10px; font-size:13px; color:rgba(0,0,0,.65); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; user-select:none; transition:color .16s ease; }
+.stab:hover { color:var(--primary); }
+.stab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+.stab .cnt { display:inline-block; min-width:18px; height:16px; line-height:16px; text-align:center; padding:0 5px; border-radius:8px; background:#eff1f4; color:var(--text-3); font-size:11px; margin-left:4px; }
+.stab.active .cnt { background:var(--primary-bg); color:var(--primary); }
+
 /* ===== 工具行 ===== */
 .toolbar { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
 .toolbar .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
 
-/* ===== 标签 ===== */
+/* ===== 表格 ===== */
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+thead th { background:var(--thead-bg); font-weight:600; color:rgba(0,0,0,.85); text-align:left; padding:11px 12px; border-bottom:1px solid #e8e8e8; }
+tbody td { padding:10px 12px; border-bottom:1px solid #f2f3f5; color:rgba(0,0,0,.85); transition:background .16s ease; }
+tbody tr:hover td { background:#f5faff; }
+th.sticky-op, td.sticky-op { position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -6px rgba(0,0,0,.12); }
+thead th.sticky-op { background:var(--thead-bg); }
+tbody tr:hover td.sticky-op { background:#f5faff; }
+.lk { color:var(--primary); cursor:pointer; }
+.lk:hover { text-decoration:underline; }
+.ops a { color:var(--primary); cursor:pointer; margin-right:10px; }
+.ops a:hover { text-decoration:underline; }
+.ops a:last-child { margin-right:0; }
 .tag { display:inline-block; padding:0 9px; height:22px; line-height:20px; font-size:12px; border-radius:11px; border:1px solid transparent; font-weight:500; }
 .tag-orange { color:#fa8c16; background:#fff7e6; border-color:#ffd591; }
 .tag-blue { color:var(--primary); background:var(--primary-bg); border-color:#91caff; }
 .tag-gray { color:#8c8c8c; background:#fafafa; border-color:#e8e8e8; }
 .tag-red { color:var(--danger); background:#fff1f0; border-color:#ffa39e; }
-.lk { color:var(--primary); cursor:pointer; }
-.lk:hover { text-decoration:underline; }
+.subject-badge { display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:4px; font-size:12px; font-weight:600; }
+.subject-lp { color:var(--danger); background:#fff1f0; border:1px solid #ffa39e; }
+.cn-sub { display:block; font-size:11px; color:var(--text-3); line-height:1.4; margin-top:2px; }
+
+/* ===== 分页器 ===== */
+.pager { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:14px 16px; font-size:12px; color:rgba(0,0,0,.85); flex-wrap:wrap; }
+.pg-info { margin-right:8px; }
+.pg-btn { min-width:30px; height:30px; padding:0 6px; border:1px solid var(--input-border); border-radius:6px; background:#fff; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(0,0,0,.85); font-size:12px; user-select:none; transition:all .16s ease; }
+.pg-btn:hover { color:var(--primary); border-color:var(--primary); }
+.pg-btn.cur { background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 2px 6px -1px rgba(22,119,255,.35); }
 
 /* ===== 弹窗 ===== */
 .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,.5); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:1000; }
@@ -136,42 +168,22 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .f-row label .req { color:var(--danger); margin-right:2px; }
 .f-input { width:100%; box-sizing:border-box; height:32px; border:1px solid var(--input-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; outline:none; transition:border-color .16s ease, box-shadow .16s ease; }
 .f-input:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
-.f-readonly { background:#fafafa; border:1px solid var(--border); border-radius:4px; padding:7px 10px; font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:8px; }
+.f-input:disabled { background:#f5f5f5; color:var(--text-2); cursor:not-allowed; }
 textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
+.f-readonly { background:#fafafa; border:1px solid var(--border); border-radius:4px; padding:7px 10px; font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:8px; }
 .f-select { width:100%; height:32px; border:1px solid var(--input-border); border-radius:6px; padding:0 8px; font-size:13px; font-family:inherit; outline:none; background:#fff; color:var(--text); transition:border-color .16s ease, box-shadow .16s ease; }
 .f-select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.1); }
 .f-hint { font-size:12px; color:var(--text-3); margin-top:4px; }
 .upload-zone { border:1px dashed var(--input-border); border-radius:8px; padding:22px 16px; text-align:center; color:var(--text-3); font-size:13px; cursor:pointer; background:#fafbfd; transition:all .16s ease; }
 .upload-zone:hover { border-color:var(--primary); color:var(--primary); background:#f0f7ff; }
+.upload-zone .up-strong { color:var(--primary); }
+.cn-out { margin-top:8px; font-size:13px; color:var(--text-2); background:#f8fbff; border:1px solid #e6f4ff; border-radius:4px; padding:7px 10px; }
+.cn-out.ok { color:var(--primary); font-weight:600; }
+.cn-out.bad { color:var(--danger); background:#fff1f0; border-color:#ffa39e; font-weight:500; }
 
-/* ===== 本页：项目摘要条 ===== */
-.prj-strip { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:16px; border-bottom:1px solid var(--border); }
-.prj-strip h3 { margin:0; font-size:16px; font-weight:700; letter-spacing:.3px; }
-.prj-no { color:var(--text-3); font-size:12px; font-family:ui-monospace,monospace; background:#f0f2f5; border-radius:4px; padding:2px 8px; }
-.prj-strip .strip-meta { font-size:12px; color:var(--text-3); }
-
-/* ===== 本页：投后事件时间线（rail.feed 圆点样式 · 全宽主区放大版） ===== */
-.tl-tools { display:flex; align-items:center; gap:10px; padding:14px 16px 0; flex-wrap:wrap; }
-.tl-tools .tip { font-size:12px; color:var(--text-3); margin-left:auto; }
-.feed { margin-top:6px; padding:18px 16px 8px; }
-.feed-item { position:relative; padding:0 0 18px 30px; }
-.feed-item:last-child { padding-bottom:10px; }
-.feed-item::before { content:''; position:absolute; left:7px; top:20px; bottom:-2px; width:2px; background:#e8ebf0; }
-.feed-item:last-child::before { display:none; }
-.feed-dot { position:absolute; left:0; top:3px; box-sizing:border-box; width:16px; height:16px; border-radius:50%; background:#fff; border:2px solid #91caff; transition:all .16s ease; }
-.feed-item.cur .feed-dot { background:var(--primary); border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-bg); }
-.feed-card { background:#fff; border:1px solid #e9edf2; border-radius:8px; padding:12px 16px; min-width:0; box-shadow:var(--shadow-sm); transition:all .16s ease; }
-.feed-card:hover { border-color:#c4dcff; box-shadow:0 2px 10px -2px rgba(22,119,255,.14); }
-.feed-item.cur .feed-card { background:var(--primary-bg); border-color:#91caff; }
-.feed-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-.feed-title b { font-size:14px; }
-.feed-desc { font-size:13px; color:var(--text-2); margin-top:6px; }
-.feed-meta { font-size:12px; color:var(--text-3); margin-top:6px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-.feed-meta .who { display:inline-flex; align-items:center; gap:4px; }
-.feed-att { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:var(--primary); cursor:pointer; }
-.feed-att:hover { text-decoration:underline; }
-.feed-att svg { flex:none; }
-.feed-empty { border:1px dashed #dce2ea; border-radius:8px; padding:36px 16px; text-align:center; color:var(--text-3); font-size:13px; background:#fafbfd; margin:18px 16px; }
+/* 金额/数量列右对齐（admin-ui-spec data-table 口径） */
+th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5), th:nth-child(6), td:nth-child(6) { text-align:right; font-variant-numeric:tabular-nums; }
+/* end td-num-right */
 </style>
 </head>
 <body>
@@ -198,20 +210,20 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <li class="sm-item">
         <div class="sm-link" onclick="go('../基金管理/P3-R01-F07-基金列表.html')"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>基金管理</div>
       </li>
-      <li class="sm-item has-sub">
+      <li class="sm-item has-sub open">
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F09-LP台账.html')">LP 台账</div></li>
+          <li><div class="sm-link selected">LP 出资</div></li>
         </ul>
       </li>
-      <li class="sm-item has-sub open">
+      <li class="sm-item has-sub">
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>投后管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link selected">投后项目</div></li>
-          <li><div class="sm-link" onclick="go('P3-R01-F12-报告归档.html')">报告归档</div></li>
-          <li><div class="sm-link" onclick="go('P3-R01-F13-风险预警.html')">风险预警</div></li>
-          <li><div class="sm-link" onclick="go('P3-R01-F14-提醒中心.html')">提醒中心</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F22-投后项目.html')">投后项目</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F12-报告归档.html')">报告归档</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F13-风险预警.html')">风险预警</div></li>
+          <li><div class="sm-link" onclick="go('../投后管理/P3-R01-F14-提醒中心.html')">提醒中心</div></li>
         </ul>
       </li>
       <li class="sm-item has-sub">
@@ -261,202 +273,309 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
 
   <div class="main-col">
     <div class="tabs">
-      <span class="tab" onclick="go(\'P3-R01-F22-投后项目.html\')">投后项目 <span class="close">×</span></span>
-      <span class="tab active">投后事项 · 云雀教育 <span class="close">×</span></span>
+      <span class="tab" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">星河航天基金·详情 <span class="close">×</span></span>
+      <span class="tab active">LP 出资 <span class="close">×</span></span>
     </div>
 
     <div class="content">
-      <!-- 筛选：项目选择 + 事件类型 + 发生时间 -->
-      <div class="card filter">
-        <div class="fgrid">
-          <div class="fi"><label>投后项目：</label>
-            <div class="ctl" id="prjCtl">
-              <select id="prjSelect" onchange="onPrjChange(this.value)">
-                <option value="yunke" selected>云雀教育 · PRJ-2026-0005</option>
-                <option value="xinghe">星河航天 · PRJ-2026-0004</option>
-                <option value="panshi">磐石精密制造 · PRJ-2025-0016</option>
-              </select>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;color:rgba(0,0,0,.35);flex:none;"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
+      <!-- 基金选择卡 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="fi"><label>所属基金：</label>
+            <select class="ctl" id="fundSel" style="min-width:480px;height:32px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">
+              <option value="f002" selected>FUND-2026-002 苏州工业园区星河航天投资合伙企业（有限合伙）</option>
+              <option value="f003">FUND-2026-003 杭州云雀教育创业投资合伙企业（有限合伙）</option>
+              <option value="f011">FUND-2025-011 深圳磐石一期股权投资合伙企业（有限合伙）</option>
+            </select>
           </div>
-          <div class="fi"><label>事件类型：</label>
-            <div class="ctl sel"><span class="v">全部</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-          </div>
-          <div class="fi"><label>发生时间：</label>
-            <div class="ctl range"><input placeholder="开始日期"><span class="sep">~</span><input placeholder="结束日期"></div>
-          </div>
-          <div class="fi" style="justify-content:flex-end;">
-            <div class="fbtns">
-              <button class="btn btn-default">重置</button>
-              <button class="btn btn-primary">查询</button>
-            </div>
-          </div>
+          <button class="btn btn-primary" onclick="switchFund(document.getElementById('fundSel').value)">查询</button>
+          <span style="font-size:12px;color:var(--text-3);">按基金查看出资与实缴情况</span>
+          <button class="link-btn" style="margin-left:auto;" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">返回基金详情 ›</button>
         </div>
       </div>
 
-      <!-- 时间线主卡 -->
+      <!-- 汇总卡 -->
+      <div class="card sum-card">
+        <div class="sum-item"><div class="k">认缴总额</div><div class="v" id="sumCommit">8,000<small>万元</small></div></div>
+        <div class="sum-item"><div class="k">实缴总额</div><div class="v blue" id="sumPaid">4,000<small>万元</small></div></div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span>实缴进度</span><b id="sumPct">50%</b></div>
+          <div class="prog-bar"><div class="prog-fill" id="sumBar" style="width:50%;"></div></div>
+        </div>
+        <div class="sum-item"><div class="k">出资主体</div><div class="v" id="sumSubs">2<small>个</small></div></div>
+      </div>
+
+      <!-- 列表卡片 -->
       <div class="card" style="padding:0;">
-        <div class="prj-strip">
-          <h3 id="stripName">云雀教育（职业教育平台）</h3>
-          <span class="prj-no" id="stripNo">PRJ-2026-0005</span>
-          <span id="stripTags"><span class="tag tag-blue">⑩ 投后管理中</span><span class="tag tag-blue">投后 128 天</span></span>
-          <span class="strip-meta" id="stripMeta">投后负责人：华悦 · A 轮 · 对应基金 FUND-2026-003（存续中）</span>
+        <div class="stabs">
+          <span class="stab active">全部<span class="cnt" id="cntAll">2</span></span>
+          <span class="stab">实缴中<span class="cnt" id="cntDoing">2</span></span>
+          <span class="stab">已缴足<span class="cnt" id="cntDone">0</span></span>
         </div>
-        <div class="tl-tools">
-          <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openEvModal()">＋ 新增事件</button>
-          <span class="tip">共 6 条投后事件 · 按发生时间倒序</span>
+        <div class="toolbar">
+          <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openNewCap()">＋ 新增出资记录</button>
+          <button class="btn btn-default">批量导出</button>
         </div>
-
-        <!-- 云雀教育 · 投后事件时间线 -->
-        <div class="feed" id="feedYunke">
-          <div class="feed-item cur">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>半年度经营访谈</b><span class="tag tag-gray">访谈纪要</span></div>
-              <div class="feed-desc">校区扩张至 12 城，在读学员 2.1 万，现金流转正</div>
-              <div class="feed-meta">
-                <span>2026-08-15</span>
-                <span class="who">记录人：华悦</span>
-              </div>
-            </div>
-          </div>
-          <div class="feed-item">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>CFO 变更</b><span class="tag tag-orange">重大经营变动</span></div>
-              <div class="feed-desc">原 CFO 因个人原因离任，新 CFO 8 月到岗</div>
-              <div class="feed-meta">
-                <span>2026-07-30</span>
-                <span class="who">记录人：华悦</span>
-              </div>
-            </div>
-          </div>
-          <div class="feed-item">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>年度预算调整</b><span class="tag tag-blue">董事会决议</span></div>
-              <div class="feed-desc">营销预算下调 15%，转投课程研发</div>
-              <div class="feed-meta">
-                <span>2026-06-28</span>
-                <span class="who">记录人：吕道远</span>
-                <span class="feed-att" onclick="alert('打开附件：董事会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>董事会决议.pdf</span>
-              </div>
-            </div>
-          </div>
-          <div class="feed-item">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>2025 年度分红方案</b><span class="tag tag-blue">股东会决议</span></div>
-              <div class="feed-desc">暂不分红，留存支持扩张</div>
-              <div class="feed-meta">
-                <span>2026-05-20</span>
-                <span class="who">记录人：吕道远</span>
-                <span class="feed-att" onclick="alert('打开附件：股东会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>股东会决议.pdf</span>
-              </div>
-            </div>
-          </div>
-          <div class="feed-item">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>一季度经营访谈</b><span class="tag tag-gray">访谈纪要</span></div>
-              <div class="feed-desc">退费率 3.2%，续费率 71%</div>
-              <div class="feed-meta">
-                <span>2026-03-10</span>
-                <span class="who">记录人：华悦</span>
-              </div>
-            </div>
-          </div>
-          <div class="feed-item">
-            <span class="feed-dot"></span>
-            <div class="feed-card">
-              <div class="feed-title"><b>投后季度例会启动</b><span class="tag tag-gray">其他</span></div>
-              <div class="feed-meta">
-                <span>2026-01-05</span>
-                <span class="who">记录人：华悦</span>
-              </div>
-            </div>
-          </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>出资编号</th>
+                <th>出资主体</th>
+                <th>所属 LP</th>
+                <th>认缴金额</th>
+                <th>实缴金额</th>
+                <th>出资比例</th>
+                <th>最近实缴时间</th>
+                <th>状态</th>
+                <th class="sticky-op">操作</th>
+              </tr>
+            </thead>
+            <tbody id="capBody"></tbody>
+          </table>
         </div>
-
-        <!-- 星河航天 · 暂无投后事件 -->
-        <div class="feed-empty" id="feedXinghe" style="display:none;">星河航天处于「⑨ 出资 · 付款审批中」，出资完成后开始记录投后事件</div>
-        <!-- 磐石精密制造 · 暂无投后事件 -->
-        <div class="feed-empty" id="feedPanshi" style="display:none;">磐石精密制造已退出，投后事件已随项目转入归档</div>
+        <div class="pager">
+          <span class="pg-info" id="pgInfo">第 1-2 条/总共 2 条</span>
+          <span class="pg-btn">‹</span>
+          <span class="pg-btn cur">1</span>
+          <span class="pg-btn">›</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== 弹窗：新增投后事件 ===== -->
-<div class="modal-overlay" id="evModal">
+<!-- ===== 弹窗1：新增出资记录（认缴登记） ===== -->
+<div class="modal-overlay" id="newCapModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">新增投后事件</h3>
-      <span class="modal-close" onclick="closeEvModal()">×</span>
+      <h3 class="modal-title" data-note="1">新增出资记录</h3>
+      <span class="modal-close" onclick="closeNewCap()">×</span>
     </div>
     <div class="modal-body">
-      <div class="f-row"><label>项目（当前选中）</label>
-        <div class="f-readonly"><span id="evPrj">云雀教育（职业教育平台）</span><span style="color:#d9d9d9">|</span><span id="evPrjNo">PRJ-2026-0005</span></div>
+      <div class="f-row"><label>所属基金（自动带出）</label>
+        <div class="f-readonly"><span id="ncFund">—</span></div>
       </div>
-      <div class="f-row" data-note="1"><label>事件类型 <span class="req">*</span></label>
-        <select class="f-select" id="evType">
-          <option>股东会决议</option>
-          <option>董事会决议</option>
-          <option>重大经营变动</option>
-          <option selected>访谈纪要</option>
-          <option>其他</option>
+      <div class="f-row"><label>出资主体 <span class="req">*</span></label>
+        <select class="f-select">
+          <option value="">请选择 LP 出资主体</option>
+          <optgroup label="LP-001 宁波梅山远见投资有限公司（已认定）">
+            <option>宁波梅山远创投资合伙企业（有限合伙）</option>
+            <option>青岛远见产业投资有限公司</option>
+          </optgroup>
+          <optgroup label="LP-002 江苏悦达产业资本管理有限公司（已认定）">
+            <option>悦达（上海）资产管理有限公司</option>
+          </optgroup>
+          <optgroup label="LP-003 北京华金控股集团有限公司（待认定，不可选）">
+            <option disabled>华金（宁波梅山）股权投资有限公司 — LP 待认定</option>
+            <option disabled>华金（青岛）投资合伙企业（有限合伙） — LP 待认定</option>
+            <option disabled>深圳华金创投合伙企业（有限合伙） — LP 待认定</option>
+          </optgroup>
+          <optgroup label="LP-004 杭州鼎晖科创投资有限公司（待认定，不可选）">
+            <option disabled>鼎晖科创（杭州）合伙企业（有限合伙） — LP 待认定</option>
+          </optgroup>
         </select>
+        <div class="f-hint">合格投资者认定通过后其主体方可认缴出资</div>
       </div>
-      <div class="f-row"><label>发生时间 <span class="req">*</span></label>
-        <input class="f-input" type="date" value="2026-08-27">
+      <div class="f-row"><label>认缴金额（元）<span class="req">*</span></label>
+        <input class="f-input" type="number" id="commitInput" placeholder="例：48000000">
+        <div class="cn-out" id="commitOut">输入数字金额后实时显示中文大写，如 48,000,000 → 肆仟捌佰万元</div>
       </div>
-      <div class="f-row"><label>事件标题 <span class="req">*</span></label>
-        <input class="f-input" placeholder="如：半年度经营访谈 / CFO 变更">
+      <div class="f-row"><label>出资比例（%）</label>
+        <input class="f-input" placeholder="如：60">
       </div>
-      <div class="f-row"><label>事件详情</label>
-        <textarea class="f-input" rows="3" placeholder="决议结论 / 访谈要点 / 变动说明"></textarea>
-      </div>
-      <div class="f-row" style="margin-bottom:0;"><label>附件（选填）</label>
-        <div class="upload-zone" onclick="this.querySelector('input').click()">点击或拖拽上传附件（决议扫描件 / 访谈纪要）<input type="file" style="display:none"></div>
+      <div class="f-row"><label>备注</label>
+        <textarea class="f-input" rows="2" placeholder="备注说明（选填）"></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-default" onclick="closeEvModal()">取 消</button>
-      <button class="btn btn-primary" onclick="closeEvModal();alert('已记录投后事件')">确认记录</button>
+      <button class="btn btn-default" onclick="closeNewCap()">取 消</button>
+      <button class="btn btn-primary" onclick="closeNewCap();alert('已登记认缴')">确认登记认缴</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 弹窗2：登记实缴 ===== -->
+<div class="modal-overlay" id="paidModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">登记实缴</h3>
+      <span class="modal-close" onclick="closePaid()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>出资主体（自动带出）</label>
+        <div class="f-readonly"><span id="pdSub">—</span><span id="pdLp" class="subject-badge subject-lp" style="margin-left:auto;">LP</span></div>
+      </div>
+      <div class="f-row"><label>本次实缴金额（元）<span class="req">*</span></label>
+        <input class="f-input" type="number" id="paidInput" placeholder="例：24000000">
+        <div class="cn-out" id="paidOut">输入数字金额后实时显示中文大写，如 24,000,000 → 贰仟肆佰万元</div>
+      </div>
+      <div class="f-row"><label>实缴日期 <span class="req">*</span></label>
+        <input type="date" class="f-input" value="2026-08-27">
+      </div>
+      <div class="f-row"><label>实缴凭证 <span class="req">*</span></label>
+        <div class="upload-zone" onclick="this.querySelector('input').click()">点击或拖拽上传银行回单 / 进账凭证（PDF / JPG）<input type="file" style="display:none"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closePaid()">取 消</button>
+      <button class="btn btn-primary" onclick="closePaid();alert('已登记实缴')">确认登记实缴</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ===== 业务脚本：项目切换 + 新增事件弹窗 ===== */
-var PRJ = {
-  yunke:  { name:'云雀教育（职业教育平台）', no:'PRJ-2026-0005',
-            tags:'<span class="tag tag-blue">⑩ 投后管理中</span><span class="tag tag-blue">投后 128 天</span>',
-            meta:'投后负责人：华悦 · A 轮 · 对应基金 FUND-2026-003（存续中）' },
-  xinghe: { name:'星河航天（商业卫星）', no:'PRJ-2026-0004',
-            tags:'<span class="tag tag-blue">⑨ 出资 · 付款审批中</span>',
-            meta:'负责人：胡博 · Pre-A · 出资完成后进入投后管理' },
-  panshi: { name:'磐石精密制造', no:'PRJ-2025-0016',
-            tags:'<span class="tag tag-gray">已退出</span>',
-            meta:'对应基金 FUND-2025-011 深圳磐石一期 · 清算中（步骤 3/5 税务办理中）' }
+/* ===== 出资数据（按基金） ===== */
+var FUNDS = {
+  f002: {
+    name: 'FUND-2026-002 苏州工业园区星河航天投资合伙企业（有限合伙）',
+    commit: '8,000', paid: '4,000', pct: 50, subs: 2,
+    rows: [
+      { id: 'CAP-2026-0001', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '4,800 万', commitCN: '四千八百万', paid: '2,400 万', ratio: '60%', last: '2026-08-20', st: '实缴中 · 50%', stCls: 'tag-orange' },
+      { id: 'CAP-2026-0002', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '3,200 万', commitCN: '三千二百万', paid: '1,600 万', ratio: '40%', last: '2026-08-20', st: '实缴中 · 50%', stCls: 'tag-orange' }
+    ]
+  },
+  f003: {
+    name: 'FUND-2026-003 杭州云雀教育创业投资合伙企业（有限合伙）',
+    commit: '6,000', paid: '6,000', pct: 100, subs: 2,
+    rows: [
+      { id: 'CAP-2026-0007', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '3,600 万', commitCN: '三千六百万', paid: '3,600 万', ratio: '60%', last: '2026-02-10', st: '已缴足', stCls: 'tag-blue' },
+      { id: 'CAP-2026-0008', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '2,400 万', commitCN: '二千四百万', paid: '2,400 万', ratio: '40%', last: '2026-02-10', st: '已缴足', stCls: 'tag-blue' }
+    ]
+  },
+  f011: {
+    name: 'FUND-2025-011 深圳磐石一期股权投资合伙企业（有限合伙）',
+    commit: '4,000', paid: '4,000', pct: 100, subs: 2,
+    rows: [
+      { id: 'CAP-2025-0021', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '2,400 万', commitCN: '二千四百万', paid: '2,400 万', ratio: '60%', last: '2025-04-18', st: '已缴足', stCls: 'tag-blue' },
+      { id: 'CAP-2025-0022', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '1,600 万', commitCN: '一千六百万', paid: '1,600 万', ratio: '40%', last: '2025-04-20', st: '已缴足', stCls: 'tag-blue' }
+    ]
+  }
 };
-var FEEDS = { yunke:'feedYunke', xinghe:'feedXinghe', panshi:'feedPanshi' };
-function onPrjChange(v) {
-  var p = PRJ[v];
-  document.getElementById('stripName').textContent = p.name;
-  document.getElementById('stripNo').textContent = p.no;
-  document.getElementById('stripTags').innerHTML = p.tags;
-  document.getElementById('stripMeta').textContent = p.meta;
-  document.getElementById('evPrj').textContent = p.name;
-  document.getElementById('evPrjNo').textContent = p.no;
-  Object.keys(FEEDS).forEach(function (k) {
-    document.getElementById(FEEDS[k]).style.display = (k === v) ? '' : 'none';
+
+/* ===== 渲染 ===== */
+function switchFund(key) {
+  var f = FUNDS[key];
+  document.getElementById('sumCommit').innerHTML = f.commit + '<small>万元</small>';
+  document.getElementById('sumPaid').innerHTML = f.paid + '<small>万元</small>';
+  document.getElementById('sumPct').textContent = f.pct + '%';
+  document.getElementById('sumBar').style.width = f.pct + '%';
+  document.getElementById('sumSubs').innerHTML = f.subs + '<small>个</small>';
+  var doing = 0, done = 0;
+  f.rows.forEach(function (r) { if (r.st.indexOf('实缴中') > -1) { doing++; } else { done++; } });
+  document.getElementById('cntAll').textContent = f.rows.length;
+  document.getElementById('cntDoing').textContent = doing;
+  document.getElementById('cntDone').textContent = done;
+  document.getElementById('pgInfo').textContent = '第 1-' + f.rows.length + ' 条/总共 ' + f.rows.length + ' 条';
+  var html = '';
+  f.rows.forEach(function (r) {
+    html += '<tr>'
+      + '<td><span class="lk">' + r.id + '</span></td>'
+      + '<td>' + r.sub + '</td>'
+      + '<td><span class="subject-badge subject-lp">' + r.lp + '</span></td>'
+      + '<td>' + r.commit + '<span class="cn-sub">（' + r.commitCN + '）</span></td>'
+      + '<td>' + r.paid + '</td>'
+      + '<td>' + r.ratio + '</td>'
+      + '<td>' + r.last + '</td>'
+      + '<td><span class="tag ' + r.stCls + '">' + r.st + '</span></td>'
+      + '<td class="sticky-op ops"><a onclick="openPaid(\'' + r.sub + '\',\'' + r.lp + '\')">登记实缴</a><a>编辑</a></td>'
+      + '</tr>';
+  });
+  document.getElementById('capBody').innerHTML = html;
+}
+document.getElementById('fundSel').addEventListener('change', function () { switchFund(this.value); });
+switchFund('f002');
+
+/* ===== 数字 → 中文大写（输入阿拉伯数字，实时显示大写金额） ===== */
+function numToCn(n) {
+  if (isNaN(n) || n < 0) return null;
+  n = Math.round(n * 100) / 100;
+  var integer = Math.floor(n), dec = Math.round((n - integer) * 100);
+  var jiao = Math.floor(dec / 10), fen = dec % 10;
+  var D = '零壹贰叁肆伍陆柒捌玖';
+  var U = ['', '拾', '佰', '仟'];
+  var S = ['', '万', '亿'];
+  function seg(x) {
+    var s = '', zero = false;
+    for (var i = 3; i >= 0; i--) {
+      var d = Math.floor(x / Math.pow(10, i)) % 10;
+      if (d === 0) { if (s) zero = true; }
+      else {
+        if (zero) { s += '零'; zero = false; }
+        s += D.charAt(d) + U[i];
+      }
+    }
+    return s;
+  }
+  if (integer === 0 && jiao === 0 && fen === 0) return '零元';
+  var parts = [], idx = 0, needZero = false;
+  while (integer > 0) {
+    var cur = integer % 10000;
+    if (cur !== 0) {
+      var p = seg(cur) + S[idx];
+      if (needZero && parts.length > 0) p += '零';
+      parts.unshift(p);
+    }
+    integer = Math.floor(integer / 10000);
+    idx++;
+    needZero = cur < 1000 && integer > 0 && parts.length > 0;
+  }
+  var out = (parts.length ? parts.join('') : '零') + '元';
+  if (jiao === 0 && fen === 0) return out;
+  if (jiao > 0) out += D.charAt(jiao) + '角';
+  else if (fen > 0) out += '零';
+  if (fen > 0) out += D.charAt(fen) + '分';
+  return out;
+}
+function fmtNum(n) {
+  var parts = String(n).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
+function bindNum(inputId, outId, idleText) {
+  var inp = document.getElementById(inputId);
+  var out = document.getElementById(outId);
+  inp.addEventListener('input', function () {
+    var v = inp.value.trim();
+    if (!v) { out.className = 'cn-out'; out.textContent = idleText; return; }
+    var n = parseFloat(v);
+    if (isNaN(n) || n <= 0) {
+      out.className = 'cn-out bad';
+      out.textContent = '请输入大于 0 的数字金额';
+    } else {
+      out.className = 'cn-out ok';
+      out.textContent = '→ ' + numToCn(n) + '（' + fmtNum(n) + ' 元）';
+    }
   });
 }
-function openEvModal() { document.getElementById('evModal').classList.add('show'); }
-function closeEvModal() { document.getElementById('evModal').classList.remove('show'); }
-document.getElementById('evModal').addEventListener('click', function (e) { if (e.target === this) closeEvModal(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeEvModal(); });
+
+/* ===== 新增出资记录弹窗 ===== */
+function openNewCap() {
+  var key = document.getElementById('fundSel').value;
+  document.getElementById('ncFund').textContent = FUNDS[key].name;
+  document.getElementById('commitInput').value = '';
+  document.getElementById('commitOut').className = 'cn-out';
+  document.getElementById('commitOut').textContent = '输入数字金额后实时显示中文大写，如 48,000,000 → 肆仟捌佰万元';
+  document.getElementById('newCapModal').classList.add('show');
+}
+function closeNewCap() { document.getElementById('newCapModal').classList.remove('show'); }
+document.getElementById('newCapModal').addEventListener('click', function (e) { if (e.target === this) closeNewCap(); });
+bindNum('commitInput', 'commitOut', '输入数字金额后实时显示中文大写，如 48,000,000 → 肆仟捌佰万元');
+
+/* ===== 登记实缴弹窗 ===== */
+function openPaid(sub, lp) {
+  document.getElementById('pdSub').textContent = sub;
+  document.getElementById('pdLp').textContent = lp;
+  document.getElementById('paidInput').value = '';
+  document.getElementById('paidOut').className = 'cn-out';
+  document.getElementById('paidOut').textContent = '输入数字金额后实时显示中文大写，如 24,000,000 → 贰仟肆佰万元';
+  document.getElementById('paidModal').classList.add('show');
+}
+function closePaid() { document.getElementById('paidModal').classList.remove('show'); }
+document.getElementById('paidModal').addEventListener('click', function (e) { if (e.target === this) closePaid(); });
+bindNum('paidInput', 'paidOut', '输入数字金额后实时显示中文大写，如 24,000,000 → 贰仟肆佰万元');
+
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNewCap(); closePaid(); } });
 </script>
 
 <script>
@@ -497,7 +616,7 @@ body.proto-notes-on .proto-pin.pn-open{display:block}
 body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 .pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
 </style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>类型不强制细分</div><div class="pnp-d">事件无法明确归类时选择「其他」，不强制细分（08-26 口径）；<br>类型下拉：股东会决议/董事会决议/重大经营变动/访谈纪要/其他。</div><div class="pnp-b"><span class="pnp-tag">P11 · 投后事项</span></div><div class="pnp-src"><div class="src-item"><b>P11 投后事项</b>：投后事件时间线：六类事件 + 附件（A10 由「投后时间线」更名）</div></div></div>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>认缴→实缴两步</div><div class="pnp-d">认缴登记后方可登记实缴；<br>金额输入阿拉伯数字后实时显示中文大写（48,000,000 →「肆仟捌佰万元」）。认缴/实缴为业务口径词（Commitment/Funded）。</div><div class="pnp-b"><span class="pnp-tag">P10 · LP 出资</span></div><div class="pnp-src"><div class="src-item"><b>P10 LP 出资</b>：认缴/实缴两步出资，按基金切换（A10 由「出资记录」更名）</div></div></div>
 <div class="pn-fab" id="protoNotesFab">标注</div></div>
 <script id="proto-notes-js">
 (function(){

@@ -223,7 +223,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
           <li><div class="sm-link selected">LP 台账</div></li>
-          <li><div class="sm-link" onclick="go('P3-R01-F10-出资记录.html')">LP 出资</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F10-LP出资.html')">LP 出资</div></li>
         </ul>
       </li>
       <li class="sm-item has-sub">
@@ -536,11 +536,11 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
   </div>
 </div>
 
-<!-- ===== 弹窗3：LP 认定 ===== -->
+<!-- ===== 弹窗3：合格投资者认定 ===== -->
 <div class="modal-overlay" id="verifyModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">LP 认定</h3>
+      <h3 class="modal-title">合格投资者认定</h3>
       <span class="modal-close" onclick="closeVerify()">×</span>
     </div>
     <div class="modal-body">
@@ -624,7 +624,7 @@ function openSubModal(lpName) {
 function closeSubModal() { document.getElementById('newSubModal').classList.remove('show'); }
 document.getElementById('newSubModal').addEventListener('click', function (e) { if (e.target === this) closeSubModal(); });
 
-/* ===== LP 认定（结论切换高亮） ===== */
+/* ===== 合格投资者认定（结论切换高亮） ===== */
 function setVerdict(kind) {
   var isPass = kind === 'pass';
   document.getElementById('cardPass').style.cssText = isPass
@@ -683,6 +683,9 @@ document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link)
 
 
 
+
+
+
 <style id="proto-notes-style">
 body.proto-notes-on [data-note]{position:relative}
 body.proto-notes-on [data-note]::after{content:attr(data-note);position:absolute;top:1px;right:1px;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600;box-shadow:0 0 0 1.5px #fff;cursor:pointer;opacity:.75;transition:opacity .15s}
@@ -704,8 +707,8 @@ body.proto-notes-on .proto-pin.pn-open{display:block}
 body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 .pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
 </style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>一 LP 多主体</div><div class="pnp-d">一个 LP 可对应多个出资主体（SUB 编号，对外出资的法律实体）；<br>LP 认定通过后，其出资主体方可对外出资。</div><div class="pnp-b"><span class="pnp-tag">P09 · LP 台账</span></div><div class="pnp-src"><div class="src-item"><b>P09 LP 台账</b>：一 LP 多出资主体 + LP 认定（A10 由「LP 名录」更名）</div></div></div>
-<div class="proto-pin" id="proto-pin-2"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">2</span>LP 认定规则</div><div class="pnp-d">认定前须至少上传营业执照与资金证明；<br>资质材料仅认定人与管理员可见。</div><div class="pnp-b"><span class="pnp-tag">P09 · LP 台账</span></div><div class="pnp-src"><div class="src-item"><b>P09 LP 台账</b>：一 LP 多出资主体 + LP 认定（A10 由「LP 名录」更名）</div></div></div>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>一 LP 多主体</div><div class="pnp-d">一个 LP 可对应多个出资主体（SUB 编号，对外出资的法律实体）；<br>合格投资者认定通过后，其出资主体方可对外出资。</div><div class="pnp-b"><span class="pnp-tag">P09 · LP 台账</span></div><div class="pnp-src"><div class="src-item"><b>P09 LP 台账</b>：一 LP 多出资主体 + 合格投资者认定（A10 由「LP 名录」更名）</div></div></div>
+<div class="proto-pin" id="proto-pin-2"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">2</span>合格投资者认定规则</div><div class="pnp-d">认定前须至少上传营业执照与资金证明；<br>资质材料仅认定人与管理员可见。</div><div class="pnp-b"><span class="pnp-tag">P09 · LP 台账</span></div><div class="pnp-src"><div class="src-item"><b>P09 LP 台账</b>：一 LP 多出资主体 + 合格投资者认定（A10 由「LP 名录」更名）</div></div></div>
 <div class="pn-fab" id="protoNotesFab">标注</div></div>
 <script id="proto-notes-js">
 (function(){

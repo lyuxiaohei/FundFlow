@@ -175,8 +175,8 @@ body{display:flex;flex-direction:column;overflow:hidden;}
       <li class="sm-item has-sub">
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP台账.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-LP出资.html')">LP 出资</div></li>
         </ul>
       </li>
       <li class="sm-item has-sub open">
@@ -235,7 +235,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 
   <div class="main-col">
     <div class="tabs">
-      <span class="tab" onclick="go('P3-R01-F11-投后时间线.html')">投后事项 · 云雀教育 <span class="close">×</span></span>
+      <span class="tab" onclick="go('P3-R01-F11-投后事项.html')">投后事项 · 云雀教育 <span class="close">×</span></span>
       <span class="tab active">风险预警 <span class="close">×</span></span>
     </div>
 
@@ -283,7 +283,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
                 <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span>
                 <span class="al-time">2026-08-27 09:32</span>
               </div>
-              <div class="al-desc">收盘价 18.6 元，低于减持方案参考价 19.0 元，连续 5 个交易日，建议结合 9 月减持窗口评估退出批次执行 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">磐石精密制造</span></div>
+              <div class="al-desc">收盘价 18.6 元，低于减持方案参考价 19.0 元，连续 5 个交易日，建议结合 9 月减持窗口评估退出批次执行 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></div>
               <div class="al-foot ops" id="alFoot1">
                 <a onclick="markRead('al1','alFoot1')">标记已读</a>
                 <a onclick="go('../退出与分配/P3-R01-F15-项目退出.html')">登记退出</a>
@@ -300,7 +300,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
                 <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span>
                 <span class="al-time">2026-08-26 16:05</span>
               </div>
-              <div class="al-desc">市场主体信息变更，需核实是否影响投后条款 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">云雀教育</span></div>
+              <div class="al-desc">市场主体信息变更，需核实是否影响投后条款 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></div>
               <div class="al-foot ops" id="alFoot2">
                 <a onclick="markRead('al2','alFoot2')">标记已读</a>
                 <a onclick="handleAlert('al2','alFoot2','alState2')">处理</a>
@@ -317,7 +317,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
                 <span class="tag tag-orange">舆情</span><span class="tag tag-gray">同花顺</span>
                 <span class="al-time">2026-08-25 11:20</span>
               </div>
-              <div class="al-desc">需与投后访谈数据交叉核实 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">云雀教育</span></div>
+              <div class="al-desc">需与投后访谈数据交叉核实 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></div>
               <div class="al-foot ops" id="alFoot3">
                 <a onclick="markRead('al3','alFoot3')">标记已读</a>
                 <a onclick="handleAlert('al3','alFoot3','alState3')">处理</a>
@@ -334,7 +334,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
                 <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span><span class="tag tag-gray" id="alState4">已读未处理</span>
                 <span class="al-time">2026-08-20 09:00</span>
               </div>
-              <div class="al-desc">IPO 减持窗口 2026-09-01 开启，可登记退出批次 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">磐石精密制造</span></div>
+              <div class="al-desc">IPO 减持窗口 2026-09-01 开启，可登记退出批次 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></div>
               <div class="al-foot ops" id="alFoot4">
                 <a onclick="handleAlert('al4','alFoot4','alState4')">标记已处理</a>
                 <a onclick="go('../退出与分配/P3-R01-F15-项目退出.html')">登记退出</a>
@@ -351,7 +351,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
                 <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span><span class="tag tag-blue">已处理</span>
                 <span class="al-time">2026-08-18 14:40</span>
               </div>
-              <div class="al-desc">触发被执行人信息预警 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">星河航天</span></div>
+              <div class="al-desc">触发被执行人信息预警 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天</span></div>
               <div class="al-foot">
                 <span class="al-note">处理说明：<b>已核实为同名企业，误报</b> · 2026-08-19 · 胡博</span>
               </div>

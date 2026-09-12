@@ -207,8 +207,8 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <li class="sm-item has-sub">
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP台账.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-LP出资.html')">LP 出资</div></li>
         </ul>
       </li>
       <li class="sm-item has-sub">
@@ -358,7 +358,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
         <div id="panel-dict" style="display:none;">
           <div class="dict-flex">
             <div class="dict-side">
-              <div class="dict-side-title">字典分类</div>
+              <div class="dict-side-title">数据分类</div>
               <div class="dict-item selected" data-dict="gp" onclick="switchDict('gp',this)">放弃原因 · GP<span class="cnt-b">11</span></div>
               <div class="dict-item" data-dict="lp" onclick="switchDict('lp',this)">放弃原因 · LP<span class="cnt-b">5</span></div>
               <div class="dict-item" data-dict="ind" onclick="switchDict('ind',this)">行业赛道<span class="cnt-b">9</span></div>
@@ -372,11 +372,11 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <h3 class="card-title" id="dictTitle">放弃原因 · GP</h3>
               </div>
               <div class="dict-toolbar">
-                <button class="btn btn-primary" onclick="openDictItem()">＋ 新增字典项</button>
-                <button class="btn btn-default" onclick="alert('已导出当前字典全部条目')">批量导出</button>
+                <button class="btn btn-primary" onclick="openDictItem()">＋ 新增数据项</button>
+                <button class="btn btn-default" onclick="alert('已导出当前数据全部条目')">批量导出</button>
               </div>
 
-              <!-- 字典：放弃原因 GP（按节点分组） -->
+              <!-- 数据分类：放弃原因 GP（按节点分组） -->
               <div class="dict-panel" id="dp-gp">
                 <div class="table-wrap">
                   <table>
@@ -396,7 +396,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>① 看 BP 后不看</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：明显超出投资范围')">编辑</a><a class="danger-op" onclick="alert('已停用：明显超出投资范围')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：明显超出投资范围')">编辑</a><a class="danger-op" onclick="alert('已停用：明显超出投资范围')">停用</a></td>
                       </tr>
                       <tr class="group-row"><td colspan="5">② 线上路演后<span class="g-cnt">2 项</span></td></tr>
                       <tr>
@@ -404,14 +404,14 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>② 线上路演后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：专业问题答不出/逻辑薄弱')">编辑</a><a class="danger-op" onclick="alert('已停用：专业问题答不出/逻辑薄弱')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：专业问题答不出/逻辑薄弱')">编辑</a><a class="danger-op" onclick="alert('已停用：专业问题答不出/逻辑薄弱')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">团队能力不足</td>
                         <td>② 线上路演后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>2</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：团队能力不足')">编辑</a><a class="danger-op" onclick="alert('已停用：团队能力不足')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：团队能力不足')">编辑</a><a class="danger-op" onclick="alert('已停用：团队能力不足')">停用</a></td>
                       </tr>
                       <tr class="group-row"><td colspan="5">④ 访谈/尽调后<span class="g-cnt">3 项</span></td></tr>
                       <tr>
@@ -419,21 +419,21 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>④ 访谈/尽调后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：工厂萧条、订单匮乏')">编辑</a><a class="danger-op" onclick="alert('已停用：工厂萧条、订单匮乏')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：工厂萧条、订单匮乏')">编辑</a><a class="danger-op" onclick="alert('已停用：工厂萧条、订单匮乏')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">财务数据重大偏差</td>
                         <td>④ 访谈/尽调后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>2</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：财务数据重大偏差')">编辑</a><a class="danger-op" onclick="alert('已停用：财务数据重大偏差')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：财务数据重大偏差')">编辑</a><a class="danger-op" onclick="alert('已停用：财务数据重大偏差')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">疑似造假</td>
                         <td>④ 访谈/尽调后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>3</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：疑似造假')">编辑</a><a class="danger-op" onclick="alert('已停用：疑似造假')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：疑似造假')">编辑</a><a class="danger-op" onclick="alert('已停用：疑似造假')">停用</a></td>
                       </tr>
                       <tr class="group-row"><td colspan="5">⑤ 立项时<span class="g-cnt">2 项</span></td></tr>
                       <tr>
@@ -441,14 +441,14 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>⑤ 立项时</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：创始人信用风险/人品问题')">编辑</a><a class="danger-op" onclick="alert('已停用：创始人信用风险/人品问题')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：创始人信用风险/人品问题')">编辑</a><a class="danger-op" onclick="alert('已停用：创始人信用风险/人品问题')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">债务纠纷（老板否决）</td>
                         <td>⑤ 立项时</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>2</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：债务纠纷（老板否决）')">编辑</a><a class="danger-op" onclick="alert('已停用：债务纠纷（老板否决）')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：债务纠纷（老板否决）')">编辑</a><a class="danger-op" onclick="alert('已停用：债务纠纷（老板否决）')">停用</a></td>
                       </tr>
                       <tr class="group-row"><td colspan="5">⑥ 投资人路演后<span class="g-cnt">1 项</span></td></tr>
                       <tr>
@@ -456,7 +456,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>⑥ 投资人路演后</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：全体投资人明确不出资')">编辑</a><a class="danger-op" onclick="alert('已停用：全体投资人明确不出资')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：全体投资人明确不出资')">编辑</a><a class="danger-op" onclick="alert('已停用：全体投资人明确不出资')">停用</a></td>
                       </tr>
                       <tr class="group-row"><td colspan="5">⑦ 投决前主动撤回<span class="g-cnt">2 项</span></td></tr>
                       <tr>
@@ -464,21 +464,21 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>⑦ 投决前主动撤回</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：估值未谈拢（打折未成）')">编辑</a><a class="danger-op" onclick="alert('已停用：估值未谈拢（打折未成）')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：估值未谈拢（打折未成）')">编辑</a><a class="danger-op" onclick="alert('已停用：估值未谈拢（打折未成）')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">对赌条款设置不合理</td>
                         <td>⑦ 投决前主动撤回</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>2</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：对赌条款设置不合理')">编辑</a><a class="danger-op" onclick="alert('已停用：对赌条款设置不合理')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：对赌条款设置不合理')">编辑</a><a class="danger-op" onclick="alert('已停用：对赌条款设置不合理')">停用</a></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：放弃原因 LP（按节点分组） -->
+              <!-- 数据分类：放弃原因 LP（按节点分组） -->
               <div class="dict-panel" id="dp-lp" style="display:none;">
                 <div class="table-wrap">
                   <table>
@@ -498,155 +498,155 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>⑦ 投决会否决</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>1</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：不看好行业')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好行业')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：不看好行业')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好行业')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">不看好赛道</td>
                         <td>⑦ 投决会否决</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>2</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：不看好赛道')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好赛道')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：不看好赛道')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好赛道')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">项目风险异议</td>
                         <td>⑦ 投决会否决</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>3</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：项目风险异议')">编辑</a><a class="danger-op" onclick="alert('已停用：项目风险异议')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：项目风险异议')">编辑</a><a class="danger-op" onclick="alert('已停用：项目风险异议')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">估值异议</td>
                         <td>⑦ 投决会否决</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>4</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：估值异议')">编辑</a><a class="danger-op" onclick="alert('已停用：估值异议')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：估值异议')">编辑</a><a class="danger-op" onclick="alert('已停用：估值异议')">停用</a></td>
                       </tr>
                       <tr>
                         <td class="leaf-name">政策/合规顾虑</td>
                         <td>⑦ 投决会否决</td>
                         <td><span class="tag tag-blue">启用</span></td>
                         <td>5</td>
-                        <td class="sticky-op ops"><a onclick="alert('编辑字典项：政策/合规顾虑')">编辑</a><a class="danger-op" onclick="alert('已停用：政策/合规顾虑')">停用</a></td>
+                        <td class="sticky-op ops"><a onclick="alert('编辑数据项：政策/合规顾虑')">编辑</a><a class="danger-op" onclick="alert('已停用：政策/合规顾虑')">停用</a></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：行业赛道（平铺） -->
+              <!-- 数据分类：行业赛道（平铺） -->
               <div class="dict-panel" id="dp-ind" style="display:none;">
                 <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>字典项</th>
+                        <th>数据项</th>
                         <th>状态</th>
                         <th>排序</th>
                         <th class="sticky-op">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>人工智能</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：人工智能')">编辑</a><a class="danger-op" onclick="alert('已停用：人工智能')">停用</a></td></tr>
-                      <tr><td>先进制造·新能源</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：先进制造·新能源')">编辑</a><a class="danger-op" onclick="alert('已停用：先进制造·新能源')">停用</a></td></tr>
-                      <tr><td>医疗健康</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：医疗健康')">编辑</a><a class="danger-op" onclick="alert('已停用：医疗健康')">停用</a></td></tr>
-                      <tr><td>半导体</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：半导体')">编辑</a><a class="danger-op" onclick="alert('已停用：半导体')">停用</a></td></tr>
-                      <tr><td>低空经济</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：低空经济')">编辑</a><a class="danger-op" onclick="alert('已停用：低空经济')">停用</a></td></tr>
-                      <tr><td>教育</td><td><span class="tag tag-blue">启用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：教育')">编辑</a><a class="danger-op" onclick="alert('已停用：教育')">停用</a></td></tr>
-                      <tr><td>新材料</td><td><span class="tag tag-blue">启用</span></td><td>7</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：新材料')">编辑</a><a class="danger-op" onclick="alert('已停用：新材料')">停用</a></td></tr>
-                      <tr><td>农业科技</td><td><span class="tag tag-blue">启用</span></td><td>8</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：农业科技')">编辑</a><a class="danger-op" onclick="alert('已停用：农业科技')">停用</a></td></tr>
-                      <tr><td>量子科技</td><td><span class="tag tag-blue">启用</span></td><td>9</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：量子科技')">编辑</a><a class="danger-op" onclick="alert('已停用：量子科技')">停用</a></td></tr>
+                      <tr><td>人工智能</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：人工智能')">编辑</a><a class="danger-op" onclick="alert('已停用：人工智能')">停用</a></td></tr>
+                      <tr><td>先进制造·新能源</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：先进制造·新能源')">编辑</a><a class="danger-op" onclick="alert('已停用：先进制造·新能源')">停用</a></td></tr>
+                      <tr><td>医疗健康</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：医疗健康')">编辑</a><a class="danger-op" onclick="alert('已停用：医疗健康')">停用</a></td></tr>
+                      <tr><td>半导体</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：半导体')">编辑</a><a class="danger-op" onclick="alert('已停用：半导体')">停用</a></td></tr>
+                      <tr><td>低空经济</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：低空经济')">编辑</a><a class="danger-op" onclick="alert('已停用：低空经济')">停用</a></td></tr>
+                      <tr><td>教育</td><td><span class="tag tag-blue">启用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：教育')">编辑</a><a class="danger-op" onclick="alert('已停用：教育')">停用</a></td></tr>
+                      <tr><td>新材料</td><td><span class="tag tag-blue">启用</span></td><td>7</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：新材料')">编辑</a><a class="danger-op" onclick="alert('已停用：新材料')">停用</a></td></tr>
+                      <tr><td>农业科技</td><td><span class="tag tag-blue">启用</span></td><td>8</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：农业科技')">编辑</a><a class="danger-op" onclick="alert('已停用：农业科技')">停用</a></td></tr>
+                      <tr><td>量子科技</td><td><span class="tag tag-blue">启用</span></td><td>9</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：量子科技')">编辑</a><a class="danger-op" onclick="alert('已停用：量子科技')">停用</a></td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：轮次（平铺，含停用示例） -->
+              <!-- 数据分类：轮次（平铺，含停用示例） -->
               <div class="dict-panel" id="dp-round" style="display:none;">
                 <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>字典项</th>
+                        <th>数据项</th>
                         <th>状态</th>
                         <th>排序</th>
                         <th class="sticky-op">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>天使轮</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：天使轮')">编辑</a><a class="danger-op" onclick="alert('已停用：天使轮')">停用</a></td></tr>
-                      <tr><td>Pre-A</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：Pre-A')">编辑</a><a class="danger-op" onclick="alert('已停用：Pre-A')">停用</a></td></tr>
-                      <tr><td>A 轮</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：A 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：A 轮')">停用</a></td></tr>
-                      <tr><td>B 轮</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：B 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：B 轮')">停用</a></td></tr>
-                      <tr><td>定增</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：定增')">编辑</a><a class="danger-op" onclick="alert('已停用：定增')">停用</a></td></tr>
-                      <tr><td>C 轮</td><td><span class="tag tag-gray">停用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：C 轮')">编辑</a><a onclick="alert('已启用：C 轮')">启用</a></td></tr>
+                      <tr><td>天使轮</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：天使轮')">编辑</a><a class="danger-op" onclick="alert('已停用：天使轮')">停用</a></td></tr>
+                      <tr><td>Pre-A</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：Pre-A')">编辑</a><a class="danger-op" onclick="alert('已停用：Pre-A')">停用</a></td></tr>
+                      <tr><td>A 轮</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：A 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：A 轮')">停用</a></td></tr>
+                      <tr><td>B 轮</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：B 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：B 轮')">停用</a></td></tr>
+                      <tr><td>定增</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：定增')">编辑</a><a class="danger-op" onclick="alert('已停用：定增')">停用</a></td></tr>
+                      <tr><td>C 轮</td><td><span class="tag tag-gray">停用</span></td><td>6</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：C 轮')">编辑</a><a onclick="alert('已启用：C 轮')">启用</a></td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：项目来源（平铺） -->
+              <!-- 数据分类：项目来源（平铺） -->
               <div class="dict-panel" id="dp-src" style="display:none;">
                 <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>字典项</th>
+                        <th>数据项</th>
                         <th>状态</th>
                         <th>排序</th>
                         <th class="sticky-op">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>主动接洽</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：主动接洽')">编辑</a><a class="danger-op" onclick="alert('已停用：主动接洽')">停用</a></td></tr>
-                      <tr><td>机构推荐</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：机构推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：机构推荐')">停用</a></td></tr>
-                      <tr><td>行业峰会</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：行业峰会')">编辑</a><a class="danger-op" onclick="alert('已停用：行业峰会')">停用</a></td></tr>
-                      <tr><td>政府引荐</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：政府引荐')">编辑</a><a class="danger-op" onclick="alert('已停用：政府引荐')">停用</a></td></tr>
-                      <tr><td>LP 推荐</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：LP 推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：LP 推荐')">停用</a></td></tr>
+                      <tr><td>主动接洽</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：主动接洽')">编辑</a><a class="danger-op" onclick="alert('已停用：主动接洽')">停用</a></td></tr>
+                      <tr><td>机构推荐</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：机构推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：机构推荐')">停用</a></td></tr>
+                      <tr><td>行业峰会</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：行业峰会')">编辑</a><a class="danger-op" onclick="alert('已停用：行业峰会')">停用</a></td></tr>
+                      <tr><td>政府引荐</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：政府引荐')">编辑</a><a class="danger-op" onclick="alert('已停用：政府引荐')">停用</a></td></tr>
+                      <tr><td>LP 推荐</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：LP 推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：LP 推荐')">停用</a></td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：提醒类型（平铺） -->
+              <!-- 数据分类：提醒类型（平铺） -->
               <div class="dict-panel" id="dp-remind" style="display:none;">
                 <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>字典项</th>
+                        <th>数据项</th>
                         <th>状态</th>
                         <th>排序</th>
                         <th class="sticky-op">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>阶段停滞提醒</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：阶段停滞提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：阶段停滞提醒')">停用</a></td></tr>
-                      <tr><td>报告逾期提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：报告逾期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：报告逾期提醒')">停用</a></td></tr>
-                      <tr><td>证照到期提醒</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：证照到期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：证照到期提醒')">停用</a></td></tr>
-                      <tr><td>付款节点提醒</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：付款节点提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：付款节点提醒')">停用</a></td></tr>
-                      <tr><td>审批超时提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：审批超时提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：审批超时提醒')">停用</a></td></tr>
+                      <tr><td>阶段停滞提醒</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：阶段停滞提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：阶段停滞提醒')">停用</a></td></tr>
+                      <tr><td>报告逾期提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：报告逾期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：报告逾期提醒')">停用</a></td></tr>
+                      <tr><td>证照到期提醒</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：证照到期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：证照到期提醒')">停用</a></td></tr>
+                      <tr><td>付款节点提醒</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：付款节点提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：付款节点提醒')">停用</a></td></tr>
+                      <tr><td>审批超时提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：审批超时提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：审批超时提醒')">停用</a></td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <!-- 字典：报告类型（平铺） -->
+              <!-- 数据分类：报告类型（平铺） -->
               <div class="dict-panel" id="dp-report" style="display:none;">
                 <div class="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>字典项</th>
+                        <th>数据项</th>
                         <th>状态</th>
                         <th>排序</th>
                         <th class="sticky-op">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>月报</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：月报')">编辑</a><a class="danger-op" onclick="alert('已停用：月报')">停用</a></td></tr>
-                      <tr><td>季报</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：季报')">编辑</a><a class="danger-op" onclick="alert('已停用：季报')">停用</a></td></tr>
-                      <tr><td>年报</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：年报')">编辑</a><a class="danger-op" onclick="alert('已停用：年报')">停用</a></td></tr>
-                      <tr><td>专项报告</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑字典项：专项报告')">编辑</a><a class="danger-op" onclick="alert('已停用：专项报告')">停用</a></td></tr>
+                      <tr><td>月报</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：月报')">编辑</a><a class="danger-op" onclick="alert('已停用：月报')">停用</a></td></tr>
+                      <tr><td>季报</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：季报')">编辑</a><a class="danger-op" onclick="alert('已停用：季报')">停用</a></td></tr>
+                      <tr><td>年报</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：年报')">编辑</a><a class="danger-op" onclick="alert('已停用：年报')">停用</a></td></tr>
+                      <tr><td>专项报告</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="alert('编辑数据项：专项报告')">编辑</a><a class="danger-op" onclick="alert('已停用：专项报告')">停用</a></td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -738,22 +738,22 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
   </div>
 </div>
 
-<!-- ===== 弹窗3：新增字典项 ===== -->
+<!-- ===== 弹窗3：新增数据项 ===== -->
 <div class="modal-overlay" id="dictItemModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">新增字典项</h3>
+      <h3 class="modal-title">新增数据项</h3>
       <span class="modal-close" onclick="closeDictItem()">×</span>
     </div>
     <div class="modal-body">
-      <div class="f-row"><label>所属字典</label><div class="f-readonly" id="diDict">—</div></div>
+      <div class="f-row"><label>所属数据分类</label><div class="f-readonly" id="diDict">—</div></div>
       <div class="f-row" id="diNodeRow" style="display:none;"><label>所属节点 <span class="req">*</span></label>
         <select class="f-select" id="diNode">
           <option value="">请选择节点</option>
         </select>
-        <div class="f-hint">分组字典需先挂到节点，再录入末级原因</div>
+        <div class="f-hint">分组数据需先挂到节点，再录入末级原因</div>
       </div>
-      <div class="f-row" data-note="1"><label>字典项名称 <span class="req">*</span></label><input class="f-input" id="diName" placeholder="如：明显超出投资范围"></div>
+      <div class="f-row" data-note="1"><label>数据项名称 <span class="req">*</span></label><input class="f-input" id="diName" placeholder="如：明显超出投资范围"></div>
       <div class="f-row"><label>排序号</label><input class="f-input" id="diSort" placeholder="数字越小越靠前（默认追加到末尾）"></div>
       <div class="f-row"><label>状态</label>
         <div class="radio-line">
@@ -884,6 +884,12 @@ document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link)
 
 
 
+
+
+
+
+
+
 <style id="proto-notes-style">
 body.proto-notes-on [data-note]{position:relative}
 body.proto-notes-on [data-note]::after{content:attr(data-note);position:absolute;top:1px;right:1px;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600;box-shadow:0 0 0 1.5px #fff;cursor:pointer;opacity:.75;transition:opacity .15s}
@@ -905,7 +911,7 @@ body.proto-notes-on .proto-pin.pn-open{display:block}
 body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 .pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
 </style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>末级原因字典</div><div class="pnp-d">按放弃节点分组的末级原因，供放弃登记（F01）与放弃统计（F19）使用；<br>分组字典需先挂到节点，再录入末级原因（两处数据同步）。</div><div class="pnp-b"><span class="pnp-tag">P21 · 系统管理</span></div><div class="pnp-src"><div class="src-item"><b>P21 系统管理</b>：用户与角色 + 基础数据（原字典管理）</div></div></div>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>末级原因数据</div><div class="pnp-d">按放弃节点分组的末级原因，供放弃登记（F01）与放弃统计（F19）使用；<br>分组数据需先挂到节点，再录入末级原因（两处数据同步）。</div><div class="pnp-b"><span class="pnp-tag">P21 · 系统管理</span></div><div class="pnp-src"><div class="src-item"><b>P21 系统管理</b>：用户与角色 + 基础数据（原字典管理）</div></div></div>
 <div class="pn-fab" id="protoNotesFab">标注</div></div>
 <script id="proto-notes-js">
 (function(){

@@ -213,8 +213,8 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <li class="sm-item has-sub">
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>LP 管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP名录.html')">LP 台账</div></li>
-          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-出资记录.html')">LP 出资</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F09-LP台账.html')">LP 台账</div></li>
+          <li><div class="sm-link" onclick="go('../LP 管理/P3-R01-F10-LP出资.html')">LP 出资</div></li>
         </ul>
       </li>
       <li class="sm-item has-sub">
@@ -300,16 +300,16 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <!-- 审批列表卡 -->
       <div class="card" style="padding:0;">
         <div class="stabs">
-          <span class="stab stab-warn active" data-view="todo" onclick="switchView('todo')">我的待审<span class="cnt">3</span></span>
-          <span class="stab" data-view="cc" onclick="switchView('cc')">抄送我<span class="cnt">2</span></span>
+          <span class="stab stab-warn active" data-view="todo" onclick="switchView('todo')">待我审批<span class="cnt">3</span></span>
+          <span class="stab" data-view="cc" onclick="switchView('cc')">抄送我的<span class="cnt">2</span></span>
           <span class="stab" data-view="mine" onclick="switchView('mine')">我发起的<span class="cnt">3</span></span>
-          <span class="stab" data-view="done" onclick="switchView('done')">已审<span class="cnt">4</span></span>
+          <span class="stab" data-view="done" onclick="switchView('done')">我已审批<span class="cnt">4</span></span>
         </div>
         <div class="toolbar">
           <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openNew()" data-note="1">＋ 发起审批</button>
         </div>
 
-        <!-- 面板：我的待审 -->
+        <!-- 面板：待我审批 -->
         <div id="panel-todo">
           <div class="table-wrap">
             <table>
@@ -329,7 +329,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0037 审批单详情')">APV-2026-0037</span></td>
                   <td><span class="tag tag-blue">投决上会</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
                   <td>吕道远</td>
                   <td>2026-08-27</td>
                   <td>投决会</td>
@@ -339,7 +339,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0038 审批单详情')">APV-2026-0038</span></td>
                   <td><span class="tag tag-blue">基金注册审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">蓝鲸生物医药</span> <span class="dim">PRJ-2026-0003 / FUND-2026-001</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">蓝鲸生物医药</span> <span class="dim">PRJ-2026-0003 / FUND-2026-001</span></td>
                   <td>胡博</td>
                   <td>2026-08-26</td>
                   <td>总经理审批</td>
@@ -349,7 +349,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0039 审批单详情')">APV-2026-0039</span></td>
                   <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">星河航天</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
                   <td>胡博</td>
                   <td>2026-08-27</td>
                   <td>财务审批</td>
@@ -367,7 +367,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
           </div>
         </div>
 
-        <!-- 面板：抄送我 -->
+        <!-- 面板：抄送我的 -->
         <div id="panel-cc" style="display:none;">
           <div class="table-wrap">
             <table>
@@ -435,7 +435,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0037 审批单详情')">APV-2026-0037</span></td>
                   <td><span class="tag tag-blue">投决上会</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
                   <td>吕道远</td>
                   <td>2026-08-27</td>
                   <td>投决会</td>
@@ -445,7 +445,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0033 审批单详情')">APV-2026-0033</span></td>
                   <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
                   <td>吕道远</td>
                   <td>2026-08-24</td>
                   <td>财务审批</td>
@@ -455,7 +455,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0030 审批单详情')">APV-2026-0030</span></td>
                   <td><span class="tag tag-blue">立项审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">磐石量子</span> <span class="dim">PRJ-2026-0010</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石量子</span> <span class="dim">PRJ-2026-0010</span></td>
                   <td>吕道远</td>
                   <td>2026-08-20</td>
                   <td>已完成</td>
@@ -473,7 +473,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
           </div>
         </div>
 
-        <!-- 面板：已审 -->
+        <!-- 面板：我已审批 -->
         <div id="panel-done" style="display:none;">
           <div class="table-wrap">
             <table>
@@ -492,7 +492,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <tr>
                   <td><span class="lk" onclick="alert('APV-2026-0033 审批单详情')">APV-2026-0033</span></td>
                   <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-基本信息.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
+                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
                   <td>胡博</td>
                   <td><span class="tag tag-orange">退回</span></td>
                   <td>2026-08-24</td>
@@ -708,6 +708,9 @@ document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link)
 
 
 
+
+
+
 <style id="proto-notes-style">
 body.proto-notes-on [data-note]{position:relative}
 body.proto-notes-on [data-note]::after{content:attr(data-note);position:absolute;top:1px;right:1px;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600;box-shadow:0 0 0 1.5px #fff;cursor:pointer;opacity:.75;transition:opacity .15s}
@@ -729,8 +732,8 @@ body.proto-notes-on .proto-pin.pn-open{display:block}
 body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 .pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
 </style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>审批发起点</div><div class="pnp-d">各业务页的「提交审批」入口统一汇总至此；<br>各类型的发起入口在对应业务页——立项申请在⑤立项、投决上会在⑦投决、基金注册在⑧、付款在⑨、分配在分配单、注销在清算页。</div><div class="pnp-b"><span class="pnp-tag">P20 · 审批中心</span></div><div class="pnp-src"><div class="src-item"><b>P20 审批中心</b>：六节点审批：待审/抄送我/我发起的/已审四视图 + 双轨驳回</div></div></div>
-<div class="proto-pin" id="proto-pin-2"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">2</span>驳回双轨（A09）</div><div class="pnp-d">退回＝带痕修改重提：历史审批记录保留，重新提交可直达当前审批节点。<br>否决＝终态：流程终结，只能重新发起。<br>另支持发起人「撤回」与「抄送我」第四视图。</div><div class="pnp-b"><span class="pnp-tag">P20 · 审批中心</span><span class="pnp-tag">A09 · 09-03 审批双轨与工作台</span></div><div class="pnp-src"><div class="src-item"><b>P20 审批中心</b>：六节点审批：待审/抄送我/我发起的/已审四视图 + 双轨驳回</div><div class="src-item"><b>A09 09-03 审批双轨与工作台</b>：退回/否决双轨、撤回、抄送我、审批超时提醒、F00 工作台</div></div></div>
+<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>审批发起点</div><div class="pnp-d">各业务页的「提交审批」入口统一汇总至此；<br>各类型的发起入口在对应业务页——立项申请在⑤立项、投决上会在⑦投决、基金注册在⑧、付款在⑨、分配在分配单、注销在清算页。</div><div class="pnp-b"><span class="pnp-tag">P20 · 审批中心</span></div><div class="pnp-src"><div class="src-item"><b>P20 审批中心</b>：六节点审批：待审/抄送我的/我发起的/我已审批四视图 + 双轨驳回</div></div></div>
+<div class="proto-pin" id="proto-pin-2"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">2</span>驳回双轨（A09）</div><div class="pnp-d">退回＝带痕修改重提：历史审批记录保留，重新提交可直达当前审批节点。<br>否决＝终态：流程终结，只能重新发起。<br>另支持发起人「撤回」与「抄送我的」第四视图。</div><div class="pnp-b"><span class="pnp-tag">P20 · 审批中心</span><span class="pnp-tag">A09 · 09-03 审批双轨与工作台</span></div><div class="pnp-src"><div class="src-item"><b>P20 审批中心</b>：六节点审批：待审/抄送我的/我发起的/我已审批四视图 + 双轨驳回</div><div class="src-item"><b>A09 09-03 审批双轨与工作台</b>：退回/否决双轨、撤回、抄送我的、审批超时提醒、F00 工作台</div></div></div>
 <div class="pn-fab" id="protoNotesFab">标注</div></div>
 <script id="proto-notes-js">
 (function(){
