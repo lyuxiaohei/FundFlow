@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>工作台 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -208,7 +209,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
     <div class="content">
       <div class="hello">
         <h1>下午好，吕道远</h1>
-        <span class="date">2026-09-03 · 星期四 · 今天有 3 件待审、2 条停滞提醒</span>
+        <span class="date" id="dmHelloDate">2026-09-03 · 星期四 · 今天有 3 件待审、2 条停滞提醒</span>
       </div>
 
       <!-- 快捷入口 -->
@@ -234,52 +235,20 @@ body{display:flex;flex-direction:column;overflow:hidden;}
       <div class="dash-grid">
         <!-- 我的待办 -->
         <div class="card">
-          <div class="card-title">我的待办<span class="tag tag-orange">3</span><span class="more" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">全部 ›</span></div>
-          <div class="todo-item" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">
-            <span class="tag tag-blue">投决上会</span>
-            <span class="t-name">聚变能源科技 · APV-2026-0037</span>
-            <span class="t-sub">投决会 · 0 天</span>
-          </div>
-          <div class="todo-item" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">
-            <span class="tag tag-blue">基金注册审批</span>
-            <span class="t-name">蓝鲸生物医药 · APV-2026-0038</span>
-            <span class="t-sub">总经理审批 · 1 天</span>
-          </div>
-          <div class="todo-item" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">
-            <span class="tag tag-blue">付款审批</span>
-            <span class="t-name">星河航天 · APV-2026-0039</span>
-            <span class="t-sub">财务审批 · 0 天</span>
-          </div>
+          <div class="card-title">我的待办<span class="tag tag-orange" id="dmTodoCnt">3</span><span class="more" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">全部 ›</span></div>
+          <div id="dmTodoList"></div>
         </div>
 
         <!-- 停滞提醒 -->
         <div class="card">
-          <div class="card-title">停滞提醒<span class="tag tag-orange">2</span><span class="more" onclick="go('../项目库/P3-R01-F01-项目列表.html')">项目库 ›</span></div>
-          <div class="stall-item" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">
-            <span class="warn-days">⚠ 停滞 33 天</span>
-            <span class="t-name">智驾千里 · ③ 保密协议签署</span>
-            <span class="t-sub">超 30 天未推进</span>
-          </div>
-          <div class="stall-item" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">
-            <span class="warn-days">⚠ 停滞 47 天</span>
-            <span class="t-name">磐石量子 · ④ 尽调/访谈</span>
-            <span class="t-sub">超 30 天未推进</span>
-          </div>
+          <div class="card-title">停滞提醒<span class="tag tag-orange" id="dmStallCnt">2</span><span class="more" onclick="go('../项目库/P3-R01-F01-项目列表.html')">项目库 ›</span></div>
+          <div id="dmStallList"></div>
         </div>
 
         <!-- 我发起的 -->
         <div class="card">
           <div class="card-title">我发起的<span class="more" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">审批中心 ›</span></div>
-          <div class="todo-item" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">
-            <span class="tag tag-blue">审批中</span>
-            <span class="t-name">APV-2026-0037 · 投决上会 · 聚变能源科技</span>
-            <span class="t-sub" onclick="event.stopPropagation();alert('已向当前审批人发送催办提醒');">催办</span>
-          </div>
-          <div class="todo-item" onclick="go('../审批中心/P3-R01-F20-审批中心.html')">
-            <span class="tag tag-blue">已通过</span>
-            <span class="t-name">APV-2026-0030 · 立项审批 · 磐石量子</span>
-            <span class="t-sub">2026-08-21 通过</span>
-          </div>
+          <div id="dmMineList"></div>
         </div>
 
         <!-- 业务速览 -->
@@ -287,19 +256,19 @@ body{display:flex;flex-direction:column;overflow:hidden;}
           <div class="card-title">业务速览<span class="more" onclick="go('../统计报表/P3-R01-F18-阶段漏斗.html')">阶段漏斗 ›</span></div>
           <div class="stat-row" style="grid-template-columns:1fr 1fr;gap:12px;">
             <div class="stat" onclick="go('../统计报表/P3-R01-F18-阶段漏斗.html')">
-              <div class="s-num">36</div>
+              <div class="s-num" id="dmStatProjects">36</div>
               <div class="s-lbl">项目总数（①~⑫ 全量）</div>
             </div>
             <div class="stat" onclick="go('../基金管理/P3-R01-F07-基金列表.html')">
-              <div class="s-num">7<small>只</small></div>
+              <div class="s-num" id="dmStatFunds">7<small>只</small></div>
               <div class="s-lbl">在管基金 · 存续 5 / 清算 1 / 注销 1</div>
             </div>
             <div class="stat" onclick="go('../LP 管理/P3-R01-F10-LP出资.html')">
-              <div class="s-num">50<small>%</small></div>
+              <div class="s-num" id="dmStatPaid">50<small>%</small></div>
               <div class="s-lbl">LP 实缴进度 · 4,000 / 8,000 万</div>
             </div>
             <div class="stat" onclick="go('../投后管理/P3-R01-F13-风险预警.html')">
-              <div class="s-num">4<small>条</small></div>
+              <div class="s-num" id="dmStatRules">4<small>条</small></div>
               <div class="s-lbl">提醒规则 · 本月 1 条到期</div>
             </div>
           </div>
@@ -308,6 +277,27 @@ body{display:flex;flex-direction:column;overflow:hidden;}
     </div>
   </div>
 </div>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F00.todo'] = { target: '#dmTodoList', rows: function () { return S.todoView.todos; }, rowHtml: function (r) { return r.tr; },
+    after: function () {
+      var todos = S.todoView.todos.length, stalls = S.todoView.stalls.length;
+      document.getElementById('dmTodoCnt').textContent = todos;
+      document.getElementById('dmStallCnt').textContent = stalls;
+      document.getElementById('dmHelloDate').textContent = '2026-09-03 · 星期四 · 今天有 ' + todos + ' 件待审、' + stalls + ' 条停滞提醒';
+      document.getElementById('dmStatProjects').textContent = S.dmFunnel.total;
+      document.getElementById('dmStatFunds').innerHTML = S.funds.length + '<small>只</small>';
+      document.getElementById('dmStatPaid').innerHTML = S.capCalls.f002.pct + '<small>%</small>';
+      document.getElementById('dmStatRules').innerHTML = S.reminders.rules.length + '<small>条</small>';
+    } };
+  DM.pages['F00.stall'] = { target: '#dmStallList', rows: function () { return S.todoView.stalls; }, rowHtml: function (r) { return r.tr; } };
+  DM.pages['F00.mine'] = { target: '#dmMineList', rows: function () { return S.todoView.mines; }, rowHtml: function (r) { return r.tr; } };
+  ['F00.todo', 'F00.stall', 'F00.mine'].forEach(DM.renderList);
+})();
+</script>
 
 <script>
 /* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>项目退出 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -328,47 +329,7 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody id="rowsData">
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2025-001 分红 0.10 元/份 × 2,000 万份 = 200 万元，2025-11-20 已完成')">BAT-2025-001</span></td>
-                <td><span class="tag tag-blue">分红</span></td>
-                <td>0.10</td>
-                <td>2,000</td>
-                <td>200</td>
-                <td>2025-11-20</td>
-                <td>0</td>
-                <td class="num-pos">200</td>
-                <td>—</td>
-                <td><span class="tag tag-blue">已完成</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2025-001 分红 0.10 元/份 × 2,000 万份 = 200 万元，2025-11-20 已完成')">查看</a><a onclick="alert('编辑批次：BAT-2025-001')">编辑</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2026-001 股权转让 1,000 万份 × 2.80 元/份 = 2,800 万元，本金回收 2,000 万、批次收益 800 万')">BAT-2026-001</span></td>
-                <td><span class="tag tag-blue">股权转让</span></td>
-                <td>2.80</td>
-                <td>1,000</td>
-                <td>2,800</td>
-                <td>2026-05-18</td>
-                <td>2,000</td>
-                <td class="num-pos">800</td>
-                <td>40%</td>
-                <td><span class="tag tag-blue">已完成</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2026-001 股权转让 1,000 万份 × 2.80 元/份 = 2,800 万元，本金回收 2,000 万、批次收益 800 万')">查看</a><a onclick="alert('编辑批次：BAT-2026-001')">编辑</a><a onclick="go('P3-R01-F16-收益分配.html')">收益分配</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk" onclick="alert('批次详情：BAT-2026-002 IPO 减持 1,000 万份 × 预计 3.50 元/份 = 预计 3,500 万元，预计 2026-09 窗口执行')">BAT-2026-002</span></td>
-                <td><span class="tag tag-orange">IPO 减持</span></td>
-                <td>预计 3.50</td>
-                <td>1,000</td>
-                <td>预计 3,500</td>
-                <td>预计 2026-09</td>
-                <td>预计 2,000</td>
-                <td class="num-pos">预计 1,500</td>
-                <td>预计 75%</td>
-                <td><span class="tag tag-orange">待执行</span></td>
-                <td class="sticky-op ops"><a onclick="alert('批次详情：BAT-2026-002 IPO 减持 1,000 万份 × 预计 3.50 元/份 = 预计 3,500 万元，预计 2026-09 窗口执行')">查看</a><a onclick="alert('编辑批次：BAT-2026-002')">编辑</a></td>
-              </tr>
-            </tbody>
+            <tbody id="rowsData"></tbody>
             <tbody id="rowEmpty" style="display:none;">
               <tr><td colspan="11" class="empty-cell">该项目尚未登记退出批次 · 进入⑪ 项目退出阶段后可分批次登记</td></tr>
             </tbody>
@@ -431,7 +392,22 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
     </div>
     <div class="modal-footer">
       <button class="btn btn-default" onclick="closeBatModal()">取 消</button>
-      <button class="btn btn-primary" onclick="closeBatModal();alert('已登记退出批次')">确认登记</button>
+      <button class="btn btn-primary" onclick="dmSubmitBatch()">确认登记</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmBatModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmBatTitle">批次详情</h3>
+      <span class="modal-close" onclick="document.getElementById('dmBatModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmBatBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmBatModal').classList.remove('show')">关 闭</button>
     </div>
   </div>
 </div>
@@ -501,6 +477,9 @@ function calcExit() {
   document.getElementById('calcRate').textContent = principal > 0 ? '收益率 ' + (gain / principal * 100).toFixed(1) + '%' : '收益率 —';
 }
 function openBatModal() {
+  window.dmEditId = null;
+  document.querySelector('#batModal .modal-title').textContent = '登记退出批次';
+  document.querySelector('#batModal .modal-footer .btn-primary').textContent = '确认登记';
   document.getElementById('exPrice').value = '';
   document.getElementById('exQty').value = '';
   calcExit();
@@ -509,6 +488,133 @@ function openBatModal() {
 function closeBatModal() { document.getElementById('batModal').classList.remove('show'); }
 document.getElementById('batModal').addEventListener('click', function (e) { if (e.target === this) closeBatModal(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBatModal(); });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F15.bat'] = { target: '#rowsData', rows: function () { return S.batches; }, rowHtml: function (r) { return r.tr; },
+    after: function () {
+      var n = S.batches.length;
+      var pg = document.getElementById('pgInfo');
+      if (pg) { pg.textContent = '第 1-' + n + ' 条/总共 ' + n + ' 条'; }
+      var empty = document.getElementById('rowEmpty');
+      if (empty) { empty.style.display = n ? 'none' : ''; }
+      var rowsData = document.getElementById('rowsData');
+      if (rowsData) { rowsData.style.display = n ? '' : 'none'; }
+    } };
+  DM.renderList('F15.bat');
+
+  /* ===== T2 登记退出批次：提交即新增一行（数据入 store.batches，行/页码联动） ===== */
+  window.dmFmtNum = function (n) {
+    var v = Math.round(n * 100) / 100;
+    return v.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+  };
+  window.dmSubmitBatch = function () {
+    if (window.dmEditId) { dmSaveBatEdit(); return; }
+    var price = parseFloat(document.getElementById('exPrice').value) || 0;
+    var qty = parseFloat(document.getElementById('exQty').value) || 0;
+    if (!(price > 0 && qty > 0)) { alert('请填写退出价格与数量'); return; }
+    var typeSel = document.getElementById('exType');
+    var type = typeSel.options[typeSel.selectedIndex].text;
+    var typeCls = type === 'IPO 减持' ? 'tag-orange' : 'tag-blue';
+    var amount = price * qty, principal = qty * 2, gain = amount - principal;
+    var rate = principal > 0 ? (gain / principal * 100).toFixed(1) + '%' : '—';
+    var date = document.getElementById('exDate').value || '2026-08-27';
+    var seq = 0;
+    DM.store.batches.forEach(function (b) {
+      var m = b.id.match(/BAT-\d{4}-(\d+)/); if (m) { seq = Math.max(seq, +m[1]); }
+    });
+    var id = 'BAT-2026-' + ('00' + (seq + 1)).slice(-3);
+    var b = { id: id, type: type, typeCls: typeCls, price: dmFmtNum(price), qty: dmFmtNum(qty),
+      amount: dmFmtNum(amount), date: date, principal: dmFmtNum(principal), gain: dmFmtNum(gain),
+      gainCls: gain < 0 ? 'num-neg' : 'num-pos', rate: rate, status: '待执行', stCls: 'tag-orange',
+      detail: type + ' ' + dmFmtNum(qty) + ' 万份 × ' + dmFmtNum(price) + ' 元/份 = ' + dmFmtNum(amount) + ' 万元，' + date + ' 登记（待执行）' };
+    b.tr = '<tr>'
+      + '<td><span class="lk">' + b.id + '</span></td>'
+      + '<td><span class="tag ' + b.typeCls + '">' + b.type + '</span></td>'
+      + '<td>' + b.price + '</td>'
+      + '<td>' + b.qty + '</td>'
+      + '<td>' + b.amount + '</td>'
+      + '<td>' + b.date + '</td>'
+      + '<td>' + b.principal + '</td>'
+      + '<td class="' + b.gainCls + '">' + b.gain + '</td>'
+      + '<td>' + b.rate + '</td>'
+      + '<td><span class="tag tag-orange">待执行</span></td>'
+      + '<td class="sticky-op ops"><a onclick="dmBatDetail(\'' + b.id + '\')">查看</a><a onclick="dmEditBat(\'' + b.id + '\')">编辑</a></td>'
+      + '</tr>';
+    DM.store.batches.push(b);
+    DM.renderList('F15.bat');
+    closeBatModal();
+    alert('已登记退出批次');
+  };
+  /* ===== T3 批次详情 → 真弹窗；编辑批次 → 复用登记弹窗预填该行 ===== */
+  window.dmBatDetail = function (id) {
+    var b = DM.byId(DM.store.batches, id);
+    if (!b) { return; }
+    document.getElementById('dmBatTitle').textContent = '批次详情 · ' + id;
+    document.getElementById('dmBatBody').innerHTML =
+      '<div class="f-row"><label>批次编号 / 类型</label><div class="f-readonly">' + id + ' · ' + b.type + '</div></div>'
+      + '<div style="display:flex;gap:12px;">'
+      + '<div class="f-row" style="flex:1;"><label>退出价格（元/份）</label><div class="f-readonly">' + b.price + '</div></div>'
+      + '<div class="f-row" style="flex:1;"><label>数量（万份）</label><div class="f-readonly">' + b.qty + '</div></div>'
+      + '</div>'
+      + '<div class="f-row"><label>退出金额 / 退出日期</label><div class="f-readonly">' + b.amount + ' 万元 · ' + b.date + '</div></div>'
+      + '<div class="f-row"><label>分摊本金 / 批次收益 / 收益率</label><div class="f-readonly">' + b.principal + ' 万 · ' + b.gain + ' 万 · ' + b.rate + '</div></div>'
+      + '<div class="f-row"><label>状态</label><div class="f-readonly">' + b.status + '</div></div>'
+      + '<div class="f-hint" style="white-space:normal;line-height:1.6;">' + b.detail + '</div>';
+    document.getElementById('dmBatModal').classList.add('show');
+  };
+  window.dmEditBat = function (id) {
+    var b = DM.byId(DM.store.batches, id);
+    if (!b) { return; }
+    window.dmEditId = id;
+    document.querySelector('#batModal .modal-title').textContent = '编辑批次 · ' + id;
+    document.querySelector('#batModal .modal-footer .btn-primary').textContent = '保存修改';
+    var sel = document.getElementById('exType');
+    for (var i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].text === b.type) { sel.selectedIndex = i; break; }
+    }
+    document.getElementById('exPrice').value = String(parseFloat(String(b.price).replace('预计', '')) || 0);
+    document.getElementById('exQty').value = String(parseFloat(String(b.qty).replace('预计', '')) || 0);
+    var d = String(b.date).match(/\d{4}-\d{2}-\d{2}/);
+    document.getElementById('exDate').value = d ? d[0] : '2026-08-27';
+    calcExit();
+    document.getElementById('batModal').classList.add('show');
+  };
+  window.dmSaveBatEdit = function () {
+    var b = DM.byId(DM.store.batches, window.dmEditId);
+    var price = parseFloat(document.getElementById('exPrice').value) || 0;
+    var qty = parseFloat(document.getElementById('exQty').value) || 0;
+    if (!(price > 0 && qty > 0)) { alert('请填写退出价格与数量'); return; }
+    var typeSel = document.getElementById('exType');
+    var date = document.getElementById('exDate').value || '2026-08-27';
+    if (b) {
+      b.type = typeSel.options[typeSel.selectedIndex].text;
+      b.typeCls = b.type === 'IPO 减持' ? 'tag-orange' : 'tag-blue';
+      b.price = dmFmtNum(price); b.qty = dmFmtNum(qty);
+      b.amount = dmFmtNum(price * qty); b.principal = dmFmtNum(qty * 2);
+      b.gain = dmFmtNum(price * qty - qty * 2); b.date = date;
+      b.rate = qty * 2 > 0 ? ((price * qty - qty * 2) / (qty * 2) * 100).toFixed(1) + '%' : '—';
+      b.detail = b.type + ' ' + b.qty + ' 万份 × ' + b.price + ' 元/份 = ' + b.amount + ' 万元，' + date + ' 修改（待执行）';
+      b.tr = '<tr>'
+        + '<td><span class="lk" onclick="dmBatDetail(\'' + b.id + '\')">' + b.id + '</span></td>'
+        + '<td><span class="tag ' + b.typeCls + '">' + b.type + '</span></td>'
+        + '<td>' + b.price + '</td><td>' + b.qty + '</td><td>' + b.amount + '</td><td>' + b.date + '</td>'
+        + '<td>' + b.principal + '</td><td class="' + b.gainCls + '">' + b.gain + '</td><td>' + b.rate + '</td>'
+        + '<td><span class="tag tag-orange">待执行</span></td>'
+        + '<td class="sticky-op ops"><a onclick="dmBatDetail(\'' + b.id + '\')">查看</a><a onclick="dmEditBat(\'' + b.id + '\')">编辑</a></td>'
+        + '</tr>';
+      DM.renderList('F15.bat');
+    }
+    window.dmEditId = null;
+    document.querySelector('#batModal .modal-title').textContent = '登记退出批次';
+    document.querySelector('#batModal .modal-footer .btn-primary').textContent = '确认登记';
+    closeBatModal();
+    alert('批次已保存');
+  };
+})();
 </script>
 
 <script>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>退出项目 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -291,38 +292,7 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>磐石精密制造</td>
-                <td>FUND-2025-011 · 深圳磐石一期股权投资合伙企业（有限合伙）</td>
-                <td>2,000 万份</td>
-                <td>3,000 万元</td>
-                <td>1,000 万元</td>
-                <td>BAT-2026-002（共 3 批）</td>
-                <td><span class="tag tag-blue">已完成</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F15-项目退出.html')">详情</a><a onclick="go('P3-R01-F15-项目退出.html')">登记批次</a></td>
-              </tr>
-              <tr>
-                <td>云雀教育 <span class="tag tag-gray">⑩ 投后中</span></td>
-                <td>FUND-2026-003 · 杭州云雀教育创业投资合伙企业（有限合伙）</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-                <td><span class="tag tag-blue">持仓中</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F15-项目退出.html')">详情</a><a onclick="go('P3-R01-F15-项目退出.html')">登记批次</a></td>
-              </tr>
-              <tr>
-                <td>星河航天 <span class="tag tag-gray">⑨ 付款审批中</span></td>
-                <td>FUND-2026-002 · 苏州工业园区星河航天投资合伙企业（有限合伙）</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-                <td><span class="tag tag-gray">未进入退出</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F15-项目退出.html')">详情</a><a onclick="go('P3-R01-F15-项目退出.html')">登记批次</a></td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -337,6 +307,15 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
     </div>
   </div>
 </div>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F23.list'] = { target: '#dmBody', rows: function () { return S.postEvents.exiting; }, rowHtml: function (r) { return r.tr; } };
+  DM.renderList('F23.list');
+})();
+</script>
 
 <script>
 /* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */

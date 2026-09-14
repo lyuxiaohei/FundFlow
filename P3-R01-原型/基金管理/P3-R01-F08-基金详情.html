@@ -362,7 +362,7 @@ tbody tr:hover td { background:#f5faff; }
                   <td>胡博</td>
                   <td>2026-08-08</td>
                   <td>2.4 MB</td>
-                  <td class="ops"><a onclick="alert('预览：星河基金有限合伙协议（LPA）')">预览</a><a onclick="alert('开始下载')">下载</a></td>
+                  <td class="ops"><a onclick="dmFileView('文件预览', '星河基金有限合伙协议（LPA）')">预览</a><a onclick="alert('开始下载')">下载</a></td>
                 </tr>
                 <tr>
                   <td><span class="lk">营业执照及工商登记文件.zip</span></td>
@@ -370,7 +370,7 @@ tbody tr:hover td { background:#f5faff; }
                   <td>嘉怡</td>
                   <td>2026-08-10</td>
                   <td>8.6 MB</td>
-                  <td class="ops"><a onclick="alert('预览：营业执照及工商登记文件')">预览</a><a onclick="alert('开始下载')">下载</a></td>
+                  <td class="ops"><a onclick="dmFileView('文件预览', '营业执照及工商登记文件')">预览</a><a onclick="alert('开始下载')">下载</a></td>
                 </tr>
                 <tr>
                   <td><span class="lk">首期实缴出资凭证-宁波梅山远创.pdf</span></td>
@@ -378,7 +378,7 @@ tbody tr:hover td { background:#f5faff; }
                   <td>胡博</td>
                   <td>2026-08-20</td>
                   <td>1.1 MB</td>
-                  <td class="ops"><a onclick="alert('预览：首期实缴出资凭证-宁波梅山远创')">预览</a><a onclick="alert('开始下载')">下载</a></td>
+                  <td class="ops"><a onclick="dmFileView('文件预览', '首期实缴出资凭证-宁波梅山远创')">预览</a><a onclick="alert('开始下载')">下载</a></td>
                 </tr>
                 <tr>
                   <td><span class="lk">首期实缴出资凭证-悦达上海.pdf</span></td>
@@ -386,7 +386,7 @@ tbody tr:hover td { background:#f5faff; }
                   <td>胡博</td>
                   <td>2026-08-20</td>
                   <td>0.9 MB</td>
-                  <td class="ops"><a onclick="alert('预览：首期实缴出资凭证-悦达上海')">预览</a><a onclick="alert('开始下载')">下载</a></td>
+                  <td class="ops"><a onclick="dmFileView('文件预览', '首期实缴出资凭证-悦达上海')">预览</a><a onclick="alert('开始下载')">下载</a></td>
                 </tr>
               </tbody>
             </table>
@@ -559,6 +559,32 @@ function openUpload() { document.getElementById('uploadModal').classList.add('sh
 function closeUpload() { document.getElementById('uploadModal').classList.remove('show'); }
 document.getElementById('uploadModal').addEventListener('click', function (e) { if (e.target === this) closeUpload(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeUpload(); });
+</script>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmFileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmFTitle">文件预览</h3>
+      <span class="modal-close" onclick="document.getElementById('dmFileModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmFBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmFileModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== G03/T3 预览真弹窗（dm- 前缀，静态页无单源，取值取自点击参数） ===== */
+function dmFileView(title, name) {
+  document.getElementById('dmFTitle').textContent = title + ' · ' + name;
+  document.getElementById('dmFBody').innerHTML =
+    '<div class="f-row"><label>文件</label><div class="f-readonly">' + name + '</div></div>'
+    + '<div class="f-hint">演示原型：文件在线预览为占位说明，正式版支持 PDF / 扫描件翻阅与下载</div>';
+  document.getElementById('dmFileModal').classList.add('show');
+}
 </script>
 
 <script>

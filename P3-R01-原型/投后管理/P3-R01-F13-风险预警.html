@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>风险预警 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -261,10 +262,10 @@ body{display:flex;flex-direction:column;overflow:hidden;}
       <!-- 预警卡片流 -->
       <div class="card" style="padding:0;">
         <div class="stabs">
-          <span class="stab active">全部<span class="cnt">5</span></span>
+          <span class="stab active">全部<span class="cnt" id="dmCntAll">5</span></span>
           <span class="stab stab-red">未读<span class="cnt" id="cntUnread">3</span></span>
           <span class="stab stab-warn">已读未处理<span class="cnt" id="cntReadUntreated">1</span></span>
-          <span class="stab">已处理<span class="cnt">1</span></span>
+          <span class="stab">已处理<span class="cnt" id="dmCntDone">1</span></span>
         </div>
         <div class="toolbar">
           <button class="link-btn" style="margin-left:auto;" onclick="markAllRead()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>全部标记已读</button>
@@ -272,88 +273,7 @@ body{display:flex;flex-direction:column;overflow:hidden;}
         <div class="alerts">
 
           <!-- 1 · 股价 · 系统 · 磐石精密制造 · 未读 -->
-          <div class="alert-card unread al-red" id="al1">
-            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg></span></div>
-            <div class="al-main">
-              <div class="al-head">
-                <span class="al-title"><span class="al-dot"></span><b>股价跌破减持参考线</b></span>
-                <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span>
-                <span class="al-time">2026-08-27 09:32</span>
-              </div>
-              <div class="al-desc">收盘价 18.6 元，低于减持方案参考价 19.0 元，连续 5 个交易日，建议结合 9 月减持窗口评估退出批次执行 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></div>
-              <div class="al-foot ops" id="alFoot1">
-                <a onclick="markRead('al1','alFoot1')">标记已读</a>
-                <a onclick="go('../退出管理/P3-R01-F15-项目退出.html')">登记退出</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2 · 舆情 · 企查查 · 云雀教育 · 未读 -->
-          <div class="alert-card unread al-orange" id="al2">
-            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l16-6v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span></div>
-            <div class="al-main">
-              <div class="al-head">
-                <span class="al-title"><span class="al-dot"></span><b>法定代表人变更</b></span>
-                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span>
-                <span class="al-time">2026-08-26 16:05</span>
-              </div>
-              <div class="al-desc">市场主体信息变更，需核实是否影响投后条款 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></div>
-              <div class="al-foot ops" id="alFoot2">
-                <a onclick="markRead('al2','alFoot2')">标记已读</a>
-                <a onclick="handleAlert('al2','alFoot2','alState2')">处理</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3 · 舆情 · 同花顺 · 云雀教育 · 未读 -->
-          <div class="alert-card unread al-orange" id="al3">
-            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16"/><path d="M6 18V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10"/><path d="M6 12h12"/><line x1="9" y1="9.5" x2="9" y2="9.51"/><line x1="12" y1="9.5" x2="12" y2="9.51"/><line x1="15" y1="9.5" x2="15" y2="9.51"/></svg></span></div>
-            <div class="al-main">
-              <div class="al-head">
-                <span class="al-title"><span class="al-dot"></span><b>媒体报道：营收下滑传闻</b></span>
-                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">同花顺</span>
-                <span class="al-time">2026-08-25 11:20</span>
-              </div>
-              <div class="al-desc">需与投后访谈数据交叉核实 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></div>
-              <div class="al-foot ops" id="alFoot3">
-                <a onclick="markRead('al3','alFoot3')">标记已读</a>
-                <a onclick="handleAlert('al3','alFoot3','alState3')">处理</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4 · 股价 · 系统 · 磐石精密制造 · 已读未处理 -->
-          <div class="alert-card al-red" id="al4">
-            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span></div>
-            <div class="al-main">
-              <div class="al-head">
-                <span class="al-title"><b>减持窗口开启提示</b></span>
-                <span class="tag tag-red">股价</span><span class="tag tag-gray">系统</span><span class="tag tag-gray" id="alState4">已读未处理</span>
-                <span class="al-time">2026-08-20 09:00</span>
-              </div>
-              <div class="al-desc">IPO 减持窗口 2026-09-01 开启，可登记退出批次 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></div>
-              <div class="al-foot ops" id="alFoot4">
-                <a onclick="handleAlert('al4','alFoot4','alState4')">标记已处理</a>
-                <a onclick="go('../退出管理/P3-R01-F15-项目退出.html')">登记退出</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- 5 · 舆情 · 企查查 · 星河航天 · 已处理 -->
-          <div class="alert-card al-orange" id="al5">
-            <div class="al-ico"><span class="al-ico-c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l16-6v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span></div>
-            <div class="al-main">
-              <div class="al-head">
-                <span class="al-title"><b>新增被执行人信息</b></span>
-                <span class="tag tag-orange">舆情</span><span class="tag tag-gray">企查查</span><span class="tag tag-blue">已处理</span>
-                <span class="al-time">2026-08-18 14:40</span>
-              </div>
-              <div class="al-desc">触发被执行人信息预警 · 关联项目：<span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天</span></div>
-              <div class="al-foot">
-                <span class="al-note">处理说明：<b>已核实为同名企业，误报</b> · 2026-08-19 · 胡博</span>
-              </div>
-            </div>
-          </div>
+          <div id="dmWarnList"></div>
 
         </div>
       </div>
@@ -403,6 +323,23 @@ function markAllRead() {
   if (cr) { cr.textContent = (parseInt(cr.textContent, 10) || 0) + unreadCnt; }
   alert('已全部标记为已读');
 }
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F13.cards'] = { target: '#dmWarnList', rows: function () { return S.warnings; }, rowHtml: function (r) { return r.tr; },
+    after: function () {
+      var un = 0, ru = 0, dn = 0;
+      S.warnings.forEach(function (w) { if (w.state === 'unread') { un++; } else if (w.state === 'readUntreated') { ru++; } else { dn++; } });
+      document.getElementById('dmCntAll').textContent = S.warnings.length;
+      document.getElementById('cntUnread').textContent = un;
+      document.getElementById('cntReadUntreated').textContent = ru;
+      document.getElementById('dmCntDone').textContent = dn;
+    } };
+  DM.renderList('F13.cards');
+})();
 </script>
 
 <script>

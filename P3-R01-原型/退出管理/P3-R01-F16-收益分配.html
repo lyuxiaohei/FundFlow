@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>收益分配 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -339,51 +340,7 @@ th:nth-child(3), td:nth-child(3) { text-align:right; font-variant-numeric:tabula
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="main-row">
-                <td><span class="exp-arrow open" onclick="toggleSub(this)" title="展开 / 收起">▸</span></td>
-                <td><span class="lk" onclick="alert('分配单详情：DST-2026-001 基于批次 BAT-2026-001（股权转让 2,800 万元），按 LP 出资比例分配：宁波梅山远创 60% = 1,680 万元、悦达上海 40% = 1,120 万元')">DST-2026-001</span></td>
-                <td><span class="lk" onclick="alert('来源批次：BAT-2026-001 股权转让 · 1,000 万份 × 2.80 元/份 = 2,800 万元 · 2026-05-18 完成')">BAT-2026-001</span> · 股权转让</td>
-                <td>2,800</td>
-                <td><span class="tag tag-blue">分配中</span></td>
-                <td>2026-05-25</td>
-                <td class="sticky-op ops"><a onclick="openPay('悦达（上海）资产管理有限公司','1,120 万元')">登记付款</a><a onclick="alert('分配单详情：DST-2026-001 基于批次 BAT-2026-001（股权转让 2,800 万元），按 LP 出资比例分配：宁波梅山远创 60% = 1,680 万元、悦达上海 40% = 1,120 万元')">查看</a></td>
-              </tr>
-              <tr class="sub-row">
-                <td colspan="7">
-                  <table class="lp-table">
-                    <thead>
-                      <tr>
-                        <th>出资主体</th>
-                        <th>出资比例</th>
-                        <th data-note="1">分配金额（万元）</th>
-                        <th>付款状态</th>
-                        <th>付款日期</th>
-                        <th>凭证 / 操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr data-pay="paid">
-                        <td>宁波梅山远创投资合伙企业<span class="lp-sub">LP-A 宁波梅山远见投资有限公司</span></td>
-                        <td>60%</td>
-                        <td class="num-pos">1,680</td>
-                        <td><span class="tag tag-blue">已付款</span></td>
-                        <td>2026-06-10</td>
-                        <td class="ops"><a onclick="alert('付款凭证：付款凭证-宁波梅山远创-20260610.pdf（已上传）')">查看凭证</a></td>
-                      </tr>
-                      <tr data-pay="unpaid">
-                        <td>悦达（上海）资产管理有限公司<span class="lp-sub">LP-B 江苏悦达产业资本</span></td>
-                        <td>40%</td>
-                        <td class="num-pos">1,120</td>
-                        <td><span class="tag tag-orange">待付款</span></td>
-                        <td>—</td>
-                        <td class="ops"><a onclick="openPay('悦达（上海）资产管理有限公司','1,120 万元')">登记付款</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -489,6 +446,21 @@ th:nth-child(3), td:nth-child(3) { text-align:right; font-variant-numeric:tabula
   </div>
 </div>
 
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmDstModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmDstTitle">分配单详情</h3>
+      <span class="modal-close" onclick="document.getElementById('dmDstModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmDstBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmDstModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ===== 业务脚本：子行展开 + 状态页签过滤 + 合计校验 + 登记付款 ===== */
 function toggleSub(el) {
@@ -558,6 +530,36 @@ function openPay(subj, due) {
 function closePayModal() { document.getElementById('payModal').classList.remove('show'); }
 document.getElementById('payModal').addEventListener('click', function (e) { if (e.target === this) closePayModal(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeGenModal(); closePayModal(); } });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F16.dst'] = { target: '#dmBody', rows: function () { return S.distributions; }, rowHtml: function (r) { return r.tr; } };
+  DM.renderList('F16.dst');
+
+  /* ===== T3 分配单详情 / 付款凭证 → 真弹窗（取值自 distributions 单源） ===== */
+  window.dmDstDetail = function () {
+    var d = DM.store.distributions[0];
+    if (!d) { return; }
+    document.getElementById('dmDstTitle').textContent = '分配单详情 · ' + d.id;
+    document.getElementById('dmDstBody').innerHTML =
+      '<div class="f-row"><label>分配单编号</label><div class="f-readonly">' + d.id + ' · 分配中</div></div>'
+      + '<div class="f-row"><label>来源批次</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + d.src + '</div></div>'
+      + '<div class="f-row"><label>分配明细</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + d.detail + '</div></div>'
+      + '<div class="f-hint">分配金额按 LP 出资比例预填，合计须与可分配金额一致</div>';
+    document.getElementById('dmDstModal').classList.add('show');
+  };
+  window.dmVoucher = function () {
+    var d = DM.store.distributions[0];
+    document.getElementById('dmDstTitle').textContent = '付款凭证';
+    document.getElementById('dmDstBody').innerHTML =
+      '<div class="f-row"><label>凭证文件</label><div class="f-readonly">' + (d ? d.voucher : '—') + '</div></div>'
+      + '<div class="f-hint">演示原型：凭证在线预览为占位说明，正式版支持图片 / PDF 查验</div>';
+    document.getElementById('dmDstModal').classList.add('show');
+  };
+})();
 </script>
 
 <script>

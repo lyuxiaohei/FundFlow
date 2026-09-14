@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>投后项目 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -289,38 +290,7 @@ th:nth-child(4), td:nth-child(4) { text-align:right; font-variant-numeric:tabula
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>云雀教育</td>
-                <td>FUND-2026-003 · 杭州云雀教育创业投资合伙企业（有限合伙）</td>
-                <td>2026-05-02</td>
-                <td>128</td>
-                <td>半年度经营访谈（2026-08-15）</td>
-                <td>2026Q1 季报（2026-04-28）</td>
-                <td><span class="tag tag-orange">1 条未读</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F11-投后事项.html')">详情</a><a onclick="go('P3-R01-F11-投后事项.html')">记事件</a></td>
-              </tr>
-              <tr>
-                <td>磐石精密制造</td>
-                <td>FUND-2025-011 · 深圳磐石一期股权投资合伙企业（有限合伙）</td>
-                <td>2025-06-10</td>
-                <td>444</td>
-                <td>事件归档 <span class="tag tag-gray">已退出</span></td>
-                <td>专项报告 · 清算（2026-06-20）</td>
-                <td>—</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F11-投后事项.html')">详情</a><a onclick="go('P3-R01-F11-投后事项.html')">记事件</a></td>
-              </tr>
-              <tr>
-                <td>星河航天</td>
-                <td>FUND-2026-002 · 苏州工业园区星河航天投资合伙企业（有限合伙）</td>
-                <td>—</td>
-                <td>—</td>
-                <td><span class="tag tag-blue">⑨ 付款审批中 · 即将进入投后</span></td>
-                <td>—</td>
-                <td>—</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F11-投后事项.html')">详情</a><a onclick="go('P3-R01-F11-投后事项.html')">记事件</a></td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -335,6 +305,15 @@ th:nth-child(4), td:nth-child(4) { text-align:right; font-variant-numeric:tabula
     </div>
   </div>
 </div>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F22.list'] = { target: '#dmBody', rows: function () { return S.postEvents.invested; }, rowHtml: function (r) { return r.tr; } };
+  DM.renderList('F22.list');
+})();
+</script>
 
 <script>
 /* ===== 菜单折叠 / 左下角系统切换（统一脚本） ===== */

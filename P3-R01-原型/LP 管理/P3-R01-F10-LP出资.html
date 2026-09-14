@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>LP 出资 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -423,32 +424,7 @@ th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5), th:nth-child
 
 <script>
 /* ===== 出资数据（按基金） ===== */
-var FUNDS = {
-  f002: {
-    name: 'FUND-2026-002 苏州工业园区星河航天投资合伙企业（有限合伙）',
-    commit: '8,000', paid: '4,000', pct: 50, subs: 2,
-    rows: [
-      { id: 'CAP-2026-0001', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '4,800 万', commitCN: '四千八百万', paid: '2,400 万', ratio: '60%', last: '2026-08-20', st: '实缴中 · 50%', stCls: 'tag-orange' },
-      { id: 'CAP-2026-0002', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '3,200 万', commitCN: '三千二百万', paid: '1,600 万', ratio: '40%', last: '2026-08-20', st: '实缴中 · 50%', stCls: 'tag-orange' }
-    ]
-  },
-  f003: {
-    name: 'FUND-2026-003 杭州云雀教育创业投资合伙企业（有限合伙）',
-    commit: '6,000', paid: '6,000', pct: 100, subs: 2,
-    rows: [
-      { id: 'CAP-2026-0007', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '3,600 万', commitCN: '三千六百万', paid: '3,600 万', ratio: '60%', last: '2026-02-10', st: '已缴足', stCls: 'tag-blue' },
-      { id: 'CAP-2026-0008', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '2,400 万', commitCN: '二千四百万', paid: '2,400 万', ratio: '40%', last: '2026-02-10', st: '已缴足', stCls: 'tag-blue' }
-    ]
-  },
-  f011: {
-    name: 'FUND-2025-011 深圳磐石一期股权投资合伙企业（有限合伙）',
-    commit: '4,000', paid: '4,000', pct: 100, subs: 2,
-    rows: [
-      { id: 'CAP-2025-0021', sub: '宁波梅山远创投资合伙企业（有限合伙）', lp: 'LP-001 宁波梅山远见', commit: '2,400 万', commitCN: '二千四百万', paid: '2,400 万', ratio: '60%', last: '2025-04-18', st: '已缴足', stCls: 'tag-blue' },
-      { id: 'CAP-2025-0022', sub: '悦达（上海）资产管理有限公司', lp: 'LP-002 江苏悦达', commit: '1,600 万', commitCN: '一千六百万', paid: '1,600 万', ratio: '40%', last: '2025-04-20', st: '已缴足', stCls: 'tag-blue' }
-    ]
-  }
-};
+var FUNDS = DM.store.capCalls;
 
 /* ===== 渲染 ===== */
 function switchFund(key) {

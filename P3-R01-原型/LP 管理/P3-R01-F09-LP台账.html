@@ -345,7 +345,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>SUB-001</td>
                         <td>宁波梅山远创投资合伙企业（有限合伙）</td>
                         <td><span class="lk" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">星河航天基金</span> / <span class="lk" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">云雀基金</span></td>
-                        <td><span class="lk" onclick="alert('查看资质材料：营业执照、资金证明等 2 份')">已上传 2 份</span></td>
+                        <td><span class="lk" onclick="dmMatView('营业执照、资金证明等 2 份')">已上传 2 份</span></td>
                         <td class="ops"><a onclick="openUploadMat('宁波梅山远创投资合伙企业（有限合伙）')">上传材料</a><a>编辑</a></td>
                       </tr>
                       <tr>
@@ -379,7 +379,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>SUB-003</td>
                         <td>悦达（上海）资产管理有限公司</td>
                         <td><span class="lk" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">星河航天基金</span> / <span class="lk" onclick="go('../基金管理/P3-R01-F08-基金详情.html')">云雀基金</span></td>
-                        <td><span class="lk" onclick="alert('查看资质材料：营业执照、资金证明等 1 份')">已上传 1 份</span></td>
+                        <td><span class="lk" onclick="dmMatView('营业执照、资金证明等 1 份')">已上传 1 份</span></td>
                         <td class="ops"><a onclick="openUploadMat('悦达（上海）资产管理有限公司')">上传材料</a><a>编辑</a></td>
                       </tr>
                     </tbody>
@@ -406,7 +406,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>SUB-004</td>
                         <td>华金（宁波梅山）股权投资有限公司</td>
                         <td><span style="color:var(--text-3);">—</span></td>
-                        <td><span class="lk" onclick="alert('查看资质材料：营业执照等 1 份')">已上传 1 份</span></td>
+                        <td><span class="lk" onclick="dmMatView('营业执照等 1 份')">已上传 1 份</span></td>
                         <td class="ops"><a onclick="openUploadMat('华金（宁波梅山）股权投资有限公司')">上传材料</a><a>编辑</a></td>
                       </tr>
                       <tr>
@@ -447,7 +447,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                         <td>SUB-007</td>
                         <td>鼎晖科创（杭州）合伙企业（有限合伙）</td>
                         <td><span style="color:var(--text-3);">—</span></td>
-                        <td><span class="lk" onclick="alert('查看资质材料：营业执照、身份证明、资金证明等 3 份')">已上传 3 份</span></td>
+                        <td><span class="lk" onclick="dmMatView('营业执照、身份证明、资金证明等 3 份')">已上传 3 份</span></td>
                         <td class="ops"><a onclick="openUploadMat('鼎晖科创（杭州）合伙企业（有限合伙）')">上传材料</a><a>编辑</a></td>
                       </tr>
                     </tbody>
@@ -661,6 +661,34 @@ document.getElementById('uploadMatModal').addEventListener('click', function (e)
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') { closeNewLp(); closeSubModal(); closeVerify(); closeUploadMat(); }
 });
+</script>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmMatModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmMTitle">资质材料</h3>
+      <span class="modal-close" onclick="document.getElementById('dmMatModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmMBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmMatModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== G03/T3 查看资质材料 → 真弹窗（dm- 前缀） ===== */
+function dmMatView(list) {
+  document.getElementById('dmMTitle').textContent = '资质材料';
+  var items = list.split('、').map(function (s) { return s.replace(/等 \d+ 份$/, '').trim(); }).filter(Boolean);
+  var lis = items.map(function (t) { return '<div class="f-readonly">📄 ' + t + '</div>'; }).join('<div style="height:8px;"></div>');
+  document.getElementById('dmMBody').innerHTML =
+    '<div class="f-row"><label>材料清单</label>' + lis + '</div>'
+    + '<div class="f-hint">演示原型：材料在线预览为占位说明；资质材料仅认定人与管理员可见</div>';
+  document.getElementById('dmMatModal').classList.add('show');
+}
 </script>
 
 <script>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>放弃原因分布 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -299,24 +300,24 @@ tbody tr.group-row .g-cnt { font-weight:400; color:var(--text-3); margin-left:6p
       <!-- 汇总卡（含状态页签） -->
       <div class="card" style="padding-top:0;">
         <div class="stabs" style="margin:-20px -24px 16px;padding:10px 24px 0;">
-          <span class="stab active" data-f="all" onclick="setSubject('all')">全部<span class="cnt">10</span></span>
-          <span class="stab" data-f="gp" onclick="setSubject('gp')">GP 放弃<span class="cnt">8</span></span>
-          <span class="stab" data-f="lp" onclick="setSubject('lp')">LP 否决<span class="cnt">2</span></span>
+          <span class="stab active" data-f="all" onclick="setSubject('all')">全部<span class="cnt" id="dmCntAll">10</span></span>
+          <span class="stab" data-f="gp" onclick="setSubject('gp')">GP 放弃<span class="cnt" id="dmCntGp">8</span></span>
+          <span class="stab" data-f="lp" onclick="setSubject('lp')">LP 否决<span class="cnt" id="dmCntLp">2</span></span>
         </div>
         <div class="stats">
           <div class="stat">
             <div class="lb">放弃总数</div>
-            <div class="num">10</div>
+            <div class="num" id="dmNumTotal">10</div>
             <div class="sub">未投归档不可回流</div>
           </div>
           <div class="stat">
             <div class="lb">GP 放弃</div>
-            <div class="num blue">8</div>
+            <div class="num blue" id="dmNumGp">8</div>
             <div class="sub">①~⑦ 管理人主动放弃</div>
           </div>
           <div class="stat">
             <div class="lb">LP 否决</div>
-            <div class="num red">2</div>
+            <div class="num red" id="dmNumLp">2</div>
             <div class="sub">⑦ 投决会否决</div>
           </div>
           <div class="stat">
@@ -442,112 +443,29 @@ tbody tr.group-row .g-cnt { font-weight:400; color:var(--text-3); margin-left:6p
                 <th>最近发生</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="group-row" data-subject="gp" data-node="1"><td colspan="7">① 看 BP 后不看<span class="g-cnt">GP · 2 条</span></td></tr>
-              <tr data-subject="gp" data-node="1">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>① 看 BP 后不看</td>
-                <td>明显超出投资范围</td>
-                <td class="dim">主营业务与基金投资范围偏离较大</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('海豚半导体 · 未投归档详情（GP 放弃）')">海豚半导体</span></td>
-                <td>2026-08-10</td>
-              </tr>
-              <tr data-subject="gp" data-node="1">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>① 看 BP 后不看</td>
-                <td>明显超出投资范围</td>
-                <td class="dim">产能规模超出当前阶段偏好</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('晶彩光电 · 未投归档详情（GP 放弃）')">晶彩光电</span></td>
-                <td>2026-08-26</td>
-              </tr>
-              <tr class="group-row" data-subject="gp" data-node="2"><td colspan="7">② 线上路演后<span class="g-cnt">GP · 1 条</span></td></tr>
-              <tr data-subject="gp" data-node="2">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>② 线上路演后</td>
-                <td>专业问题答不出/逻辑薄弱</td>
-                <td class="dim">两轮问答后核心数字前后矛盾</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('驭光微纳 · 未投归档详情（GP 放弃）')">驭光微纳</span></td>
-                <td>2026-07-18</td>
-              </tr>
-              <tr class="group-row" data-subject="gp" data-node="4"><td colspan="7">④ 访谈/尽调后<span class="g-cnt">GP · 2 条</span></td></tr>
-              <tr data-subject="gp" data-node="4">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>④ 访谈/尽调后</td>
-                <td>财务数据重大偏差</td>
-                <td class="dim">营收数据与纳税记录差异较大</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('蓝湾储能 · 未投归档详情（GP 放弃）')">蓝湾储能</span></td>
-                <td>2026-07-02</td>
-              </tr>
-              <tr data-subject="gp" data-node="4">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>④ 访谈/尽调后</td>
-                <td>工厂萧条、订单匮乏</td>
-                <td class="dim">实地走访产能利用率低，在手订单不足</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('恒宇装备 · 未投归档详情（GP 放弃）')">恒宇装备</span></td>
-                <td>2026-06-21</td>
-              </tr>
-              <tr class="group-row" data-subject="gp" data-node="5"><td colspan="7">⑤ 立项时<span class="g-cnt">GP · 1 条</span></td></tr>
-              <tr data-subject="gp" data-node="5">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>⑤ 立项时</td>
-                <td>创始人信用风险/人品问题</td>
-                <td class="dim">历史涉诉与对外担保未如实披露</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('青云网络 · 未投归档详情（GP 放弃）')">青云网络</span></td>
-                <td>2026-06-09</td>
-              </tr>
-              <tr class="group-row" data-subject="gp" data-node="6"><td colspan="7">⑥ 投资人路演后<span class="g-cnt">GP · 1 条</span></td></tr>
-              <tr data-subject="gp" data-node="6">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>⑥ 投资人路演后</td>
-                <td>全体投资人明确不出资</td>
-                <td class="dim">路演后认购意向为零，无法成案</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('南汐生物 · 未投归档详情（GP 放弃）')">南汐生物</span></td>
-                <td>2026-07-25</td>
-              </tr>
-              <tr class="group-row" data-subject="gp" data-node="7"><td colspan="7">⑦ 投决前主动撤回<span class="g-cnt">GP · 1 条</span></td></tr>
-              <tr data-subject="gp" data-node="7">
-                <td><span class="tag tag-blue">GP</span></td>
-                <td>⑦ 投决前主动撤回</td>
-                <td>估值未谈拢（打折未成）</td>
-                <td class="dim">两轮折价沟通未达成一致</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('千乘出行 · 未投归档详情（GP 放弃）')">千乘出行</span></td>
-                <td>2026-08-20</td>
-              </tr>
-              <tr class="group-row" data-subject="lp" data-node="7"><td colspan="7">⑦ 投决会否决<span class="g-cnt">LP · 2 条</span></td></tr>
-              <tr data-subject="lp" data-node="7">
-                <td><span class="tag tag-red">LP</span></td>
-                <td>⑦ 投决会否决</td>
-                <td>不看好行业</td>
-                <td class="dim">对低空经济商业化周期判断存在分歧</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('风行低空 · 未投归档详情（LP 否决）')">风行低空</span></td>
-                <td>2026-08-15</td>
-              </tr>
-              <tr data-subject="lp" data-node="7">
-                <td><span class="tag tag-red">LP</span></td>
-                <td>⑦ 投决会否决</td>
-                <td>项目风险异议</td>
-                <td class="dim">适航取证进度与交付节奏存在风险</td>
-                <td>1</td>
-                <td><span class="lk" onclick="alert('蓝湾机器人 · 未投归档详情（LP 否决）')">蓝湾机器人</span></td>
-                <td>2026-07-22</td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager" style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 16px;font-size:12px;color:rgba(0,0,0,.85);">
-          <span>第 1-10 条/总共 10 条</span>
+          <span id="dmPgInfo">第 1-10 条/总共 10 条</span>
           <span style="min-width:30px;height:30px;padding:0 6px;border:1px solid var(--input-border);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;background:var(--primary);border-color:var(--primary);color:#fff;cursor:pointer;">1</span>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmAbModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmAbTitle">未投归档详情</h3>
+      <span class="modal-close" onclick="document.getElementById('dmAbModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmAbBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmAbModal').classList.remove('show')">关 闭</button>
     </div>
   </div>
 </div>
@@ -596,6 +514,63 @@ function refreshDist() {
 }
 document.getElementById('filterSubject').addEventListener('change', function () { setSubject(this.value); });
 document.getElementById('filterNode').addEventListener('change', function () { curNode = this.value; refreshDist(); });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  var G = S.__f19Groups;
+  function cntOf(g) { return S.abandons.filter(function (a) { return a.subject === g.subject && a.node === g.node; }).length; }
+  DM.pages['F19.detail'] = { target: '#dmBody',
+    rows: function () {
+      var out = [];
+      G.forEach(function (g) {
+        out.push({ group: g, n: cntOf(g) });
+        S.abandons.forEach(function (a) { if (a.subject === g.subject && a.node === g.node) { out.push({ row: a }); } });
+      });
+      return out;
+    },
+    rowHtml: function (r) {
+      if (r.group) {
+        return '<tr class="group-row" data-subject="' + r.group.subject + '" data-node="' + r.group.node + '"><td colspan="7">' + r.group.label + '<span class="g-cnt">' + (r.group.subject === 'gp' ? 'GP' : 'LP') + ' · ' + r.n + ' 条</span></td></tr>';
+      }
+      return r.row.tr;
+    },
+    after: function () {
+      var gp = S.abandons.filter(function (a) { return a.subject === 'gp'; }).length;
+      var lp = S.abandons.length - gp;
+      document.getElementById('dmCntAll').textContent = S.abandons.length;
+      document.getElementById('dmCntGp').textContent = gp;
+      document.getElementById('dmCntLp').textContent = lp;
+      document.getElementById('dmNumTotal').textContent = S.abandons.length;
+      document.getElementById('dmNumGp').textContent = gp;
+      document.getElementById('dmNumLp').textContent = lp;
+      document.getElementById('dmPgInfo').textContent = '第 1-' + S.abandons.length + ' 条/总共 ' + S.abandons.length + ' 条';
+      if (window.dmRefreshHook) { window.dmRefreshHook(); }
+    } };
+  DM.renderList('F19.detail');
+
+  /* ===== T3 未投归档详情 → 真弹窗（取值自 abandons 单源） ===== */
+  window.dmAbDetail = function (name) {
+    var a = null; DM.store.abandons.forEach(function (x) { if (x.name === name) { a = x; } });
+    if (!a) { return; }
+    var sub = a.subject === 'gp' ? 'GP 放弃（管理人主动）' : 'LP 否决（投决会）';
+    document.getElementById('dmAbTitle').textContent = name + ' · 未投归档详情';
+    document.getElementById('dmAbBody').innerHTML =
+      '<div class="f-row"><label>项目</label><div class="f-readonly">' + name + '</div></div>'
+      + '<div class="f-row"><label>放弃主体</label><div class="f-readonly">' + sub + '</div></div>'
+      + '<div class="f-row"><label>放弃节点</label><div class="f-readonly">' + a.nodeLabel + '</div></div>'
+      + '<div class="f-row"><label>末级原因</label><div class="f-readonly">' + a.reason + '</div></div>'
+      + '<div class="f-row"><label>自定义补充</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + a.custom + '</div></div>'
+      + '<div style="display:flex;gap:12px;">'
+      + '<div class="f-row" style="flex:1;"><label>最近发生</label><div class="f-readonly">' + a.date + '</div></div>'
+      + '<div class="f-row" style="flex:1;"><label>关联项目编号</label><div class="f-readonly">' + (a.prj || '—') + '</div></div>'
+      + '</div>'
+      + '<div class="f-hint">未投归档不可回流管道；如再接触需按新项目建档</div>';
+    document.getElementById('dmAbModal').classList.add('show');
+  };
+})();
 </script>
 
 <script>

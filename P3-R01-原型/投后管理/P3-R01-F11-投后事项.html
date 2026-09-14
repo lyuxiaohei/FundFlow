@@ -336,7 +336,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
               <div class="feed-meta">
                 <span>2026-06-28</span>
                 <span class="who">记录人：吕道远</span>
-                <span class="feed-att" onclick="alert('打开附件：董事会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>董事会决议.pdf</span>
+                <span class="feed-att" onclick="dmFileView('附件预览', '董事会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>董事会决议.pdf</span>
               </div>
             </div>
           </div>
@@ -348,7 +348,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
               <div class="feed-meta">
                 <span>2026-05-20</span>
                 <span class="who">记录人：吕道远</span>
-                <span class="feed-att" onclick="alert('打开附件：股东会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>股东会决议.pdf</span>
+                <span class="feed-att" onclick="dmFileView('附件预览', '股东会决议.pdf')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>股东会决议.pdf</span>
               </div>
             </div>
           </div>
@@ -454,6 +454,32 @@ function openEvModal() { document.getElementById('evModal').classList.add('show'
 function closeEvModal() { document.getElementById('evModal').classList.remove('show'); }
 document.getElementById('evModal').addEventListener('click', function (e) { if (e.target === this) closeEvModal(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeEvModal(); });
+</script>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmFileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmFTitle">附件预览</h3>
+      <span class="modal-close" onclick="document.getElementById('dmFileModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmFBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmFileModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== G03/T3 预览真弹窗（dm- 前缀，静态页无单源，取值取自点击参数） ===== */
+function dmFileView(title, name) {
+  document.getElementById('dmFTitle').textContent = title + ' · ' + name;
+  document.getElementById('dmFBody').innerHTML =
+    '<div class="f-row"><label>文件</label><div class="f-readonly">' + name + '</div></div>'
+    + '<div class="f-hint">演示原型：文件在线预览为占位说明，正式版支持 PDF / 扫描件翻阅与下载</div>';
+  document.getElementById('dmFileModal').classList.add('show');
+}
 </script>
 
 <script>

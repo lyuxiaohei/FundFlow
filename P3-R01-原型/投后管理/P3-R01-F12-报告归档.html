@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>报告归档 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -297,10 +298,10 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <!-- 列表卡片 -->
       <div class="card" style="padding:0;">
         <div class="stabs">
-          <span class="stab active">全部<span class="cnt">5</span></span>
-          <span class="stab">季报<span class="cnt">2</span></span>
-          <span class="stab">年报<span class="cnt">1</span></span>
-          <span class="stab">专项报告<span class="cnt">2</span></span>
+          <span class="stab active">全部<span class="cnt" id="dmCntAll">5</span></span>
+          <span class="stab">季报<span class="cnt" id="dmCntQ">2</span></span>
+          <span class="stab">年报<span class="cnt" id="dmCntY">1</span></span>
+          <span class="stab">专项报告<span class="cnt" id="dmCntS">2</span></span>
         </div>
         <div class="toolbar">
           <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openUpload()">＋ 上传报告</button>
@@ -320,63 +321,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><span class="lk">RPT-2026-021</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></td>
-                <td><span class="tag tag-blue">季报</span></td>
-                <td>2026Q2</td>
-                <td>2026-07-15</td>
-                <td>—</td>
-                <td>—</td>
-                <td><span class="tag tag-orange">⚠ 待上传 · 逾期 43 天</span></td>
-                <td class="sticky-op ops"><a onclick="openUpload('yunke','q','2026Q2')">上传</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk">RPT-2026-018</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></td>
-                <td><span class="tag tag-blue">季报</span></td>
-                <td>2026Q1</td>
-                <td>2026-04-15</td>
-                <td>华悦</td>
-                <td>2026-04-28</td>
-                <td><span class="tag tag-blue">已归档</span></td>
-                <td class="sticky-op ops"><a onclick="alert('打开报告预览')">预览</a><a onclick="alert('已开始下载')">下载</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk">RPT-2026-009</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span></td>
-                <td><span class="tag tag-blue">年报</span></td>
-                <td>2025年度</td>
-                <td>2026-03-31</td>
-                <td>华悦</td>
-                <td>2026-03-30</td>
-                <td><span class="tag tag-blue">已归档</span></td>
-                <td class="sticky-op ops"><a onclick="alert('打开报告预览')">预览</a><a onclick="alert('已开始下载')">下载</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk">RPT-2026-015</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></td>
-                <td><span class="tag tag-blue">专项报告 · 清算</span></td>
-                <td>—</td>
-                <td>2026-06-30</td>
-                <td>胡博</td>
-                <td>2026-06-20</td>
-                <td><span class="tag tag-blue">已归档</span></td>
-                <td class="sticky-op ops"><a onclick="alert('打开报告预览')">预览</a><a onclick="alert('已开始下载')">下载</a></td>
-              </tr>
-              <tr>
-                <td><span class="lk">RPT-2026-012</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span></td>
-                <td><span class="tag tag-blue">专项报告 · 上市减持</span></td>
-                <td>—</td>
-                <td>2026-09-30</td>
-                <td>—</td>
-                <td>—</td>
-                <td><span class="tag tag-gray">待上传</span></td>
-                <td class="sticky-op ops"><a onclick="openUpload('panshi','s','上市减持方案')">上传</a></td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -445,7 +390,22 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
     </div>
     <div class="modal-footer">
       <button class="btn btn-default" onclick="closeUpload()">取 消</button>
-      <button class="btn btn-primary" onclick="closeUpload();alert('已归档')">确认上传归档</button>
+      <button class="btn btn-primary" onclick="dmSubmitReport()">确认上传归档</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmRptModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmRptTitle">报告预览</h3>
+      <span class="modal-close" onclick="document.getElementById('dmRptModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmRptBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmRptModal').classList.remove('show')">关 闭</button>
     </div>
   </div>
 </div>
@@ -495,6 +455,90 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
     txt.textContent = collapsed ? '收起' : '展开';
     ico.style.transform = collapsed ? 'rotate(180deg)' : '';
   });
+})();
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F12.list'] = { target: '#dmBody', rows: function () { return S.reports; }, rowHtml: function (r) { return r.tr; },
+    after: function () {
+      var q = 0, y = 0, s = 0;
+      S.reports.forEach(function (r) {
+        if (r.type === '季报') { q++; } else if (r.type === '年报') { y++; } else { s++; }
+      });
+      document.getElementById('dmCntAll').textContent = S.reports.length;
+      document.getElementById('dmCntQ').textContent = q;
+      document.getElementById('dmCntY').textContent = y;
+      document.getElementById('dmCntS').textContent = s;
+    } };
+  DM.renderList('F12.list');
+
+  /* ===== T2 上传报告：新增一行（已归档，按页面现有枚举）＋对应「待上传」行同步消解 ===== */
+  window.dmSubmitReport = function () {
+    var PRJ = { yunke: '云雀教育', panshi: '磐石精密制造' };
+    var prj = PRJ[document.getElementById('upPrj').value] || '云雀教育';
+    var t = document.getElementById('upType').value;
+    var typeTag, period;
+    if (t === 'q') {
+      typeTag = '季报';
+      period = document.getElementById('upQuarter').options[document.getElementById('upQuarter').selectedIndex].text;
+    } else if (t === 'y') {
+      typeTag = '年报';
+      period = document.getElementById('upYear').options[document.getElementById('upYear').selectedIndex].text + '年度';
+    } else {
+      typeTag = '专项报告 · ' + document.getElementById('upSpecial').options[document.getElementById('upSpecial').selectedIndex].text;
+      period = '—';
+    }
+    var seq = 0;
+    S.reports.forEach(function (r) {
+      var m = r.id.match(/RPT-\d{4}-(\d+)/); if (m) { seq = Math.max(seq, +m[1]); }
+    });
+    var id = 'RPT-2026-0' + ('0' + (seq + 1)).slice(-2);
+    var nr = { id: id, prj: prj, type: typeTag, period: period, status: '已归档' };
+    nr.tr = '<tr>'
+      + '<td><span class="lk">' + id + '</span></td>'
+      + '<td><span class="lk" onclick="go(\'../项目库/P3-R01-F02-项目详情-项目概况.html\')">' + prj + '</span></td>'
+      + '<td><span class="tag tag-blue">' + typeTag + '</span></td>'
+      + '<td>' + period + '</td>'
+      + '<td>—</td><td>吕道远</td><td>2026-08-27</td>'
+      + '<td><span class="tag tag-blue">已归档</span></td>'
+      + '<td class="sticky-op ops"><a onclick="dmViewReport(\'' + id + '\')">预览</a><a onclick="alert(\'已开始下载\')">下载</a></td>'
+      + '</tr>';
+    S.reports.unshift(nr);
+    /* 同项目同类型同报告期的「待上传」行消解为已归档 */
+    S.reports.forEach(function (r) {
+      if (r !== nr && r.prj === prj && r.type === typeTag && r.period === period && r.status === '待上传') {
+        r.status = '已归档';
+        r.tr = r.tr
+          .replace(/<span class="tag tag-orange">[^<]*<\/span>/, '<span class="tag tag-blue">已归档</span>')
+          .replace(/<a onclick="openUpload\([^)]*\)">上传<\/a>/, '<a onclick="dmViewReport(\'' + r.id + '\')">预览</a><a onclick="alert(\'已开始下载\')">下载</a>');
+      }
+    });
+    DM.renderList('F12.list');
+    closeUpload();
+    alert('已归档');
+  };
+  /* ===== T3 报告预览 → 真弹窗（取值自 reports 单源 / 行 DOM） ===== */
+  window.dmViewReport = function (id) {
+    var r = DM.byId(DM.store.reports, id);
+    if (!r) {
+      var tds = null;
+      document.querySelectorAll('#dmBody tr').forEach(function (tr) {
+        if (tr.textContent.indexOf(id) > -1) { tds = tr.querySelectorAll('td'); }
+      });
+      if (!tds) { return; }
+      r = { id: id, prj: tds[1].textContent.trim(), type: tds[2].textContent.trim(), period: tds[3].textContent.trim(), status: tds[7].textContent.trim() };
+    }
+    document.getElementById('dmRptTitle').textContent = '报告预览 · ' + id;
+    document.getElementById('dmRptBody').innerHTML =
+      '<div class="f-row"><label>报告编号 / 类型</label><div class="f-readonly">' + r.id + ' · ' + r.type + '</div></div>'
+      + '<div class="f-row"><label>项目 / 报告期</label><div class="f-readonly">' + r.prj + ' · ' + r.period + '</div></div>'
+      + '<div class="f-row"><label>状态</label><div class="f-readonly">' + r.status + '</div></div>'
+      + '<div class="f-hint">演示原型：报告在线预览为占位说明，正式版支持 PDF 翻阅与下载</div>';
+    document.getElementById('dmRptModal').classList.add('show');
+  };
 })();
 </script>
 

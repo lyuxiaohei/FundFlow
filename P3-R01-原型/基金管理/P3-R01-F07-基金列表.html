@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>基金列表 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -339,85 +340,7 @@ th:nth-child(3), td:nth-child(3) { text-align:right; font-variant-numeric:tabula
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2026-003</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">杭州云雀教育创业投资合伙企业（有限合伙）</span></td>
-                <td>6,000 万</td>
-                <td>2026-02-15</td>
-                <td>境内 · 杭州</td>
-                <td><span class="tag tag-blue">存续中</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育</span><span class="muted">PRJ-2026-0005</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2026-002</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">苏州工业园区星河航天投资合伙企业（有限合伙）</span></td>
-                <td>8,000 万</td>
-                <td>2026-08-10</td>
-                <td>境内 · 苏州工业园区</td>
-                <td><span class="tag tag-blue">存续中</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天</span><span class="muted">PRJ-2026-0004</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2026-001</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">宁波梅山保税港区蓝鲸产业投资合伙企业（有限合伙）</span></td>
-                <td>5,000 万</td>
-                <td>—</td>
-                <td>境内 · 宁波梅山</td>
-                <td><span class="tag tag-orange">设立中</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">蓝鲸生物医药</span><span class="muted">PRJ-2026-0003</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2025-011</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">深圳磐石一期股权投资合伙企业（有限合伙）</span></td>
-                <td>4,000 万</td>
-                <td>2025-03-10</td>
-                <td>境内 · 深圳</td>
-                <td><span class="tag tag-orange">清算中</span></td>
-                <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石精密制造</span><span class="muted">PRJ-2025-0016</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a onclick="go('../退出管理/P3-R01-F17-清算注销.html')">清算进度</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2025-007</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">香港远航国际投资有限公司</span></td>
-                <td>6,500 万</td>
-                <td>2025-05-16</td>
-                <td>境外 · 香港</td>
-                <td><span class="tag tag-blue">存续中</span></td>
-                <td><span style="color:var(--text-3);">—</span> <span class="tag tag-blue tag-sm">可关联</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2024-005</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">上海临港智造股权投资合伙企业（有限合伙）</span></td>
-                <td>3,000 万</td>
-                <td>2024-06-28</td>
-                <td>境内 · 上海临港</td>
-                <td><span class="tag tag-gray">已注销</span></td>
-                <td><span style="color:var(--text-3);">—</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">FUND-2023-002</span></td>
-                <td><span class="lk" onclick="go('P3-R01-F08-基金详情.html')">宁波远见创业投资合伙企业（有限合伙）</span></td>
-                <td>3,500 万</td>
-                <td>2023-11-08</td>
-                <td>境内 · 宁波</td>
-                <td><span class="tag tag-blue">存续中</span></td>
-                <td><span style="color:var(--text-3);">—</span> <span class="tag tag-blue tag-sm">可关联</span></td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F08-基金详情.html')">详情</a><a>编辑</a></td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -524,6 +447,15 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
     txt.textContent = collapsed ? '收起' : '展开';
     ico.style.transform = collapsed ? 'rotate(180deg)' : '';
   });
+})();
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F07.list'] = { target: '#dmBody', rows: function () { return S.funds; }, rowHtml: function (r) { return r.tr; } };
+  DM.renderList('F07.list');
 })();
 </script>
 

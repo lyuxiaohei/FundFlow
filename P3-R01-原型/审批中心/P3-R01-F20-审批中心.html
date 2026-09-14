@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>审批中心 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -297,10 +298,10 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <!-- 审批列表卡 -->
       <div class="card" style="padding:0;">
         <div class="stabs">
-          <span class="stab stab-warn active" data-view="todo" onclick="switchView('todo')">待我审批<span class="cnt">3</span></span>
-          <span class="stab" data-view="cc" onclick="switchView('cc')">抄送我的<span class="cnt">2</span></span>
-          <span class="stab" data-view="mine" onclick="switchView('mine')">我发起的<span class="cnt">3</span></span>
-          <span class="stab" data-view="done" onclick="switchView('done')">我已审批<span class="cnt">4</span></span>
+          <span class="stab stab-warn active" data-view="todo" onclick="switchView('todo')">待我审批<span class="cnt" id="dmCntTodo">3</span></span>
+          <span class="stab" data-view="cc" onclick="switchView('cc')">抄送我的<span class="cnt" id="dmCntCc">2</span></span>
+          <span class="stab" data-view="mine" onclick="switchView('mine')">我发起的<span class="cnt" id="dmCntMine">3</span></span>
+          <span class="stab" data-view="done" onclick="switchView('done')">我已审批<span class="cnt" id="dmCntDone">4</span></span>
         </div>
         <div class="toolbar">
           <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openNew()" data-note="1">＋ 发起审批</button>
@@ -322,38 +323,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                   <th class="sticky-op">操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0037 审批单详情')">APV-2026-0037</span></td>
-                  <td><span class="tag tag-blue">投决上会</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
-                  <td>吕道远</td>
-                  <td>2026-08-27</td>
-                  <td>投决会</td>
-                  <td><span class="tag tag-orange">待审</span></td>
-                  <td class="sticky-op ops"><a onclick="openApproval('APV-2026-0037','投决上会','聚变能源科技 PRJ-2026-0001','吕道远','2026-08-27','投决会','投决材料已齐备（BP / 尽调报告 / 估值建议），拟投 3,000 万元、投前估值 12 亿元，提请投决会审议。')">审批</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0038 审批单详情')">APV-2026-0038</span></td>
-                  <td><span class="tag tag-blue">基金注册审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">蓝鲸生物医药</span> <span class="dim">PRJ-2026-0003 / FUND-2026-001</span></td>
-                  <td>胡博</td>
-                  <td>2026-08-26</td>
-                  <td>总经理审批</td>
-                  <td><span class="tag tag-orange">待审</span></td>
-                  <td class="sticky-op ops"><a onclick="openApproval('APV-2026-0038','基金注册审批','蓝鲸生物医药 PRJ-2026-0003 / FUND-2026-001','胡博','2026-08-26','总经理审批','专项基金已完成合伙协议签署，拟注册资本与出资安排见附件，提请审批后办理工商注册。')">审批</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0039 审批单详情')">APV-2026-0039</span></td>
-                  <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
-                  <td>胡博</td>
-                  <td>2026-08-27</td>
-                  <td>财务审批</td>
-                  <td><span class="tag tag-orange">待审</span></td>
-                  <td class="sticky-op ops"><a onclick="openApproval('APV-2026-0039','付款审批','星河航天 PRJ-2026-0004 / FUND-2026-002','胡博','2026-08-27','财务审批','首期出资 1,500 万元，投资协议与交割条件已满足，收款账户信息已补充完整，提请财务复核付款。')">审批</a></td>
-                </tr>
-              </tbody>
+              <tbody id="dmBodyTodo"></tbody>
             </table>
           </div>
           <div class="pager">
@@ -380,28 +350,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                   <th class="sticky-op">操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0028 审批单详情')">APV-2026-0028</span></td>
-                  <td><span class="tag tag-blue">基金注册审批</span></td>
-                  <td class="biz-cell">香港远航国际基金</td>
-                  <td>嘉怡</td>
-                  <td>2026-08-08</td>
-                  <td>总经理审批</td>
-                  <td><span class="tag tag-blue">已通过</span></td>
-                  <td class="sticky-op ops"><a onclick="alert('APV-2026-0028 审批单详情')">详情</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0025 审批单详情')">APV-2026-0025</span></td>
-                  <td><span class="tag tag-blue">收益分配审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../退出管理/P3-R01-F16-收益分配.html')">磐石一期</span> <span class="dim">DST-2026-001</span></td>
-                  <td>胡博</td>
-                  <td>2026-06-01</td>
-                  <td>投委会</td>
-                  <td><span class="tag tag-blue">已通过</span></td>
-                  <td class="sticky-op ops"><a onclick="alert('APV-2026-0025 审批单详情')">详情</a></td>
-                </tr>
-              </tbody>
+              <tbody id="dmBodyCc"></tbody>
             </table>
           </div>
           <div class="pager">
@@ -428,38 +377,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                   <th class="sticky-op">操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0037 审批单详情')">APV-2026-0037</span></td>
-                  <td><span class="tag tag-blue">投决上会</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">聚变能源科技</span> <span class="dim">PRJ-2026-0001</span></td>
-                  <td>吕道远</td>
-                  <td>2026-08-27</td>
-                  <td>投决会</td>
-                  <td><span class="tag tag-blue">审批中</span></td>
-                  <td class="sticky-op ops"><a onclick="alert('APV-2026-0037：投决会待审，已发起 0 天')">详情</a><a onclick="alert('APV-2026-0037 已撤回：审批终止，可修改后重新发起')">撤回</a><a onclick="alert('已向当前审批人发送催办提醒')">催办</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0033 审批单详情')">APV-2026-0033</span></td>
-                  <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
-                  <td>吕道远</td>
-                  <td>2026-08-24</td>
-                  <td>财务审批</td>
-                  <td><span class="tag tag-orange">已退回</span></td>
-                  <td class="sticky-op ops"><a onclick="alert('退回原因：收款账户信息不全；修改后重新提交，可直达当前审批节点（历史审批记录保留）')">详情</a><a onclick="openNew()">重新提交</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0030 审批单详情')">APV-2026-0030</span></td>
-                  <td><span class="tag tag-blue">立项审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">磐石量子</span> <span class="dim">PRJ-2026-0010</span></td>
-                  <td>吕道远</td>
-                  <td>2026-08-20</td>
-                  <td>已完成</td>
-                  <td><span class="tag tag-blue">已通过</span></td>
-                  <td class="sticky-op ops"><a onclick="alert('APV-2026-0030：2026-08-21 通过，审批人 胡博')">详情</a></td>
-                </tr>
-              </tbody>
+              <tbody id="dmBodyMine"></tbody>
             </table>
           </div>
           <div class="pager">
@@ -485,44 +403,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                   <th>意见摘要</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0033 审批单详情')">APV-2026-0033</span></td>
-                  <td><span class="tag tag-blue">付款审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天（补充凭证）</span> <span class="dim">PRJ-2026-0004 / FUND-2026-002</span></td>
-                  <td>胡博</td>
-                  <td><span class="tag tag-orange">退回</span></td>
-                  <td>2026-08-24</td>
-                  <td>收款账户信息不全，请补充凭证后重新提交</td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0028 审批单详情')">APV-2026-0028</span></td>
-                  <td><span class="tag tag-blue">基金注册审批</span></td>
-                  <td class="biz-cell">香港远航国际基金</td>
-                  <td>嘉怡</td>
-                  <td><span class="tag tag-blue">通过</span></td>
-                  <td>2026-08-12</td>
-                  <td>境外架构核对无误</td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2026-0025 审批单详情')">APV-2026-0025</span></td>
-                  <td><span class="tag tag-blue">收益分配审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../退出管理/P3-R01-F16-收益分配.html')">磐石一期</span> <span class="dim">DST-2026-001</span></td>
-                  <td>胡博</td>
-                  <td><span class="tag tag-blue">通过</span></td>
-                  <td>2026-06-03</td>
-                  <td>分配方案与合伙协议一致，同意</td>
-                </tr>
-                <tr>
-                  <td><span class="lk" onclick="alert('APV-2025-0102 审批单详情：发起 2025-05-28 · 处理 2025-05-30')">APV-2025-0102</span></td>
-                  <td><span class="tag tag-blue">注销审批</span></td>
-                  <td class="biz-cell"><span class="lk" onclick="go('../退出管理/P3-R01-F17-清算注销.html')">临港智造</span> <span class="dim">FUND-2024-005</span></td>
-                  <td>胡博</td>
-                  <td><span class="tag tag-blue">通过</span></td>
-                  <td>2025-05-30</td>
-                  <td>清算材料齐备，同意注销</td>
-                </tr>
-              </tbody>
+              <tbody id="dmBodyDone"></tbody>
             </table>
           </div>
           <div class="pager">
@@ -554,7 +435,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
       <div class="f-row"><label>当前节点</label><div class="f-readonly" id="apNode">—</div></div>
       <div class="f-row"><label>申请说明</label><div class="f-readonly" id="apDesc" style="white-space:normal;line-height:1.6;">—</div></div>
       <div class="f-row"><label>附件</label>
-        <div><button class="btn btn-default" style="height:28px;" onclick="alert('附件预览：投决包（3 件）')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>查看附件（3）</button></div>
+        <div><button class="btn btn-default" style="height:28px;" onclick="dmApAttach()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>查看附件（3）</button></div>
       </div>
       <div class="f-row" data-note="2"><label>审批结论 <span class="req">*</span></label>
         <div style="display:flex;gap:10px;">
@@ -630,6 +511,35 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
   </div>
 </div>
 
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmApDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmApDTitle">审批单详情</h3>
+      <span class="modal-close" onclick="document.getElementById('dmApDetailModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmApDBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmApDetailModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmApAttachModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmApATitle">附件预览</h3>
+      <span class="modal-close" onclick="document.getElementById('dmApAttachModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmApABody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmApAttachModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ===== 业务脚本：三个页签面板切换 ===== */
 function switchView(v) {
@@ -643,6 +553,7 @@ function switchView(v) {
 
 /* ===== 弹窗1：审批处理（摘要填充 + 结论切换 + 驳回必填校验） ===== */
 function openApproval(no, type, biz, owner, time, node, desc) {
+  window.dmCurAp = no;
   document.getElementById('apNoType').textContent = no + ' · ' + type;
   document.getElementById('apBiz').textContent = biz;
   document.getElementById('apOwner').textContent = owner;
@@ -669,6 +580,7 @@ function submitAp() {
     alert('退回/否决时请填写审批意见');
     return;
   }
+  dmMigrateAp(kind);
   closeAp();
   if (kind === 'pass') {
     alert('已通过审批：业务阶段与状态将自动更新，审批附件自动归入对应资料包');
@@ -686,6 +598,88 @@ function closeNew() { document.getElementById('newModal').classList.remove('show
 document.getElementById('newModal').addEventListener('click', function (e) { if (e.target === this) closeNew(); });
 
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAp(); closeNew(); } });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  var VIEWS = [['todo', 'dmBodyTodo', 'dmCntTodo'], ['cc', 'dmBodyCc', 'dmCntCc'], ['mine', 'dmBodyMine', 'dmCntMine'], ['done', 'dmBodyDone', 'dmCntDone']];
+  VIEWS.forEach(function (v) {
+    DM.pages['F20.' + v[0]] = { target: '#' + v[1], rows: function () { return S.approvals[v[0]]; }, rowHtml: function (r) { return r.tr; },
+      after: function () {
+        var n = S.approvals[v[0]].length;
+        document.getElementById(v[2]).textContent = n;
+        var panel = document.getElementById('panel-' + v[0]);
+        var pg = panel.querySelector('.pg-info');
+        if (pg) { pg.textContent = '第 1-' + n + ' 条/总共 ' + n + ' 条'; }
+      } };
+    DM.renderList('F20.' + v[0]);
+  });
+  /* ===== T2 审批三态迁移：待我审批 → 我已审批（徽章计数与页码随 renderList 联动） ===== */
+  window.dmMigrateAp = function (kind) {
+    var no = window.dmCurAp;
+    if (!no) { return; }
+    window.dmCurAp = null;
+    var S = DM.store;
+    var idx = -1;
+    for (var i = 0; i < S.approvals.todo.length; i++) { if (S.approvals.todo[i].id === no) { idx = i; break; } }
+    if (idx < 0) { return; }
+    var ap = S.approvals.todo.splice(idx, 1)[0];
+    var ACT = { pass: ['通过', 'tag-blue'], return: ['退回', 'tag-orange'], veto: ['否决', 'tag-red'] }[kind] || ['通过', 'tag-blue'];
+    var opinion = document.getElementById('apOpinion').value.trim() || (kind === 'pass' ? '同意' : '—');
+    var done = { id: ap.id, type: ap.type, biz: ap.biz, owner: ap.owner, action: ACT[0], time2: '2026-08-27', opinion: opinion };
+    done.tr = '<tr>'
+      + '<td><span class="lk">' + ap.id + '</span></td>'
+      + '<td><span class="tag tag-blue">' + ap.type + '</span></td>'
+      + '<td class="biz-cell">' + (ap.bizHtml || DM.esc(ap.biz)) + '</td>'
+      + '<td>' + ap.owner + '</td>'
+      + '<td><span class="tag ' + ACT[1] + '">' + ACT[0] + '</span></td>'
+      + '<td>2026-08-27</td>'
+      + '<td>' + DM.esc(opinion) + '</td>'
+      + '</tr>';
+    S.approvals.done.unshift(done);
+    DM.renderList('F20.todo');
+    DM.renderList('F20.done');
+  };
+  /* ===== T2 撤回：该审批单自「待我审批/我发起的」移除，计数联动 ===== */
+  window.dmWithdraw = function (no) {
+    var S = DM.store;
+    ['todo', 'mine'].forEach(function (v) {
+      S.approvals[v] = S.approvals[v].filter(function (r) { return r.id !== no; });
+    });
+    DM.renderList('F20.todo'); DM.renderList('F20.mine');
+    alert(no + ' 已撤回：审批终止，可修改后重新发起');
+  };
+  /* ===== T3 审批单详情 / 附件预览 → 真弹窗（取值自单源 store） ===== */
+  window.dmApDetail = function (id) {
+    var S = DM.store, row = null, view = '';
+    ['todo', 'cc', 'mine', 'done'].forEach(function (v) {
+      if (!row) { var r = DM.byId(S.approvals[v], id); if (r) { row = r; view = v; } }
+    });
+    if (!row) { return; }
+    document.getElementById('dmApDTitle').textContent = '审批单详情 · ' + id;
+    var isDone = view === 'done';
+    document.getElementById('dmApDBody').innerHTML =
+      '<div class="f-row"><label>审批编号 / 类型</label><div class="f-readonly">' + id + ' · ' + row.type + '</div></div>'
+      + '<div class="f-row"><label>关联业务</label><div class="f-readonly">' + row.biz + '</div></div>'
+      + '<div style="display:flex;gap:12px;">'
+      + '<div class="f-row" style="flex:1;"><label>发起人</label><div class="f-readonly">' + row.owner + '</div></div>'
+      + '<div class="f-row" style="flex:1;"><label>发起时间</label><div class="f-readonly">' + row.time + '</div></div>'
+      + '</div>'
+      + '<div class="f-row"><label>当前节点</label><div class="f-readonly">' + (isDone ? '已完成' : row.node) + '</div></div>'
+      + (isDone
+        ? '<div class="f-row"><label>意见摘要</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + (row.opinion || row.desc || '—') + '</div></div>'
+        : (row.desc ? '<div class="f-row"><label>申请说明</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + row.desc + '</div></div>' : ''));
+    document.getElementById('dmApDetailModal').classList.add('show');
+  };
+  window.dmApAttach = function () {
+    document.getElementById('dmApABody').innerHTML =
+      '<div class="f-row"><label>附件清单 · 投决包（3 件）</label><div class="f-readonly" style="white-space:normal;line-height:1.8;">投决会议材料 · 尽调报告 · 估值建议</div></div>'
+      + '<div class="f-hint">演示原型：附件在线预览为占位说明，正式版支持 PDF 在线翻阅</div>';
+    document.getElementById('dmApAttachModal').classList.add('show');
+  };
+})();
 </script>
 
 <script>

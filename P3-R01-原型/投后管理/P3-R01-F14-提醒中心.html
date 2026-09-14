@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>提醒中心 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -279,8 +280,8 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
     <div class="content">
       <div class="card" style="padding:0;">
         <div class="stabs">
-          <span class="stab active" id="stabRules" onclick="switchPanel('rules')">提醒规则<span class="cnt">4</span></span>
-          <span class="stab" id="stabDue" onclick="switchPanel('due')">到期提醒<span class="cnt">4</span></span>
+          <span class="stab active" id="stabRules" onclick="switchPanel('rules')">提醒规则<span class="cnt" id="dmRuleCnt">4</span></span>
+          <span class="stab" id="stabDue" onclick="switchPanel('due')">到期提醒<span class="cnt" id="dmDueCnt">4</span></span>
         </div>
 
         <!-- ===== panel 1：提醒规则 ===== -->
@@ -319,48 +320,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
                   <th class="sticky-op">操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><span class="lk">ALR-2026-011</span></td>
-                  <td><span class="tag tag-orange">对赌到期</span></td>
-                  <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育（2026 年营收对赌）</span></td>
-                  <td>2027-06-30</td>
-                  <td>30 天</td>
-                  <td>吕道远、华悦</td>
-                  <td id="rs1"><span class="tag tag-blue">启用</span></td>
-                  <td class="sticky-op ops"><a onclick="openRuleModal('edit','dud','yunke_du','2027-06-30',30,['lyd','hy'])">编辑</a><a id="rt1" onclick="toggleRule(1)">停用</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk">ALR-2026-010</span></td>
-                  <td><span class="tag tag-orange">回购触发</span></td>
-                  <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">星河航天（投资协议回购条款）</span></td>
-                  <td>2026-12-31</td>
-                  <td>30 天</td>
-                  <td>胡博</td>
-                  <td id="rs2"><span class="tag tag-blue">启用</span></td>
-                  <td class="sticky-op ops"><a onclick="openRuleModal('edit','hg','xinghe_hg','2026-12-31',30,['hb'])">编辑</a><a id="rt2" onclick="toggleRule(2)">停用</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk">ALR-2026-009</span></td>
-                  <td><span class="tag tag-blue">资质续期</span></td>
-                  <td>华金（宁波梅山）股权投资有限公司</td>
-                  <td>2026-10-15</td>
-                  <td>45 天</td>
-                  <td>嘉怡</td>
-                  <td id="rs3"><span class="tag tag-blue">启用</span></td>
-                  <td class="sticky-op ops"><a onclick="openRuleModal('edit','zz','huajin_zz','2026-10-15',45,['jy'])">编辑</a><a id="rt3" onclick="toggleRule(3)">停用</a></td>
-                </tr>
-                <tr>
-                  <td><span class="lk">ALR-2026-008</span></td>
-                  <td><span class="tag tag-blue">履约核查</span></td>
-                  <td><span class="lk" onclick="go('../项目库/P3-R01-F02-项目详情-项目概况.html')">云雀教育（分期出资履约）</span></td>
-                  <td>2026-09-08</td>
-                  <td>30 天</td>
-                  <td>华悦</td>
-                  <td id="rs4"><span class="tag tag-blue">启用</span></td>
-                  <td class="sticky-op ops"><a onclick="openRuleModal('edit','lv','yunke_lv','2026-09-08',30,['hy'])">编辑</a><a id="rt4" onclick="toggleRule(4)">停用</a></td>
-                </tr>
-              </tbody>
+              <tbody id="dmBody"></tbody>
             </table>
           </div>
           <div class="pager">
@@ -377,38 +337,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
             <span class="tip" style="margin-left:0;">共 4 条 · 按到期日临近排序 · 已到期标红、30 天内标黄</span>
           </div>
           <div class="feed">
-            <div class="feed-item cur">
-              <span class="feed-dot"></span>
-              <div class="feed-card">
-                <div class="feed-title"><b>华金（宁波梅山）营业期限续展</b><span class="tag tag-blue">资质续期</span><span class="tag tag-blue">剩 49 天</span>
-                  <span class="due-op ops"><a onclick="confirmDue(this)">确认处理</a></span>
-                </div>
-                <div class="feed-meta"><span>到期日：2026-10-15</span><span>提醒对象：嘉怡</span><span>对应规则：ALR-2026-009</span></div>
-              </div>
-            </div>
-            <div class="feed-item">
-              <span class="feed-dot"></span>
-              <div class="feed-card">
-                <div class="feed-title"><b>云雀教育 Q3 出资履约核查</b><span class="tag tag-blue">履约核查</span><span class="tag tag-orange">⚠ 剩 12 天</span>
-                  <span class="due-op ops"><a onclick="confirmDue(this)">确认处理</a></span>
-                </div>
-                <div class="feed-meta"><span>到期日：2026-09-08</span><span>提醒对象：华悦</span><span>对应规则：ALR-2026-008</span></div>
-              </div>
-            </div>
-            <div class="feed-item">
-              <span class="feed-dot"></span>
-              <div class="feed-card">
-                <div class="feed-title"><b>星河航天投资协议回购条款跟踪</b><span class="tag tag-orange">回购触发</span><span class="tag tag-blue">剩 126 天</span></div>
-                <div class="feed-meta"><span>到期日：2026-12-31</span><span>提醒对象：胡博</span><span>对应规则：ALR-2026-010</span></div>
-              </div>
-            </div>
-            <div class="feed-item">
-              <span class="feed-dot"></span>
-              <div class="feed-card">
-                <div class="feed-title"><b>云雀教育 2026 年营收对赌</b><span class="tag tag-orange">对赌到期</span><span class="tag tag-blue">剩 307 天</span></div>
-                <div class="feed-meta"><span>到期日：2027-06-30</span><span>提醒对象：吕道远、华悦</span><span>对应规则：ALR-2026-011</span></div>
-              </div>
-            </div>
+            <div id="dmDueList"></div>
           </div>
         </div>
       </div>
@@ -545,6 +474,18 @@ function saveRule() {
 }
 document.getElementById('ruleModal').addEventListener('click', function (e) { if (e.target === this) closeRuleModal(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRuleModal(); });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F14.rules'] = { target: '#dmBody', rows: function () { return S.reminders.rules; }, rowHtml: function (r) { return r.tr; },
+    after: function () { document.getElementById('dmRuleCnt').textContent = S.reminders.rules.length; } };
+  DM.pages['F14.due'] = { target: '#dmDueList', rows: function () { return S.reminders.due; }, rowHtml: function (r) { return r.tr; },
+    after: function () { document.getElementById('dmDueCnt').textContent = S.reminders.due.length; } };
+  ['F14.rules', 'F14.due'].forEach(DM.renderList);
+})();
 </script>
 
 <script>

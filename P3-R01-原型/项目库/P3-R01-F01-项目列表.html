@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>项目列表 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -383,138 +384,7 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
                 <th class="sticky-op">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0001</span></td>
-                <td><span class="lk">聚变能源科技（核聚变初创）</span></td>
-                <td>先进制造·新能源</td>
-                <td>A 轮</td>
-                <td><span class="stage-cell">⑦ 投决</span></td>
-                <td><span class="tag tag-blue">待上会</span></td>
-                <td>6 天</td>
-                <td>吕道远</td>
-                <td>2026-08-27</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>推进</a><a class="danger-op" onclick="openAbandon('PRJ-2026-0001','⑦ 投决')">放弃</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0002</span></td>
-                <td><span class="lk">智驾千里（自动驾驶芯片）</span></td>
-                <td>人工智能</td>
-                <td>B 轮</td>
-                <td><span class="stage-cell">③ 保密协议签署</span></td>
-                <td><span class="tag tag-orange">⚠ 停滞 47 天</span></td>
-                <td>47 天</td>
-                <td>吕道远</td>
-                <td>2026-08-26</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a onclick="alert('处置标注：对方同时对接其他资金方，保持沟通中')">停滞处置</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0003</span></td>
-                <td><span class="lk">蓝鲸生物医药（创新药）</span></td>
-                <td>医疗健康</td>
-                <td>A 轮</td>
-                <td><span class="stage-cell">⑧ 基金设立</span></td>
-                <td><span class="tag tag-blue">基金注册审批中</span></td>
-                <td>3 天</td>
-                <td>胡博</td>
-                <td>2026-08-27</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>推进</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0004</span></td>
-                <td><span class="lk">星河航天（商业卫星）</span></td>
-                <td>先进制造·航天</td>
-                <td>Pre-A</td>
-                <td><span class="stage-cell">⑨ 出资</span></td>
-                <td><span class="tag tag-blue">付款审批中</span></td>
-                <td>1 天</td>
-                <td>胡博</td>
-                <td>2026-08-27</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>推进</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0005</span></td>
-                <td><span class="lk">云雀教育（职业教育平台）</span></td>
-                <td>教育</td>
-                <td>A 轮</td>
-                <td><span class="stage-cell">⑩ 投后管理</span></td>
-                <td><span class="tag tag-blue">投后管理中</span></td>
-                <td>128 天</td>
-                <td>华悦</td>
-                <td>2026-08-20</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>转入投后</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0006</span></td>
-                <td><span class="lk">远山新材料（碳纤维）</span></td>
-                <td>新材料</td>
-                <td>B 轮</td>
-                <td><span class="stage-cell">① 接触/收BP</span></td>
-                <td><span class="tag tag-blue">接收 BP</span></td>
-                <td>2 天</td>
-                <td>吕道远</td>
-                <td>2026-08-26</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>推进</a><a class="danger-op" onclick="openAbandon('PRJ-2026-0006','① 接触/收BP')">放弃</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0007</span></td>
-                <td><span class="lk">海豚半导体（车规 MCU）</span></td>
-                <td>半导体</td>
-                <td>定增</td>
-                <td><span class="stage-cell">未投归档</span></td>
-                <td><span class="tag tag-gray">GP·明显超出投资范围</span></td>
-                <td>—</td>
-                <td>吕道远</td>
-                <td>2026-08-10</td>
-                <td class="sticky-op ops"><a>归档详情</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0008</span></td>
-                <td><span class="lk">风行低空（eVTOL 整机）</span></td>
-                <td>低空经济</td>
-                <td>A 轮</td>
-                <td><span class="stage-cell">未投归档</span></td>
-                <td><span class="tag tag-red">LP·投决会否决</span></td>
-                <td>—</td>
-                <td>吕道远</td>
-                <td>2026-08-15</td>
-                <td class="sticky-op ops"><a>归档详情</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0009</span></td>
-                <td><span class="lk">青禾农业科技（智慧种植）</span></td>
-                <td>农业科技</td>
-                <td>天使轮</td>
-                <td><span class="stage-cell">⑤ 立项</span></td>
-                <td><span class="tag tag-orange">⚠ 停滞 33 天</span></td>
-                <td>33 天</td>
-                <td>胡博</td>
-                <td>2026-08-25</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a onclick="alert('已推送停滞提醒给负责人')">停滞处置</a><a class="danger-op" onclick="openAbandon('PRJ-2026-0009','⑤ 立项')">放弃</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="cb"></td>
-                <td><span class="lk">PRJ-2026-0010</span></td>
-                <td><span class="lk">磐石量子（量子测量）</span></td>
-                <td>量子科技</td>
-                <td>Pre-A</td>
-                <td><span class="stage-cell">④ 尽调/访谈</span></td>
-                <td><span class="tag tag-blue">路径B·访谈完成</span></td>
-                <td>9 天</td>
-                <td>吕道远</td>
-                <td>2026-08-24</td>
-                <td class="sticky-op ops"><a onclick="go('P3-R01-F02-项目详情-项目概况.html')">详情</a><a>推进</a><a class="danger-op" onclick="openAbandon('PRJ-2026-0010','④ 尽调/访谈')">放弃</a></td>
-              </tr>
-            </tbody>
+            <tbody id="dmBody"></tbody>
           </table>
         </div>
         <div class="pager">
@@ -533,94 +403,7 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
       <div id="viewKb" style="display:none;">
       <div class="card" style="padding:16px;">
         <div class="kb">
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">① 接触/收BP</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">远山新材料（碳纤维）</div>
-        <div class="st"><span>2 天</span></div>
-        <div class="st"><span>下一步：BP 初筛</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0006','① 接触/收BP')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">② 线上路演</span><span class="c">0</span></div>
-        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">③ 保密协议</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">智驾千里（自动驾驶芯片）</div>
-        <div class="st"><span>47 天</span><span class="warn">⚠ 停滞</span></div>
-        <div class="st"><span>下一步：跟进 NDA</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0002','③ 保密协议')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">④ 尽调/访谈</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">磐石量子（量子测量）</div>
-        <div class="st"><span>9 天</span></div>
-        <div class="st"><span>下一步：路径B·资料包</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0010','④ 尽调/访谈')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑤ 立项</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">青禾农业（智慧种植）</div>
-        <div class="st"><span>33 天</span><span class="warn">⚠ 停滞</span></div>
-        <div class="st"><span>下一步：立项会排期</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0009','⑤ 立项')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑥ 投资人路演</span><span class="c">0</span></div>
-        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑦ 投决</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">聚变能源科技（核聚变）</div>
-        <div class="st"><span>6 天</span></div>
-        <div class="st"><span>下一步：投决上会</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0001','⑦ 投决')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col mile">
-        <div class="kb-head"><span class="n">⑧ 基金设立</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">蓝鲸生物医药（创新药）</div>
-        <div class="st"><span>3 天</span></div>
-        <div class="st"><span>下一步：基金注册审批</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0003','⑧ 基金设立')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col mile">
-        <div class="kb-head"><span class="n">⑨ 出资</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">星河航天（商业卫星）</div>
-        <div class="st"><span>1 天</span></div>
-        <div class="st"><span>下一步：付款审批</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0004','⑨ 出资')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑩ 投后管理</span><span class="c">1</span></div>
-        <div class="kb-body"><div class="kb-card" onclick="go('P3-R01-F02-项目详情-项目概况.html')">
-        <div class="nm">云雀教育（职业教育）</div>
-        <div class="st"><span>128 天</span></div>
-        <div class="st"><span>下一步：季报归档</span></div>
-        <div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon('PRJ-2026-0005','⑩ 投后管理')">放弃</span></div>
-      </div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑪ 项目退出</span><span class="c">0</span></div>
-        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
-      </div>
-      <div class="kb-col">
-        <div class="kb-head"><span class="n">⑫ 清算注销</span><span class="c">0</span></div>
-        <div class="kb-body"><div class="kb-empty">暂无项目</div></div>
-      </div>
+      <div id="dmKbCols"></div>
         </div>
       </div>
       </div>
@@ -675,7 +458,7 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
     </div>
     <div class="modal-footer">
       <button class="btn btn-default" onclick="closeAbandon()">取 消</button>
-      <button class="btn btn-primary" onclick="closeAbandon();alert('已登记并转入「未投归档」')">确认放弃并归档</button>
+      <button class="btn btn-primary" onclick="dmConfirmAbandon()">确认放弃并归档</button>
     </div>
   </div>
 </div>
@@ -711,6 +494,45 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
     </div>
   </div>
 </div>
+
+
+<!-- ===== G03 弹窗3：推进确认（dm- 前缀，T2 页内真联动） ===== -->
+<div class="modal-overlay" id="dmAdvModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">推进确认</h3>
+      <span class="modal-close" onclick="dmCloseAdv()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>项目 / 当前阶段（自动带出）</label>
+        <div class="f-readonly"><span id="dmAdvPrj">—</span><span style="color:#d9d9d9">|</span><span id="dmAdvStage">—</span></div>
+      </div>
+      <div class="f-row"><label>推进至</label>
+        <div class="f-readonly" id="dmAdvNext">—</div>
+      </div>
+      <div class="f-hint" style="margin-top:2px;">确认后阶段徽章与状态同步更新（演示为页内联动，跨页数据不变）</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="dmCloseAdv()">取 消</button>
+      <button class="btn btn-primary" onclick="dmConfirmAdvance()">确认推进</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmStallModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmStallTitle">停滞处置标注</h3>
+      <span class="modal-close" onclick="document.getElementById('dmStallModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmStallBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmStallModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 /* ===== 业务脚本：筛选折叠 ===== */
@@ -775,7 +597,155 @@ document.getElementById('abandonModal').addEventListener('click', function (e) {
 function openNewModal() { document.getElementById('newModal').classList.add('show'); }
 function closeNewModal() { document.getElementById('newModal').classList.remove('show'); }
 document.getElementById('newModal').addEventListener('click', function (e) { if (e.target === this) closeNewModal(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAbandon(); closeNewModal(); } });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAbandon(); closeNewModal(); dmCloseAdv(); } });
+</script>
+
+<script>
+/* ===== G03 单源数据层接入（_data/demo-data.js，A17） ===== */
+(function () {
+  var S = DM.store;
+  DM.pages['F01.list'] = { target: '#dmBody', rows: function () { return S.projects; }, rowHtml: function (r) { return r.tr; },
+    after: function () {
+      var n = S.projects.length;
+      var pg = document.querySelector('#viewList .pg-info');
+      if (pg) { pg.textContent = '第 1-' + n + ' 条/总共 ' + S.dmFunnel.total + ' 条'; }
+    } };
+  /* 泳道列定义（列名=原泳道列头，⑧⑨ 为里程碑列） */
+  var KB_COLS = [
+    { n: 1, label: '① 接触/收BP', mile: false }, { n: 2, label: '② 线上路演', mile: false },
+    { n: 3, label: '③ 保密协议', mile: false }, { n: 4, label: '④ 尽调/访谈', mile: false },
+    { n: 5, label: '⑤ 立项', mile: false }, { n: 6, label: '⑥ 投资人路演', mile: false },
+    { n: 7, label: '⑦ 投决', mile: false }, { n: 8, label: '⑧ 基金设立', mile: true },
+    { n: 9, label: '⑨ 出资', mile: true }, { n: 10, label: '⑩ 投后管理', mile: false },
+    { n: 11, label: '⑪ 项目退出', mile: false }, { n: 12, label: '⑫ 清算注销', mile: false }
+  ];
+  window.dmKbCols = KB_COLS;
+  function kbCard(p) {
+    var k = p.kb;
+    return '<div class="kb-card" onclick="go(\'P3-R01-F02-项目详情-项目概况.html\')">'
+      + '<div class="nm">' + k.name + '</div>'
+      + '<div class="st"><span>' + p.days + '</span>' + (k.warn ? '<span class="warn">⚠ 停滞</span>' : '') + '</div>'
+      + '<div class="st"><span>下一步：' + k.next + '</span></div>'
+      + '<div class="foot"><span class="ab" onclick="event.stopPropagation();openAbandon(\'' + p.id + '\',\'' + (KB_COLS[k.col - 1] ? KB_COLS[k.col - 1].label : p.stage) + '\')">放弃</span></div>'
+      + '</div>';
+  }
+  window.dmKbCard = kbCard;
+  DM.pages['F01.kb'] = { target: '#dmKbCols', rows: function () { return KB_COLS; },
+    rowHtml: function (c) {
+      var cards = S.projects.filter(function (p) { return p.kb && p.kb.col === c.n; });
+      var inner = cards.length
+        ? cards.map(kbCard).join('')
+        : '<div class="kb-empty">暂无项目</div>';
+      return '<div class="kb-col' + (c.mile ? ' mile' : '') + '"><div class="kb-head"><span class="n">' + c.label + '</span><span class="c">' + cards.length + '</span></div><div class="kb-body">' + inner + '</div></div>';
+    } };
+  ['F01.list', 'F01.kb'].forEach(DM.renderList);
+
+  /* ===== T2 页内真联动：推进 / 放弃归档（字段驱动重建行，单源同步） ===== */
+  var DM_NEXT = {
+    1: ['② 线上路演', 2, '路演排期中'], 2: ['③ 保密协议签署', 3, 'NDA 准备中'],
+    3: ['④ 尽调/访谈', 4, '尽调准备中'], 4: ['⑤ 立项', 5, '立项准备中'],
+    5: ['⑥ 投资人路演', 6, '路演安排中'], 6: ['⑦ 投决', 7, '待上会'],
+    7: ['⑧ 基金设立', 8, '基金设立中'], 8: ['⑨ 出资', 9, '出资流程中'],
+    9: ['⑩ 投后管理', 10, '投后管理中'], 10: ['⑪ 项目退出', 11, '退出流程中']
+  };
+  var DM_F19_NODE = { 1: '① 看 BP 后不看', 2: '② 线上路演后', 3: '③ 保密协议签署', 4: '④ 访谈/尽调后', 5: '⑤ 立项时', 6: '⑥ 投资人路演后' };
+  window.dmCurPrj = null;
+  /* 行重建器：按 projects 字段生成与原行同构的 tr */
+  window.dmPrjRow = function (p) {
+    var ops = ['<a onclick="go(\'P3-R01-F02-项目详情-项目概况.html\')">详情</a>'];
+    if (p.ops.indexOf('adv') > -1) { ops.push('<a onclick="dmAdvance(\'' + p.id + '\')">推进</a>'); }
+    if (p.ops.indexOf('stall') > -1) {
+      ops.push(p.id === 'PRJ-2026-0002'
+        ? '<a onclick="dmStallNote(\'' + p.id + '\')">停滞处置</a>'
+        : '<a onclick="alert(\'已推送停滞提醒给负责人\')">停滞处置</a>');
+    }
+    if (p.ops.indexOf('abandon') > -1) { ops.push('<a class="danger-op" onclick="openAbandon(\'' + p.id + '\',\'' + p.stage + '\')">放弃</a>'); }
+    if (p.ops.indexOf('post') > -1) { ops.push('<a>转入投后</a>'); }
+    if (p.ops === 'arch' || p.stage === '未投归档') { ops = ['<a>归档详情</a>']; }
+    return '<tr>'
+      + '<td><input type="checkbox" class="cb"></td>'
+      + '<td><span class="lk">' + p.id + '</span></td>'
+      + '<td><span class="lk">' + p.name + '</span></td>'
+      + '<td>' + p.industry + '</td>'
+      + '<td>' + p.round + '</td>'
+      + '<td><span class="stage-cell">' + p.stage + '</span></td>'
+      + '<td><span class="tag ' + p.stCls + '">' + p.status + '</span></td>'
+      + '<td>' + p.days + '</td>'
+      + '<td>' + p.owner + '</td>'
+      + '<td>' + p.updated + '</td>'
+      + '<td class="sticky-op ops">' + ops.join('') + '</td>'
+      + '</tr>';
+  };
+  window.dmAdvance = function (id) {
+    var p = DM.byId(DM.store.projects, id);
+    if (!p) { return; }
+    var nx = DM_NEXT[p.stageNo];
+    if (!nx) { alert('当前阶段暂不支持继续推进'); return; }
+    window.dmCurPrj = id;
+    document.getElementById('dmAdvPrj').textContent = p.id;
+    document.getElementById('dmAdvStage').textContent = p.stage;
+    document.getElementById('dmAdvNext').textContent = nx[0] + ' · 状态将更新为「' + nx[2] + '」';
+    document.getElementById('dmAdvModal').classList.add('show');
+  };
+  window.dmCloseAdv = function () { document.getElementById('dmAdvModal').classList.remove('show'); };
+  document.getElementById('dmAdvModal').addEventListener('click', function (e) { if (e.target === this) dmCloseAdv(); });
+  window.dmConfirmAdvance = function () {
+    var p = DM.byId(DM.store.projects, window.dmCurPrj);
+    if (!p) { dmCloseAdv(); return; }
+    var nx = DM_NEXT[p.stageNo];
+    p.stage = nx[0]; p.stageNo = nx[1]; p.status = nx[2]; p.stCls = 'tag-blue';
+    p.days = '0 天'; p.updated = '2026-08-27';
+    if (p.kb && p.kb.col === nx[1] - 1) { p.kb.col = nx[1]; p.kb.next = '待更新'; p.kb.warn = false; }
+    p.tr = dmPrjRow(p);
+    dmCloseAdv();
+    DM.renderList('F01.list'); DM.renderList('F01.kb');
+  };
+  window.dmConfirmAbandon = function () {
+    var p = DM.byId(DM.store.projects, document.getElementById('abPrj').textContent);
+    var isGp = document.querySelector('input[name="subject"]:checked').dataset.kind === 'gp';
+    var reason = document.getElementById('leafReason').value;
+    var custom = document.getElementById('reasonCustom').value;
+    if (p) {
+      var prevNo = p.stageNo;                       /* 放弃节点=归档前所处阶段 */
+      var isLp = !isGp && prevNo === 7;              /* LP 否决仅 ⑦ 合法（口径：投决前放弃均为 GP） */
+      var node = isLp ? 7 : (prevNo || 7);
+      var nodeLabel = isLp ? '⑦ 投决会否决' : (prevNo === 7 || !prevNo ? '⑦ 投决前主动撤回' : DM_F19_NODE[prevNo]);
+      var short = p.name.replace(/（.*?）/, '');
+      p.stage = '未投归档'; p.stageNo = 0;
+      p.status = (isLp ? 'LP·' : 'GP·') + (reason || '放弃');
+      p.stCls = isLp ? 'tag-red' : 'tag-gray';
+      p.days = '—'; p.updated = '2026-08-27'; p.kb = null; p.ops = 'arch';
+      p.tr = dmPrjRow(p);
+      DM.store.abandons.push({
+        name: short, subject: isLp ? 'lp' : 'gp', node: node,
+        nodeLabel: nodeLabel,
+        reason: reason || '—', custom: custom || '—', date: '2026-08-27', prj: p.id,
+        tr: '<tr data-subject="' + (isLp ? 'lp' : 'gp') + '" data-node="' + node + '">'
+          + '<td><span class="tag ' + (isLp ? 'tag-red">LP' : 'tag-blue">GP') + '</span></td>'
+          + '<td>' + nodeLabel + '</td>'
+          + '<td>' + (reason || '—') + '</td>'
+          + '<td class="dim">' + (custom || '—') + '</td>'
+          + '<td>1</td>'
+          + '<td><span class="lk">' + short + '</span></td>'
+          + '<td>2026-08-27</td></tr>'
+      });
+      DM.renderList('F01.list'); DM.renderList('F01.kb');
+    }
+    closeAbandon();
+    alert('已登记并转入「未投归档」');
+  };
+  /* ===== T3 停滞处置标注（点名改造）→ 真弹窗 ===== */
+  window.dmStallNote = function (id) {
+    var p = DM.byId(DM.store.projects, id);
+    if (!p) { return; }
+    document.getElementById('dmStallTitle').textContent = '停滞处置 · ' + p.name;
+    document.getElementById('dmStallBody').innerHTML =
+      '<div class="f-row"><label>项目 / 当前阶段</label><div class="f-readonly">' + p.id + ' · ' + p.stage + '</div></div>'
+      + '<div class="f-row"><label>处置标注</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">对方同时对接其他资金方，保持沟通中</div></div>'
+      + '<div class="f-hint">停滞≠放弃：项目留在管道；可推送提醒给负责人（原「已推送停滞提醒」入口保留）</div>';
+    document.getElementById('dmStallModal').classList.add('show');
+  };
+})();
 </script>
 
 <script>
