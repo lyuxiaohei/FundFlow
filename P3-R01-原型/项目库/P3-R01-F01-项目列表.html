@@ -279,7 +279,7 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
           <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F21-用户与角色.html')">用户与角色</div></li>
-          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F25-基础数据.html')">基础数据</div></li>
+          <li><div class="sm-link" onclick="go('../系统管理/P3-R01-F25-数据字典.html')">数据字典</div></li>
         </ul>
       </li>
     </ul>
@@ -547,15 +547,20 @@ th:nth-child(7), td:nth-child(7) { text-align:right; font-variant-numeric:tabula
 })();
 
 /* ===== 弹窗：放弃登记（主体切换 → 末级级联） ===== */
-var GP_OPTIONS = '<option value="">请选择 GP 放弃原因</option>'
-  + '<optgroup label="① 看 BP 后不看"><option>明显超出投资范围</option></optgroup>'
-  + '<optgroup label="② 线上路演后"><option>专业问题答不出/逻辑薄弱</option><option>团队能力不足</option></optgroup>'
-  + '<optgroup label="④ 访谈/尽调后"><option>工厂萧条、订单匮乏</option><option>财务数据重大偏差</option><option>疑似造假</option></optgroup>'
-  + '<optgroup label="⑤ 立项时"><option>创始人信用风险/人品问题</option><option>债务纠纷（老板否决）</option></optgroup>'
-  + '<optgroup label="⑥ 投资人路演后"><option>全体投资人明确不出资</option></optgroup>'
-  + '<optgroup label="⑦ 投决前主动撤回"><option>估值未谈拢（打折未成）</option><option>对赌条款设置不合理</option></optgroup>';
-var LP_OPTIONS = '<option value="">请选择 LP 否决原因</option>'
-  + '<optgroup label="LP · 投决会否决"><option>不看好行业</option><option>不看好赛道</option><option>项目风险异议</option><option>估值异议</option><option>政策/合规顾虑</option></optgroup>';
+/* G05/T4：GP/LP 两级原因改由字典单源生成（变量名保留；分组/文案与原静态逐字一致） */
+function dmGroupedOptions(key, phText, lpStyle) {
+  var d = DM.dict(key);
+  var s = '<option value="">' + phText + '</option>';
+  d.nodes.forEach(function (n) {
+    var label = lpStyle ? 'LP · ' + n.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫]\s*/, '') : n;
+    s += '<optgroup label="' + label + '">';
+    d.items.forEach(function (it) { if (it.node === n && it.status !== '停用') { s += '<option>' + it.name + '</option>'; } });
+    s += '</optgroup>';
+  });
+  return s;
+}
+var GP_OPTIONS = dmGroupedOptions('gp', '请选择 GP 放弃原因', false);
+var LP_OPTIONS = dmGroupedOptions('lp', '请选择 LP 否决原因', true);
 document.querySelectorAll('input[name="subject"]').forEach(function (r) {
   r.addEventListener('change', function () { setSubject(r.dataset.kind); });
 });
@@ -830,6 +835,19 @@ body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
     }
   });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+<script>
+/* ===== G05/T4 枚举下拉数据驱动（字典单源 _data/demo-data.js；占位项保留静态，文本/属性逐字对齐） ===== */
+(function () {
+  if (!window.DM || !DM.dmFillSelect) { return; }
+  var sels = document.querySelectorAll('#newModal select.f-select');
+  for (var i = 0; i < sels.length; i++) {
+    var t = [];
+    for (var j = 0; j < sels[i].options.length; j++) { t.push(sels[i].options[j].text); }
+    if (t.indexOf('人工智能') > -1) { DM.dmFillSelect(sels[i], 'ind', 1); }
+    else if (t.indexOf('天使轮') > -1) { DM.dmFillSelect(sels[i], 'round', 1); }
+  }
 })();
 </script>
 </body>

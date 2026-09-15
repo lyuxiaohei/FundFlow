@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>登录 - 投资项目管理</title>
+<script src="../_data/demo-data.js"></script>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --page-bg:#f3f5f9; --border:#f0f0f0;
@@ -74,6 +75,13 @@ function doLogin() {
   if (!pwd) { alert('请输入密码'); return; }
   go('P3-R01-F00-工作台.html');
 }
+</script>
+<script>
+/* ===== G05/T4 枚举下拉数据驱动（字典单源 _data/demo-data.js；占位项保留静态，文本/属性逐字对齐） ===== */
+(function () {
+  if (!window.DM || !DM.dmFillSelect) { return; }
+  DM.dmFillSelect(document.getElementById('role'), 'role', 0);
+})();
 </script>
 </body>
 </html>
