@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>系统管理 - 投资项目管理</title>
+<title>用户与角色 - 投资项目管理</title>
 <style>
 :root {
   --primary:#1677ff; --primary-bg:#e6f4ff; --strip-bg:#e6f7ff;
@@ -238,7 +238,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
         <div class="sm-link"><span class="sm-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83-2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>系统管理<span class="sm-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
         <ul class="sm-sub">
           <li><div class="sm-link selected">用户与角色</div></li>
-          <li><div class="sm-link" onclick="switchPanel('dict')">基础数据</div></li>
+          <li><div class="sm-link" onclick="go('P3-R01-F25-基础数据.html')">基础数据</div></li>
         </ul>
       </li>
     </ul>
@@ -261,17 +261,12 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
   <div class="main-col">
     <div class="tabs">
       <span class="tab" onclick="go('../项目库/P3-R01-F01-项目列表.html')">项目列表 <span class="close">×</span></span>
-      <span class="tab active">系统管理 <span class="close">×</span></span>
+      <span class="tab active">用户与角色 <span class="close">×</span></span>
     </div>
 
     <div class="content">
       <div class="card" style="padding:0;">
-        <div class="stabs">
-          <span class="stab active" data-view="user" onclick="switchPanel('user')">用户与角色<span class="cnt">5</span></span>
-          <span class="stab" data-view="dict" onclick="switchPanel('dict')">基础数据<span class="cnt">7</span></span>
-        </div>
-
-        <!-- ===== 面板：用户与角色 ===== -->
+                <!-- ===== 面板：用户与角色 ===== -->
         <div id="panel-user">
           <div class="toolbar">
             <button class="btn btn-primary" style="height:32px;font-size:13px;" onclick="openUser()">＋ 新建用户</button>
@@ -347,306 +342,6 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
           </div>
         </div>
 
-        <!-- ===== 面板：基础数据（原字典管理） ===== -->
-        <div id="panel-dict" style="display:none;">
-          <div class="dict-flex">
-            <div class="dict-side">
-              <div class="dict-side-title">数据分类</div>
-              <div class="dict-item selected" data-dict="gp" onclick="switchDict('gp',this)">放弃原因 · GP<span class="cnt-b">11</span></div>
-              <div class="dict-item" data-dict="lp" onclick="switchDict('lp',this)">放弃原因 · LP<span class="cnt-b">5</span></div>
-              <div class="dict-item" data-dict="ind" onclick="switchDict('ind',this)">行业赛道<span class="cnt-b">9</span></div>
-              <div class="dict-item" data-dict="round" onclick="switchDict('round',this)">轮次<span class="cnt-b">6</span></div>
-              <div class="dict-item" data-dict="src" onclick="switchDict('src',this)">项目来源<span class="cnt-b">5</span></div>
-              <div class="dict-item" data-dict="remind" onclick="switchDict('remind',this)">提醒类型<span class="cnt-b">4</span></div>
-              <div class="dict-item" data-dict="report" onclick="switchDict('report',this)">报告类型<span class="cnt-b">4</span></div>
-            </div>
-            <div class="dict-main">
-              <div class="ct-row" style="margin-bottom:14px;">
-                <h3 class="card-title" id="dictTitle">放弃原因 · GP</h3>
-              </div>
-              <div class="dict-toolbar">
-                <button class="btn btn-primary" onclick="openDictItem()">＋ 新增数据项</button>
-                <button class="btn btn-default" onclick="alert('已导出当前数据全部条目')">批量导出</button>
-              </div>
-
-              <!-- 数据分类：放弃原因 GP（按节点分组） -->
-              <div class="dict-panel" id="dp-gp">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>末级原因</th>
-                        <th>所属节点</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="group-row"><td colspan="5">① 看 BP 后不看<span class="g-cnt">1 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">明显超出投资范围</td>
-                        <td>① 看 BP 后不看</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('明显超出投资范围')">编辑</a><a class="danger-op" onclick="alert('已停用：明显超出投资范围')">停用</a></td>
-                      </tr>
-                      <tr class="group-row"><td colspan="5">② 线上路演后<span class="g-cnt">2 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">专业问题答不出/逻辑薄弱</td>
-                        <td>② 线上路演后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('专业问题答不出/逻辑薄弱')">编辑</a><a class="danger-op" onclick="alert('已停用：专业问题答不出/逻辑薄弱')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">团队能力不足</td>
-                        <td>② 线上路演后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>2</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('团队能力不足')">编辑</a><a class="danger-op" onclick="alert('已停用：团队能力不足')">停用</a></td>
-                      </tr>
-                      <tr class="group-row"><td colspan="5">④ 访谈/尽调后<span class="g-cnt">3 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">工厂萧条、订单匮乏</td>
-                        <td>④ 访谈/尽调后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('工厂萧条、订单匮乏')">编辑</a><a class="danger-op" onclick="alert('已停用：工厂萧条、订单匮乏')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">财务数据重大偏差</td>
-                        <td>④ 访谈/尽调后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>2</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('财务数据重大偏差')">编辑</a><a class="danger-op" onclick="alert('已停用：财务数据重大偏差')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">疑似造假</td>
-                        <td>④ 访谈/尽调后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>3</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('疑似造假')">编辑</a><a class="danger-op" onclick="alert('已停用：疑似造假')">停用</a></td>
-                      </tr>
-                      <tr class="group-row"><td colspan="5">⑤ 立项时<span class="g-cnt">2 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">创始人信用风险/人品问题</td>
-                        <td>⑤ 立项时</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('创始人信用风险/人品问题')">编辑</a><a class="danger-op" onclick="alert('已停用：创始人信用风险/人品问题')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">债务纠纷（老板否决）</td>
-                        <td>⑤ 立项时</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>2</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('债务纠纷（老板否决）')">编辑</a><a class="danger-op" onclick="alert('已停用：债务纠纷（老板否决）')">停用</a></td>
-                      </tr>
-                      <tr class="group-row"><td colspan="5">⑥ 投资人路演后<span class="g-cnt">1 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">全体投资人明确不出资</td>
-                        <td>⑥ 投资人路演后</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('全体投资人明确不出资')">编辑</a><a class="danger-op" onclick="alert('已停用：全体投资人明确不出资')">停用</a></td>
-                      </tr>
-                      <tr class="group-row"><td colspan="5">⑦ 投决前主动撤回<span class="g-cnt">2 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">估值未谈拢（打折未成）</td>
-                        <td>⑦ 投决前主动撤回</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('估值未谈拢（打折未成）')">编辑</a><a class="danger-op" onclick="alert('已停用：估值未谈拢（打折未成）')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">对赌条款设置不合理</td>
-                        <td>⑦ 投决前主动撤回</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>2</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('对赌条款设置不合理')">编辑</a><a class="danger-op" onclick="alert('已停用：对赌条款设置不合理')">停用</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：放弃原因 LP（按节点分组） -->
-              <div class="dict-panel" id="dp-lp" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>末级原因</th>
-                        <th>所属节点</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="group-row"><td colspan="5">⑦ 投决会否决<span class="g-cnt">5 项</span></td></tr>
-                      <tr>
-                        <td class="leaf-name">不看好行业</td>
-                        <td>⑦ 投决会否决</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>1</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('不看好行业')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好行业')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">不看好赛道</td>
-                        <td>⑦ 投决会否决</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>2</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('不看好赛道')">编辑</a><a class="danger-op" onclick="alert('已停用：不看好赛道')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">项目风险异议</td>
-                        <td>⑦ 投决会否决</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>3</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('项目风险异议')">编辑</a><a class="danger-op" onclick="alert('已停用：项目风险异议')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">估值异议</td>
-                        <td>⑦ 投决会否决</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>4</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('估值异议')">编辑</a><a class="danger-op" onclick="alert('已停用：估值异议')">停用</a></td>
-                      </tr>
-                      <tr>
-                        <td class="leaf-name">政策/合规顾虑</td>
-                        <td>⑦ 投决会否决</td>
-                        <td><span class="tag tag-blue">启用</span></td>
-                        <td>5</td>
-                        <td class="sticky-op ops"><a onclick="dmEditDict('政策/合规顾虑')">编辑</a><a class="danger-op" onclick="alert('已停用：政策/合规顾虑')">停用</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：行业赛道（平铺） -->
-              <div class="dict-panel" id="dp-ind" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>数据项</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>人工智能</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="dmEditDict('人工智能')">编辑</a><a class="danger-op" onclick="alert('已停用：人工智能')">停用</a></td></tr>
-                      <tr><td>先进制造·新能源</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('先进制造·新能源')">编辑</a><a class="danger-op" onclick="alert('已停用：先进制造·新能源')">停用</a></td></tr>
-                      <tr><td>医疗健康</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="dmEditDict('医疗健康')">编辑</a><a class="danger-op" onclick="alert('已停用：医疗健康')">停用</a></td></tr>
-                      <tr><td>半导体</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="dmEditDict('半导体')">编辑</a><a class="danger-op" onclick="alert('已停用：半导体')">停用</a></td></tr>
-                      <tr><td>低空经济</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="dmEditDict('低空经济')">编辑</a><a class="danger-op" onclick="alert('已停用：低空经济')">停用</a></td></tr>
-                      <tr><td>教育</td><td><span class="tag tag-blue">启用</span></td><td>6</td><td class="sticky-op ops"><a onclick="dmEditDict('教育')">编辑</a><a class="danger-op" onclick="alert('已停用：教育')">停用</a></td></tr>
-                      <tr><td>新材料</td><td><span class="tag tag-blue">启用</span></td><td>7</td><td class="sticky-op ops"><a onclick="dmEditDict('新材料')">编辑</a><a class="danger-op" onclick="alert('已停用：新材料')">停用</a></td></tr>
-                      <tr><td>农业科技</td><td><span class="tag tag-blue">启用</span></td><td>8</td><td class="sticky-op ops"><a onclick="dmEditDict('农业科技')">编辑</a><a class="danger-op" onclick="alert('已停用：农业科技')">停用</a></td></tr>
-                      <tr><td>量子科技</td><td><span class="tag tag-blue">启用</span></td><td>9</td><td class="sticky-op ops"><a onclick="dmEditDict('量子科技')">编辑</a><a class="danger-op" onclick="alert('已停用：量子科技')">停用</a></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：轮次（平铺，含停用示例） -->
-              <div class="dict-panel" id="dp-round" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>数据项</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>天使轮</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="dmEditDict('天使轮')">编辑</a><a class="danger-op" onclick="alert('已停用：天使轮')">停用</a></td></tr>
-                      <tr><td>Pre-A</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('Pre-A')">编辑</a><a class="danger-op" onclick="alert('已停用：Pre-A')">停用</a></td></tr>
-                      <tr><td>A 轮</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="dmEditDict('A 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：A 轮')">停用</a></td></tr>
-                      <tr><td>B 轮</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="dmEditDict('B 轮')">编辑</a><a class="danger-op" onclick="alert('已停用：B 轮')">停用</a></td></tr>
-                      <tr><td>定增</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="dmEditDict('定增')">编辑</a><a class="danger-op" onclick="alert('已停用：定增')">停用</a></td></tr>
-                      <tr><td>C 轮</td><td><span class="tag tag-gray">停用</span></td><td>6</td><td class="sticky-op ops"><a onclick="dmEditDict('C 轮')">编辑</a><a onclick="alert('已启用：C 轮')">启用</a></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：项目来源（平铺） -->
-              <div class="dict-panel" id="dp-src" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>数据项</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>主动接洽</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="dmEditDict('主动接洽')">编辑</a><a class="danger-op" onclick="alert('已停用：主动接洽')">停用</a></td></tr>
-                      <tr><td>机构推荐</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('机构推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：机构推荐')">停用</a></td></tr>
-                      <tr><td>行业峰会</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="dmEditDict('行业峰会')">编辑</a><a class="danger-op" onclick="alert('已停用：行业峰会')">停用</a></td></tr>
-                      <tr><td>政府引荐</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="dmEditDict('政府引荐')">编辑</a><a class="danger-op" onclick="alert('已停用：政府引荐')">停用</a></td></tr>
-                      <tr><td>LP 推荐</td><td><span class="tag tag-blue">启用</span></td><td>5</td><td class="sticky-op ops"><a onclick="dmEditDict('LP 推荐')">编辑</a><a class="danger-op" onclick="alert('已停用：LP 推荐')">停用</a></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：提醒类型（平铺） -->
-              <div class="dict-panel" id="dp-remind" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>数据项</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>阶段停滞提醒</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="dmEditDict('阶段停滞提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：阶段停滞提醒')">停用</a></td></tr>
-                      <tr><td>报告逾期提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('报告逾期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：报告逾期提醒')">停用</a></td></tr>
-                      <tr><td>证照到期提醒</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="dmEditDict('证照到期提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：证照到期提醒')">停用</a></td></tr>
-                      <tr><td>付款节点提醒</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="dmEditDict('付款节点提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：付款节点提醒')">停用</a></td></tr>
-                      <tr><td>审批超时提醒</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('审批超时提醒')">编辑</a><a class="danger-op" onclick="alert('已停用：审批超时提醒')">停用</a></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- 数据分类：报告类型（平铺） -->
-              <div class="dict-panel" id="dp-report" style="display:none;">
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>数据项</th>
-                        <th>状态</th>
-                        <th>排序</th>
-                        <th class="sticky-op">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>月报</td><td><span class="tag tag-blue">启用</span></td><td>1</td><td class="sticky-op ops"><a onclick="dmEditDict('月报')">编辑</a><a class="danger-op" onclick="alert('已停用：月报')">停用</a></td></tr>
-                      <tr><td>季报</td><td><span class="tag tag-blue">启用</span></td><td>2</td><td class="sticky-op ops"><a onclick="dmEditDict('季报')">编辑</a><a class="danger-op" onclick="alert('已停用：季报')">停用</a></td></tr>
-                      <tr><td>年报</td><td><span class="tag tag-blue">启用</span></td><td>3</td><td class="sticky-op ops"><a onclick="dmEditDict('年报')">编辑</a><a class="danger-op" onclick="alert('已停用：年报')">停用</a></td></tr>
-                      <tr><td>专项报告</td><td><span class="tag tag-blue">启用</span></td><td>4</td><td class="sticky-op ops"><a onclick="dmEditDict('专项报告')">编辑</a><a class="danger-op" onclick="alert('已停用：专项报告')">停用</a></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -730,47 +425,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
   </div>
 </div>
 
-<!-- ===== 弹窗3：新增数据项 ===== -->
-<div class="modal-overlay" id="dictItemModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">新增数据项</h3>
-      <span class="modal-close" onclick="closeDictItem()">×</span>
-    </div>
-    <div class="modal-body">
-      <div class="f-row"><label>所属数据分类</label><div class="f-readonly" id="diDict">—</div></div>
-      <div class="f-row" id="diNodeRow" style="display:none;"><label>所属节点 <span class="req">*</span></label>
-        <select class="f-select" id="diNode">
-          <option value="">请选择节点</option>
-        </select>
-        <div class="f-hint">分组数据需先挂到节点，再录入末级原因</div>
-      </div>
-      <div class="f-row" data-note="1"><label>数据项名称 <span class="req">*</span></label><input class="f-input" id="diName" placeholder="如：明显超出投资范围"></div>
-      <div class="f-row"><label>排序号</label><input class="f-input" id="diSort" placeholder="数字越小越靠前（默认追加到末尾）"></div>
-      <div class="f-row"><label>状态</label>
-        <div class="radio-line">
-          <label><input type="radio" name="diStatus" checked style="accent-color:var(--primary);">启用</label>
-          <label><input type="radio" name="diStatus" style="accent-color:var(--primary);">停用</label>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-default" onclick="closeDictItem()">取 消</button>
-      <button class="btn btn-primary" onclick="closeDictItem();alert('已保存')">保 存</button>
-    </div>
-  </div>
-</div>
-
 <script>
-/* ===== 业务脚本1：双页签切换 ===== */
-function switchPanel(v) {
-  document.querySelectorAll('.stab[data-view]').forEach(function (s) {
-    s.classList.toggle('active', s.getAttribute('data-view') === v);
-  });
-  document.getElementById('panel-user').style.display = (v === 'user') ? '' : 'none';
-  document.getElementById('panel-dict').style.display = (v === 'dict') ? '' : 'none';
-}
-
 /* ===== 业务脚本2：用户弹窗（新建 / 编辑） ===== */
 function openUser(username, name, account, role) {
   var editing = !!username;
@@ -823,49 +478,7 @@ function syncGroupHeads() {
   });
 }
 
-/* ===== 业务脚本4：基础数据（左侧分类 ↔ 右侧标题/表格联动） ===== */
-var DICTS = {
-  gp: { name: '放弃原因 · GP', note: '按放弃节点分组的末级原因，供放弃登记与统计使用', grouped: true,
-        nodes: '<option value="">请选择节点</option><option>① 看 BP 后不看</option><option>② 线上路演后</option><option>④ 访谈/尽调后</option><option>⑤ 立项时</option><option>⑥ 投资人路演后</option><option>⑦ 投决前主动撤回</option>' },
-  lp: { name: '放弃原因 · LP', note: '投决会否决的末级原因，仅在 ⑦ 投决节点可选', grouped: true,
-        nodes: '<option value="">请选择节点</option><option>⑦ 投决会否决</option>' },
-  ind: { name: '行业赛道', note: '项目建档与筛选使用的行业维度', grouped: false, nodes: '' },
-  round: { name: '轮次', note: '项目投资轮次维度', grouped: false, nodes: '' },
-  src: { name: '项目来源', note: '项目建档时的来源渠道', grouped: false, nodes: '' },
-  remind: { name: '提醒类型', note: '提醒中心可配置的提醒类别', grouped: false, nodes: '' },
-  report: { name: '报告类型', note: '投后报告归档的类别', grouped: false, nodes: '' }
-};
-var curDict = 'gp';
-function switchDict(key, el) {
-  curDict = key;
-  document.querySelectorAll('.dict-item').forEach(function (d) { d.classList.toggle('selected', d === el || d.getAttribute('data-dict') === key); });
-  document.getElementById('dictTitle').textContent = DICTS[key].name;
-  document.getElementById('dictNote').textContent = DICTS[key].note;
-  document.querySelectorAll('.dict-panel').forEach(function (p) { p.style.display = 'none'; });
-  document.getElementById('dp-' + key).style.display = '';
-}
-function openDictItem() {
-  document.getElementById('diDict').textContent = DICTS[curDict].name;
-  var grouped = DICTS[curDict].grouped;
-  document.getElementById('diNodeRow').style.display = grouped ? '' : 'none';
-  if (grouped) document.getElementById('diNode').innerHTML = DICTS[curDict].nodes;
-  document.getElementById('diName').value = '';
-  document.getElementById('diSort').value = '';
-  document.getElementById('dictItemModal').classList.add('show');
-}
-function closeDictItem() { document.getElementById('dictItemModal').classList.remove('show'); }
-document.getElementById('dictItemModal').addEventListener('click', function (e) { if (e.target === this) closeDictItem(); });
-
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeUser(); closeGrant(); closeDictItem(); } });
-</script>
-
-<script>
-/* ===== G03/T3 编辑数据项 → 复用新增数据项弹窗预填（dm- 前缀） ===== */
-function dmEditDict(name) {
-  openDictItem();
-  document.querySelector('#dictItemModal .modal-title').textContent = '编辑数据项';
-  document.getElementById('diName').value = name;
-}
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeUser(); closeGrant(); } });
 </script>
 
 <script>
@@ -891,76 +504,5 @@ document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link)
 
 
 
-<style id="proto-notes-style">
-body.proto-notes-on [data-note]{position:relative}
-body.proto-notes-on [data-note]::after{content:attr(data-note);position:absolute;top:1px;right:1px;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600;box-shadow:0 0 0 1.5px #fff;cursor:pointer;opacity:.75;transition:opacity .15s}
-body.proto-notes-on [data-note]:hover::after{opacity:1}
-@keyframes pn-blink{0%{box-shadow:0 0 0 2px #722ed1}25%{box-shadow:0 0 0 5px rgba(114,46,209,.35)}100%{box-shadow:0 0 0 2px transparent}}
-.proto-pin{display:none;position:absolute;width:300px;background:#fff;border:1px solid #f0f0f0;border-top:2px solid #722ed1;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.13);z-index:890;padding:10px 12px;font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;font-size:12px;color:#262626}
-body.proto-notes-on .proto-pin.pn-open{display:block}
-.proto-pin .pnp-close{position:absolute;top:6px;right:8px;cursor:pointer;color:#8c8c8c;font-size:14px;line-height:1;padding:2px}
-.proto-pin .pnp-close:hover{color:#262626}
-.proto-pin .pnp-t{display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;color:#262626;padding-right:16px}
-.proto-pin .pnp-n{flex:none;min-width:16px;height:16px;padding:0 3px;border-radius:3px;background:#722ed1;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:600}
-.proto-pin .pnp-d{margin-top:5px;color:#595959;line-height:1.6}
-.proto-pin .pnp-b{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
-.proto-pin .pnp-tag{background:#f9f0ff;color:#722ed1;border-radius:3px;padding:0 6px;font-size:11px;line-height:20px}
-.proto-pin .pnp-src{margin-top:8px;padding-top:7px;border-top:1px dashed #e5dff0;font-size:11px;color:#595959;line-height:1.65}
-.proto-pin .pnp-src b{color:#722ed1;font-weight:600}
-.pn-fab{position:fixed;right:12px;bottom:12px;z-index:880;display:flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:4px;background:#fff;border:1px solid #ddd0ec;color:#722ed1;font-size:11px;font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.06);opacity:.6;transition:opacity .15s}
-.pn-fab:hover{opacity:1;border-color:#722ed1}
-body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
-.pn-fab .pn-fab-n{font-family:Consolas,monospace;font-weight:600}
-</style>
-<div id="proto-pins"><div class="proto-pin" id="proto-pin-1"><span class="pnp-close">×</span><div class="pnp-t"><span class="pnp-n">1</span>末级原因数据</div><div class="pnp-d">按放弃节点分组的末级原因，供放弃登记（F01）与放弃统计（F19）使用；<br>分组数据需先挂到节点，再录入末级原因（两处数据同步）。</div><div class="pnp-b"><span class="pnp-tag">P21 · 系统管理</span></div><div class="pnp-src"><div class="src-item"><b>P21 系统管理</b>：用户与角色 + 基础数据（原字典管理）</div></div></div>
-<div class="pn-fab" id="protoNotesFab">标注</div></div>
-<script id="proto-notes-js">
-(function(){
-  var KEY='proto-notes-on';
-  function on(){return location.search.indexOf('notes=1')>-1||localStorage.getItem(KEY)==='1'}
-  function apply(){
-    document.body.classList.toggle('proto-notes-on',on());
-    var fab=document.getElementById('protoNotesFab');
-    if(fab){fab.innerHTML=on()?'收起':'标注 <span class="pn-fab-n">'+(document.querySelectorAll('[data-note]').length)+'</span>';fab.title=on()?'收起标注（Alt+N）':'显示标注（Alt+N）'}
-  }
-  function toggle(){var v=!on();localStorage.setItem(KEY,v?'1':'0');apply()}
-  document.addEventListener('keydown',function(e){if(e.altKey&&(e.key==='n'||e.key==='N')){e.preventDefault();toggle()}});
-  function place(el,pin){
-    var r=el.getBoundingClientRect(),sx=window.scrollX||0,sy=window.scrollY||0;
-    var w=pin.offsetWidth||248,h=pin.offsetHeight||90,vw=document.documentElement.clientWidth;
-    var x=r.right+sx+12;
-    if(x+w>sx+vw-8){var xl=r.left+sx-w-12;x=xl>=sx+8?xl:(sx+vw-w-8)}
-    var y=r.top+sy;
-    if(y+h>sy+document.documentElement.clientHeight-8)y=Math.max(sy+52,r.bottom+sy-h);
-    pin.style.left=x+'px';pin.style.top=y+'px';
-  }
-  document.addEventListener('click',function(e){
-    if(!on())return;
-    var tgt=e.target.closest?e.target.closest('[data-note]'):null;
-    if(tgt){
-      var r=tgt.getBoundingClientRect();
-      if(e.clientX>r.right-24&&e.clientY<r.top+22){
-        e.stopPropagation();e.preventDefault();
-        var pin=document.getElementById('proto-pin-'+tgt.getAttribute('data-note'));
-        if(pin){
-          if(pin.classList.contains('pn-open')){pin.classList.remove('pn-open')}
-          else{pin.classList.add('pn-open');place(tgt,pin)}
-        }
-      }
-    }
-  },true);
-  document.addEventListener('click',function(e){
-    var t=e.target;
-    var fab=t.closest?t.closest('.pn-fab'):null;
-    if(fab){toggle();return}
-    var pc=t.closest?t.closest('.proto-pin'):null;
-    if(pc){
-      if(t.classList&&t.classList.contains('pnp-close'))pc.classList.remove('pn-open');
-      return;
-    }
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-})();
-</script>
 </body>
 </html>

@@ -18,7 +18,7 @@ ALL22 = [
  ('F15', '退出管理/P3-R01-F15-项目退出.html'), ('F16', '退出管理/P3-R01-F16-收益分配.html'),
  ('F17', '退出管理/P3-R01-F17-清算注销.html'), ('F18', '统计报表/P3-R01-F18-阶段漏斗.html'),
  ('F19', '统计报表/P3-R01-F19-放弃原因分布.html'), ('F20', '审批中心/P3-R01-F20-审批中心.html'),
- ('F21', '系统管理/P3-R01-F21-系统管理.html'), ('F22', '投后管理/P3-R01-F22-投后项目.html'),
+ ('F21', '系统管理/P3-R01-F21-用户与角色.html'), ('F25', '系统管理/P3-R01-F25-基础数据.html'), ('F22', '投后管理/P3-R01-F22-投后项目.html'),
  ('F23', '退出管理/P3-R01-F23-退出项目.html'), ('F24', '工作台/P3-R01-F24-登录.html'),
 ]
 INTEG = {k for k, _ in ALL22} & set(base)
@@ -125,9 +125,9 @@ for l in gate_lines:
     print(l)
 print(f"接入 15/15（降级页：无）")
 print()
-print("===== 22 页全量回归 =====")
+print("===== 23 页全量回归 =====")
 for l in pass_list:
     print(l)
 for l in fail_list:
     print(l)
-print(f"PASS {len(pass_list)}/22, FAIL {len(fail_list)}, JS错误 {jserr_total}")
+print(f"PASS {len(pass_list)}/{len(ALL22)}, FAIL {len(fail_list)}, JS错误 {jserr_total}")
