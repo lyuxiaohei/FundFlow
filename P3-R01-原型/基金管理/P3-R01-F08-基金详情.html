@@ -321,6 +321,19 @@ tbody tr:hover td { background:#f5faff; }
             <div class="f-row"><label>存续期限</label><input class="f-input" value="5+2 年"></div>
           </div>
 
+          <div class="card-title" style="margin-top:28px;">基金水位</div>
+          <div class="sum-bar" id="dmWaterCard">
+            <div class="sum-item"><div class="k">认缴总额</div><div class="v" id="dmWcCommit">—<small>万元</small></div></div>
+            <div class="sum-item"><div class="k">实缴总额</div><div class="v blue" id="dmWcPaid">—<small>万元</small></div></div>
+            <div class="sum-item"><div class="k">已投金额</div><div class="v" id="dmWcInvested">1,500<small>万元</small></div></div>
+            <div class="sum-item"><div class="k">剩余可投</div><div class="v" id="dmWcRemain">2,500<small>万元</small></div></div>
+            <div class="prog-wrap">
+              <div class="prog-label"><span>实缴进度</span><b id="dmWcPct">—</b></div>
+              <div class="prog-bar"><div class="prog-fill" id="dmWcFill" style="width:0%;"></div></div>
+            </div>
+          </div>
+          <div class="f-hint" style="margin-top:10px;">已投=关联项目累计实缴出资（演示口径）；剩余可投=实缴总额−已投金额</div>
+
           <div class="card-title" style="margin-top:28px;">管理信息</div>
           <div class="fgrid2">
             <div class="f-row"><label>管理人</label><input class="f-input" value="苏州星航投资管理有限公司"></div>
@@ -403,6 +416,7 @@ tbody tr:hover td { background:#f5faff; }
               <div class="prog-bar"><div class="prog-fill" style="width:50%;"></div></div>
             </div>
             <div class="sum-item"><div class="k">出资主体</div><div class="v">2<small>个</small></div></div>
+            <button class="btn btn-primary" style="margin-left:auto;" onclick="dmCallRemind()">催缴提醒</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -562,6 +576,29 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
 </script>
 
 
+<!-- ===== G06/T6 弹窗：催缴提醒（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmCallModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">催缴提醒 · 实缴不足主体</h3>
+      <span class="modal-close" onclick="dmCloseCall()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>出资主体</th><th>所属 LP</th><th>认缴</th><th>实缴</th><th>状态</th></tr></thead>
+          <tbody id="dmCallBody"></tbody>
+        </table>
+      </div>
+      <div class="f-hint" style="margin-top:10px;">催缴复用「付款节点提醒」口径（字典 remind 分类）；确认后向相关 LP 发送提醒</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="dmCloseCall()">取 消</button>
+      <button class="btn btn-primary" onclick="dmSendCall()">确认发送</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== G03/T3 弹窗：查看类真弹窗（dm- 前缀，复用 .modal 骨架） ===== -->
 <div class="modal-overlay" id="dmFileModal">
   <div class="modal">
@@ -685,6 +722,42 @@ body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
   for (var i = 0; i < sels.length; i++) {
     if (sels[i].options.length && sels[i].options[0].text === '有限合伙') { DM.dmFillSelect(sels[i], 'orgForm', 0); }
   }
+})();
+</script>
+<script>
+/* ===== G06/T6 基金水位卡（认缴/实缴自 store.capCalls.f002）＋催缴提醒（dm- 前缀） ===== */
+(function () {
+  var c = window.DM && DM.store.capCalls && DM.store.capCalls.f002;
+  if (c) {
+    document.getElementById('dmWcCommit').innerHTML = c.commit + '<small>万元</small>';
+    document.getElementById('dmWcPaid').innerHTML = c.paid + '<small>万元</small>';
+    document.getElementById('dmWcPct').textContent = c.pct + '%';
+    document.getElementById('dmWcFill').style.width = c.pct + '%';
+  }
+  function dmUnderpaid() {
+    return (c && c.rows ? c.rows : []).filter(function (r) {
+      var a = parseFloat(String(r.commit).replace(/,/g, '')) || 0;
+      var b = parseFloat(String(r.paid).replace(/,/g, '')) || 0;
+      return b < a;
+    });
+  }
+  window.dmCallRemind = function () {
+    var rows = dmUnderpaid();
+    var html = '';
+    rows.forEach(function (r) {
+      html += '<tr><td><span class="lk">' + r.id + '</span></td><td>' + r.sub + '</td><td>' + r.lp + '</td><td>' + r.commit + '</td><td>' + r.paid + '</td><td><span class="tag ' + r.stCls + '">' + r.st + '</span></td></tr>';
+    });
+    if (!html) { html = '<tr><td colspan="6" style="text-align:center;color:#999;">无实缴不足主体</td></tr>'; }
+    document.getElementById('dmCallBody').innerHTML = html;
+    document.getElementById('dmCallModal').classList.add('show');
+  };
+  window.dmCloseCall = function () { document.getElementById('dmCallModal').classList.remove('show'); };
+  document.getElementById('dmCallModal').addEventListener('click', function (e) { if (e.target === this) dmCloseCall(); });
+  window.dmSendCall = function () {
+    var names = dmUnderpaid().map(function (r) { return r.id + ' ' + r.sub; }).join('、');
+    dmCloseCall();
+    alert('已发送付款节点提醒：' + (names || '无实缴不足主体') + '（催缴复用字典 remind「付款节点提醒」口径）');
+  };
 })();
 </script>
 </body>

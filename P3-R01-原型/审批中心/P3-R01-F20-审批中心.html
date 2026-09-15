@@ -429,6 +429,7 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
         <div class="f-row" style="flex:1;"><label>发起时间</label><div class="f-readonly" id="apTime">—</div></div>
       </div>
       <div class="f-row"><label>当前节点</label><div class="f-readonly" id="apNode">—</div></div>
+      <div class="f-row"><label>审批人</label><div class="f-readonly" id="dmApApprover">—</div></div>
       <div class="f-row"><label>申请说明</label><div class="f-readonly" id="apDesc" style="white-space:normal;line-height:1.6;">—</div></div>
       <div class="f-row"><label>附件</label>
         <div><button class="btn btn-default" style="height:28px;" onclick="dmApAttach()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>查看附件（3）</button></div>
@@ -548,6 +549,8 @@ function switchView(v) {
 }
 
 /* ===== 弹窗1：审批处理（摘要填充 + 结论切换 + 驳回必填校验） ===== */
+/* G06/T9：审批节点→审批人映射（评审 Q10 演示口径；「待我审批」=管理员视角全部待办池，见 A21） */
+var DM_NODE_APPROVER = { '投决会': '胡博', '总经理审批': '嘉怡', '财务审批': '胡博', '投委会': '嘉怡' };
 function openApproval(no, type, biz, owner, time, node, desc) {
   window.dmCurAp = no;
   document.getElementById('apNoType').textContent = no + ' · ' + type;
@@ -555,6 +558,7 @@ function openApproval(no, type, biz, owner, time, node, desc) {
   document.getElementById('apOwner').textContent = owner;
   document.getElementById('apTime').textContent = time;
   document.getElementById('apNode').textContent = node;
+  document.getElementById('dmApApprover').textContent = DM_NODE_APPROVER[node] || '待分配';
   document.getElementById('apDesc').textContent = desc;
   document.getElementById('apOpinion').value = '';
   setDecision('pass');

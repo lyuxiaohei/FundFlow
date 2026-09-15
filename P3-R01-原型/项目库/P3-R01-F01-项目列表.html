@@ -662,11 +662,12 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { cl
     }
     if (p.ops.indexOf('abandon') > -1) { ops.push('<a class="danger-op" onclick="openAbandon(\'' + p.id + '\',\'' + p.stage + '\')">放弃</a>'); }
     if (p.ops.indexOf('post') > -1) { ops.push('<a>转入投后</a>'); }
-    if (p.ops === 'arch' || p.stage === '未投归档') { ops = ['<a>归档详情</a>']; }
+    var dmIsArch = p.ops === 'arch' || p.stage === '未投归档';
+    if (dmIsArch) { ops = ['<a onclick="dmAbDetail(\'' + p.name + '\')">归档详情</a>']; }
     return '<tr>'
       + '<td><input type="checkbox" class="cb"></td>'
       + '<td><span class="lk">' + p.id + '</span></td>'
-      + '<td><span class="lk">' + p.name + '</span></td>'
+      + '<td><span class="lk"' + (dmIsArch ? ' onclick="dmAbDetail(\'' + p.name + '\')"' : '') + '>' + p.name + '</span></td>'
       + '<td>' + p.industry + '</td>'
       + '<td>' + p.round + '</td>'
       + '<td><span class="stage-cell">' + p.stage + '</span></td>'
@@ -848,6 +849,42 @@ body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
     if (t.indexOf('人工智能') > -1) { DM.dmFillSelect(sels[i], 'ind', 1); }
     else if (t.indexOf('天使轮') > -1) { DM.dmFillSelect(sels[i], 'round', 1); }
   }
+})();
+</script>
+<!-- ===== G06/T11 弹窗：未投归档详情（dm- 前缀，复用 .modal 骨架；F19 同款，取值自 abandons 单源） ===== -->
+<div class="modal-overlay" id="dmAbModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dmAbTitle">未投归档详情</h3>
+      <span class="modal-close" onclick="document.getElementById('dmAbModal').classList.remove('show')">×</span>
+    </div>
+    <div class="modal-body" id="dmAbBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('dmAbModal').classList.remove('show')">关 闭</button>
+    </div>
+  </div>
+</div>
+<script>
+/* ===== G06/T11 未投归档详情 → 真弹窗（dm- 前缀；取值自 abandons 单源，F19 同款） ===== */
+(function () {
+  window.dmAbDetail = function (name) {
+    var a = null; DM.store.abandons.forEach(function (x) { if (x.name === name) { a = x; } });
+    if (!a) { return; }
+    var sub = a.subject === 'gp' ? 'GP 放弃（管理人主动）' : 'LP 否决（投决会）';
+    document.getElementById('dmAbTitle').textContent = name + ' · 未投归档详情';
+    document.getElementById('dmAbBody').innerHTML =
+      '<div class="f-row"><label>项目</label><div class="f-readonly">' + name + '</div></div>'
+      + '<div class="f-row"><label>放弃主体</label><div class="f-readonly">' + sub + '</div></div>'
+      + '<div class="f-row"><label>放弃节点</label><div class="f-readonly">' + a.nodeLabel + '</div></div>'
+      + '<div class="f-row"><label>末级原因</label><div class="f-readonly">' + a.reason + '</div></div>'
+      + '<div class="f-row"><label>自定义补充</label><div class="f-readonly" style="white-space:normal;line-height:1.6;">' + a.custom + '</div></div>'
+      + '<div style="display:flex;gap:12px;">'
+      + '<div class="f-row" style="flex:1;"><label>最近发生</label><div class="f-readonly">' + a.date + '</div></div>'
+      + '<div class="f-row" style="flex:1;"><label>关联项目编号</label><div class="f-readonly">' + (a.prj || '—') + '</div></div>'
+      + '</div>'
+      + '<div class="f-hint">未投归档不可回流管道；如再接触需按新项目建档</div>';
+    document.getElementById('dmAbModal').classList.add('show');
+  };
 })();
 </script>
 </body>

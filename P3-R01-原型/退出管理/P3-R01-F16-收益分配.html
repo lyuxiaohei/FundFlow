@@ -313,6 +313,25 @@ th:nth-child(3), td:nth-child(3) { text-align:right; font-variant-numeric:tabula
         </div>
       </div>
 
+      <!-- G06/T7 分配瀑布（演示口径，静态 mock） -->
+      <div class="card" id="dmWaterfallCard">
+        <div class="card-title">分配瀑布（演示口径）<span style="font-weight:400;font-size:12px;color:#999;margin-left:8px;">示例挂 BAT-2026-001</span></div>
+        <div class="f-hint" style="margin:0 0 10px;">可分配收益 800 万 ＝ 门槛收益 160 万（8% × 2,000 万本金）＋ 超额收益 640 万；超额部分 GP carry 20% ＝ 128 万、LP 512 万；LP 512 万按 60/40 分配</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>层级</th><th>对象</th><th>金额（万元）</th><th>计算口径</th></tr></thead>
+            <tbody>
+              <tr><td>第一层 · 门槛收益</td><td>LP（按出资比例）</td><td>160</td><td>8% × 2,000 万本金</td></tr>
+              <tr><td>第二层 · 超额收益</td><td>GP carry（20%）</td><td>128</td><td>640 万 × 20%</td></tr>
+              <tr><td>第二层 · 超额收益</td><td>LP（80%）</td><td>512</td><td>640 万 × 80%</td></tr>
+              <tr><td>LP 分配明细</td><td>宁波梅山远创 60%</td><td>307.2</td><td>512 万 × 60%</td></tr>
+              <tr><td>LP 分配明细</td><td>悦达上海 40%</td><td>204.8</td><td>512 万 × 40%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="f-hint" style="margin-top:10px;color:#999;">静态演示顺序，BS 版按合伙协议计算</div>
+      </div>
+
       <!-- 分配单列表（主行 + 展开子行） -->
       <div class="card" style="padding:0;">
         <div class="stabs" id="dstStabs">

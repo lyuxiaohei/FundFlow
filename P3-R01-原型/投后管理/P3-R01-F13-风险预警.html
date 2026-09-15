@@ -147,6 +147,21 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 .al-foot { margin-top:8px; display:flex; align-items:center; flex-wrap:wrap; }
 .al-note { font-size:12px; color:var(--text-3); margin-left:12px; }
 .al-note b { color:var(--text-2); font-weight:600; }
+/* ===== 弹窗（G06/T8 引入，admin-ui-spec 规范块） ===== */
+.modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,.5); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:1000; }
+.modal-overlay.show { display:flex; }
+.modal { background:#fff; border-radius:12px; width:480px; max-height:80vh; overflow-y:auto; box-shadow:var(--shadow-pop); }
+.modal-header { padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.modal-title { position:relative; padding-left:11px; font-size:16px; font-weight:600; color:#1a1a1a; margin:0; }
+.modal-title::before { content:''; position:absolute; left:0; top:3px; bottom:3px; width:3px; border-radius:2px; background:var(--primary); }
+.modal-overlay.show .modal { animation:mIn .18s cubic-bezier(.2,.8,.3,1); }
+@keyframes mIn { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:none; } }
+.modal-close { cursor:pointer; font-size:20px; color:var(--text-3); line-height:1; }
+.modal-close:hover { color:var(--text); }
+.modal-body { padding:20px 24px; }
+.modal-footer { padding:12px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+.modal .f-row { margin-bottom:14px; }
+.modal textarea { width:100%; box-sizing:border-box; border:1px solid var(--input-border, #d9d9d9); border-radius:6px; padding:8px 10px; font-size:13px; font-family:inherit; resize:vertical; }
 </style>
 </head>
 <body>
@@ -350,6 +365,72 @@ document.querySelectorAll('.sm-item.has-sub > .sm-link').forEach(function (link)
   btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
   pop.addEventListener('click', function (e) { e.stopPropagation(); });
   document.addEventListener('click', function () { pop.classList.remove('show'); });
+})();
+</script>
+<!-- ===== G06/T8 弹窗：预警处理说明（dm- 前缀，复用 .modal 骨架） ===== -->
+<div class="modal-overlay" id="dmHandleModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">处理预警 · 说明留痕</h3>
+      <span class="modal-close" onclick="dmCloseHandle()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="f-row"><label>处理说明 <span style="color:#e5484d;">*</span></label>
+        <textarea id="dmHandleNote" rows="4" placeholder="处理措施与结论（必填，提交后留痕展示）"></textarea>
+      </div>
+      <div style="font-size:12px;color:var(--text-3,#999);">预警处理强制留痕，处理时限 5 个工作日（评审 Q20 口径）</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="dmCloseHandle()">取 消</button>
+      <button class="btn btn-primary" onclick="dmSubmitHandle()">提交处理</button>
+    </div>
+  </div>
+</div>
+<script>
+/* ===== G06/T8 处理动作改弹说明输入（al2/al3/al4 接入；提交后对齐 al5 已处理样式） ===== */
+(function () {
+  window.dmHandleCtx = null;
+  window.dmOpenHandle = function (cardId, footId, stateId) {
+    window.dmHandleCtx = { cardId: cardId, footId: footId, stateId: stateId };
+    document.getElementById('dmHandleNote').value = '';
+    document.getElementById('dmHandleModal').classList.add('show');
+  };
+  window.dmCloseHandle = function () { document.getElementById('dmHandleModal').classList.remove('show'); };
+  document.getElementById('dmHandleModal').addEventListener('click', function (e) { if (e.target === this) dmCloseHandle(); });
+  window.dmSubmitHandle = function () {
+    var note = document.getElementById('dmHandleNote').value.replace(/^\s+|\s+$/g, '');
+    if (!note) { alert('请填写处理说明（必填，留痕口径）'); return; }
+    var ctx = window.dmHandleCtx;
+    if (!ctx) { dmCloseHandle(); return; }
+    var card = document.getElementById(ctx.cardId);
+    if (card) { card.classList.remove('unread'); }
+    var state = document.getElementById(ctx.stateId);
+    if (state) { state.className = 'tag tag-blue'; state.textContent = '已处理'; }
+    else if (card) {
+      var head = card.querySelector('.al-head');
+      if (head) {
+        var tag = document.createElement('span');
+        tag.className = 'tag tag-blue';
+        tag.textContent = '已处理';
+        var time = head.querySelector('.al-time');
+        if (time) { head.insertBefore(tag, time); } else { head.appendChild(tag); }
+      }
+    }
+    var foot = document.getElementById(ctx.footId);
+    if (foot) {
+      foot.classList.remove('ops');
+      foot.innerHTML = '<span class="al-note">处理说明：<b>' + note.replace(/</g, '&lt;') + '</b> · 2026-09-15 · 华悦</span>';
+    }
+    var w = window.DM && DM.store ? DM.store.warnings.filter(function (x) { return x.id === ctx.cardId; })[0] : null;
+    if (w) { w.state = 'done'; }
+    var un = 0, ru = 0, dn = 0;
+    DM.store.warnings.forEach(function (x) { if (x.state === 'unread') { un++; } else if (x.state === 'readUntreated') { ru++; } else { dn++; } });
+    document.getElementById('dmCntAll').textContent = DM.store.warnings.length;
+    document.getElementById('cntUnread').textContent = un;
+    document.getElementById('cntReadUntreated').textContent = ru;
+    document.getElementById('dmCntDone').textContent = dn;
+    dmCloseHandle();
+  };
 })();
 </script>
 </body>

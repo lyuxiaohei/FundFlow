@@ -563,13 +563,16 @@ textarea.f-input { height:auto; padding:8px 10px; resize:vertical; }
           <select class="f-select"><option selected>胡博</option><option>吕道远</option></select>
         </div>
       </div>
+      <div class="f-row"><label>认定有效期</label>
+        <div class="f-readonly"><span id="dmQualValid">24 个月（自认定通过日起算）</span></div>
+      </div>
       <div class="f-row"><label>备注</label>
         <textarea class="f-input" rows="2" placeholder="认定说明（选填）"></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-default" onclick="closeVerify()">取 消</button>
-      <button class="btn btn-primary" onclick="confirmVerify()">确认认定</button>
+      <button class="btn btn-primary" onclick="confirmVerify()">提交认定审批</button>
     </div>
   </div>
 </div>
@@ -643,7 +646,7 @@ function confirmVerify() {
   var r = document.querySelector('input[name="verdict"]:checked');
   var kind = r ? r.getAttribute('data-kind') : 'pass';
   closeVerify();
-  alert(kind === 'fail' ? '已认定（不通过）' : '已认定（通过）');
+  alert('认定审批已提交：总经理审批 · 审批人 嘉怡（APV-2026-0040）');
 }
 document.getElementById('verifyModal').addEventListener('click', function (e) { if (e.target === this) closeVerify(); });
 

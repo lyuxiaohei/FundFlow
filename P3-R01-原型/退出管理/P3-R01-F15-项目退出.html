@@ -298,6 +298,11 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
             <div class="stat-v num-pos" id="stGain">1,000<small>万元</small></div>
             <div class="stat-s" id="stGainS">收益率 25%（对本金 4,000 万元）</div>
           </div>
+          <div class="stat">
+            <div class="stat-l">剩余持仓</div>
+            <div class="stat-v" id="dmStRemain">1,000<small>万份</small></div>
+            <div class="stat-s" id="dmStRemainS">初始 2,000 万份 − 已退出 1,000 万份 = 剩余 1,000 万份</div>
+          </div>
         </div>
         <div class="f-hint" id="holdHint" style="margin-top:14px;">剩余持仓 1,000 万份（剩余成本 2,000 万元）· 同一项目可分多批次退出，本金按单位成本 2.00 元/份分摊</div>
       </div>
@@ -360,6 +365,15 @@ th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4), th:nth-child
           <option value="股权转让" selected>股权转让</option>
           <option value="IPO减持">IPO 减持</option>
         </select>
+      </div>
+      <div class="f-row" id="dmCompBlock" style="display:none;"><label>合规复核（IPO 减持适用）<span class="req">*</span></label>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="dmCkLock"> 锁定期已满</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="dmCkDisc"> 预披露已完成</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="dmCkQuota"> 90 日额度校验</label>
+        </div>
+        <div style="margin-top:8px;"><input class="f-input" id="dmReviewer" placeholder="复核人（必填）"></div>
+        <div class="f-hint">IPO 减持从严：三项复核须全勾选并填写复核人，否则提交拦截</div>
       </div>
       <div style="display:flex;gap:12px;">
         <div class="f-row" style="flex:1;"><label>退出价格（元/份）<span class="req">*</span></label>
@@ -508,6 +522,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
     return v.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
   };
   window.dmSubmitBatch = function () {
+    if (window.dmCompCheck && !dmCompCheck()) { return; }
     if (window.dmEditId) { dmSaveBatEdit(); return; }
     var price = parseFloat(document.getElementById('exPrice').value) || 0;
     var qty = parseFloat(document.getElementById('exQty').value) || 0;
@@ -706,6 +721,59 @@ body.proto-notes-on .pn-fab{background:#f9f0ff;border-color:#722ed1;opacity:.95}
 (function () {
   if (!window.DM || !DM.dmFillSelect) { return; }
   DM.dmFillSelect(document.getElementById('exType'), 'exitType', 0);
+})();
+</script>
+<script>
+/* ===== G06/T5 合规复核显隐与从严校验＋待执行批次取消/展期（dm- 前缀） ===== */
+(function () {
+  /* 区块随退出类型显隐：仅 IPO 减持出现（A21 Q7） */
+  window.dmSyncCompBlock = function () {
+    var sel = document.getElementById('exType');
+    var blk = document.getElementById('dmCompBlock');
+    if (!sel || !blk) { return; }
+    blk.style.display = sel.options[sel.selectedIndex].text === 'IPO 减持' ? '' : 'none';
+  };
+  var exSel = document.getElementById('exType');
+  if (exSel) { exSel.addEventListener('change', dmSyncCompBlock); }
+  /* 提交从严校验：IPO 减持须三勾全勾＋复核人已填，否则拦截 */
+  window.dmCompCheck = function () {
+    var sel = document.getElementById('exType');
+    if (!sel || sel.options[sel.selectedIndex].text !== 'IPO 减持') { return true; }
+    var ok = document.getElementById('dmCkLock').checked && document.getElementById('dmCkDisc').checked && document.getElementById('dmCkQuota').checked;
+    var rv = (document.getElementById('dmReviewer').value || '').replace(/^\s+|\s+$/g, '');
+    if (!ok || !rv) {
+      alert('IPO 减持合规复核未通过：锁定期已满 / 预披露已完成 / 90 日额度校验须全勾选，并填写复核人（从严拦截）');
+      return false;
+    }
+    return true;
+  };
+  /* 登记弹窗打开时复位复核区并按当前类型显隐 */
+  var dmOrigOpenBat = window.openBatModal;
+  if (dmOrigOpenBat) {
+    window.openBatModal = function () {
+      dmOrigOpenBat();
+      ['dmCkLock', 'dmCkDisc', 'dmCkQuota'].forEach(function (id) { document.getElementById(id).checked = false; });
+      document.getElementById('dmReviewer').value = '';
+      dmSyncCompBlock();
+    };
+  }
+  dmSyncCompBlock();
+  /* 待执行批次：取消（原因必填，行内留痕不走审批——A21 Q21 口径）／展期（行内留痕） */
+  window.dmCancelBat = function (id) {
+    var b = DM.byId(DM.store.batches, id);
+    if (!b || b.status === '已取消') { return; }
+    var reason = prompt('取消原因（必填，行内留痕）：');
+    if (!reason || !reason.replace(/^\s+|\s+$/g, '')) { alert('请填写取消原因（留痕口径）'); return; }
+    b.status = '已取消';
+    b.stCls = 'tag-gray';
+    b.tr = b.tr.replace('<span class="tag tag-orange">待执行</span>', '<span class="tag tag-gray">已取消</span>');
+    b.detail += '；2026-09-15 取消，原因：' + reason + '（行内留痕，不走审批）';
+    DM.renderList('F15.bat');
+    alert('已取消 ' + id + '：原因「' + reason + '」已留痕（行内留痕，不走审批）');
+  };
+  window.dmDeferBat = function (id) {
+    alert('已登记展期：' + id + '（新执行窗口另行确认，行内留痕，不走审批）');
+  };
 })();
 </script>
 </body>
